@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:34:30 by pkostura          #+#    #+#             */
-/*   Updated: 2024/12/29 14:06:54 by sombru           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:34:49 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 # define LIBFT_H
 
-# include <string.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include <limits.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -49,7 +49,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
@@ -58,7 +58,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 
 // get_next_line
 
-#define BUFFER_SIZE 1
+# define BUFFER_SIZE 1
+
 char	*ft_get_line(char *string);
 char	*ft_new_string(char *string);
 
@@ -80,8 +81,7 @@ char	*ft_strndup(const char *s, size_t n);
 
 char	*ft_arrcomb(char **array, const char ch);
 char	**ft_arrcpy(char **array);
-char    **ft_arrstr_rm(char **array, int index, int size);
+char	**ft_arrstr_rm(char **array, int index, int size);
 void	ft_free_array(char **arr);
-
 
 #endif

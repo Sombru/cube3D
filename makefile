@@ -25,6 +25,7 @@ SRC_DIR		= src/
 SRC			= main.c \
 			  window.c \
 			  draw.c \
+			  action.c \
 
 # Objects
 OBJ_PATH	= obj/

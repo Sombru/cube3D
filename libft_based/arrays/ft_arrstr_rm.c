@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrstr_rm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 11:51:44 by pasha             #+#    #+#             */
-/*   Updated: 2024/12/29 15:08:04 by sombru           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:38:30 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-// Remove a string from an array and shift the rest of array accordingly
+// Remove a string at index from an array and shift the rest of array 
 // returns NULL if no array or index is out of bounds
-char **ft_arrstr_rm(char **array, int index, int size)
+char	**ft_arrstr_rm(char **array, int index, int size)
 {
-	int i;
-    int new_index;
-    char **new_array;
+	int		i;
+	int		new_index;
+	char	**new_array;
 
 	if (!array || index < 0 || index >= size)
 		return (NULL);
@@ -26,19 +26,19 @@ char **ft_arrstr_rm(char **array, int index, int size)
 	if (!new_array)
 		return (NULL);
 	i = 0;
-    new_index = 0;
+	new_index = 0;
 	while (i < size)
 	{
-        if (i == index)
-        {
-            i++;
-            continue;
-        }
-        new_array[new_index] = ft_strdup(array[i]);
-        i++;
-        new_index++;
-    }
-    new_array[new_index] = NULL;
-    ft_free_array(array);
+		if (i == index)
+		{
+			i++;
+			continue ;
+		}
+		new_array[new_index] = ft_strdup(array[i]);
+		i++;
+		new_index++;
+	}
+	new_array[new_index] = NULL;
+	ft_free_array(array);
 	return (new_array);
 }

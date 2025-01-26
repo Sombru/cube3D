@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/01/26 16:10:10 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/01/26 17:07:36 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@
 # define PURPLE 0x800080
 # define BROWN 0xA52A2A
 
+# define LEFT_ARROW 65361
+# define UP_ARROW 65362
+# define RIGHT_ARROW 65363
+# define DOWN_ARROW 65364
+# define W_KEY 119
+# define A_KEY 97
+# define S_KEY 115
+# define D_KEY 100
+# define SPACE 32
+# define ESCAPE 65307
+
 typedef struct	s_data {
 	void		*mlx;
 	void		*win;
@@ -51,6 +62,11 @@ void    window_loop(t_data **data);
 //-------------------------------draw-----------------------------------//
 
 int		draw_player(t_data *data);
-int 	move_player(t_data *data, int keycode);
+
+//-------------------------------action-----------------------------------//
+
+
+int action(t_data *data, int keycode);
+
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrcomb.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:14:20 by sombru            #+#    #+#             */
-/*   Updated: 2024/12/29 15:07:47 by sombru           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:35:11 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	concat_strings(char *result, char **array, const char ch)
 {
-	int	i;
+	int		i;
 	char	separator[2];
 
 	separator[0] = ch;
@@ -29,7 +29,8 @@ static void	concat_strings(char *result, char **array, const char ch)
 	}
 }
 
-// Combines all strings in the array into one string separated by the character ch
+// Combines all strings in the array into one string 
+// separated by the character ch
 char	*ft_arrcomb(char **array, const char ch)
 {
 	size_t	total_length;
