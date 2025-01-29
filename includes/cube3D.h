@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/01/26 17:07:36 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/01/27 11:05:46 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,24 @@ typedef struct	s_data {
 	void		*win;
 	int			player_x;
 	int			player_y;
+	int			*map;
+	int			map_x;
+	int			map_y;
+	int			map_size;
+	int			cell_size;
 }				t_data;
 
 //-------------------------------window-----------------------------------//
 
-int     close_win(int keycode, t_data *data);
-void    window_loop(t_data **data);
+void    window_loop(t_data *data);
 
 //-------------------------------draw-----------------------------------//
 
 int		draw_player(t_data *data);
+int		draw_map(t_data *data);
 
 //-------------------------------action-----------------------------------//
 
-
-int action(t_data *data, int keycode);
-
+int action(int keycode, t_data *data);
 
 #endif
