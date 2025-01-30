@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/01/27 11:05:46 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:51:07 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@
 # define SPACE 32
 # define ESCAPE 65307
 
-typedef struct	s_data {
+# define PI 3.1415926535897932384
+
+typedef struct	s_data
+{
 	void		*mlx;
 	void		*win;
 	int			player_x;
@@ -59,16 +62,27 @@ typedef struct	s_data {
 	int			cell_size;
 }				t_data;
 
-//-------------------------------window-----------------------------------//
+typedef struct s_player_pos
+{
+	float		player_x;
+	float		player_y;
+	float		player_dx; // d = degrees
+	float		player_dy; // d = degrees
+	float		player_a;
+}
+				t_player_pos;
+
+
+//===============================window==================================//
 
 void    window_loop(t_data *data);
 
-//-------------------------------draw-----------------------------------//
+//================================draw===================================//
 
 int		draw_player(t_data *data);
 int		draw_map(t_data *data);
 
-//-------------------------------action-----------------------------------//
+//===============================action==================================//
 
 int action(int keycode, t_data *data);
 
