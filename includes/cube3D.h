@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/01/30 14:51:07 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:07:18 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,19 @@
 
 # define PI 3.1415926535897932384
 
+# define BLOCK_SIZE 50
+
+struct s_ray;
+
 typedef struct	s_data
 {
 	void		*mlx;
 	void		*win;
-	int			player_x;
-	int			player_y;
+	float		player_x;
+	float		player_y;
+	float		player_d_x; // delta x of player
+	float		player_d_y; // delta y of player
+	float		player_a; // angle of a player
 	int			*map;
 	int			map_x;
 	int			map_y;
@@ -62,15 +69,19 @@ typedef struct	s_data
 	int			cell_size;
 }				t_data;
 
-typedef struct s_player_pos
+typedef struct s_ray
 {
-	float		player_x;
-	float		player_y;
-	float		player_dx; // d = degrees
-	float		player_dy; // d = degrees
-	float		player_a;
-}
-				t_player_pos;
+	int		ray;
+	int		map_x;
+	int		map_y;
+	int		map_hit;
+	int		dof;
+	float	ray_x;
+	float	ray_y;
+	float	ray_a; // angle of ray
+	float	offset_x;
+	float	offset_y;
+}				t_ray;
 
 
 //===============================window==================================//
@@ -81,6 +92,10 @@ void    window_loop(t_data *data);
 
 int		draw_player(t_data *data);
 int		draw_map(t_data *data);
+void	draw_direction(t_data *data);
+void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
+t_ray	*draw_rays(t_data *data);
+
 
 //===============================action==================================//
 
