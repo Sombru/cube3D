@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/04 17:07:07 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:54:30 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	action(int keycode, t_data *data)
 {
-	t_ray *ray;
 	float step = 10; // Step size for movement
 	float angle_diff = 0.1;
 
@@ -70,6 +69,6 @@ int	action(int keycode, t_data *data)
 	draw_map(data);
 	draw_player(data);
 	draw_direction(data);
-	ray = draw_rays(data);
+	draw_rays(data);
 	return (0);
 }

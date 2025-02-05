@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/04 18:41:04 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:12:14 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,54 +111,47 @@ void draw_direction(t_data *data)
     draw_line(data, data->player_x + 5, data->player_y + 5, end_x, end_y, GREEN);
 }
 
-t_ray draw_rays(t_data *data)
+// cast a ray based on player X and Y and check if it hit the wall every BLOCK_SIZE 
+void cast_ray(t_data *data, float ray_angle)
 {
-	t_ray *ray;
-	float aTan;
+    float ray_x = data->player_x;
+    float ray_y = data->player_y;
+    float ray_dx = cos(ray_angle);
+    float ray_dy = sin(ray_angle);
+    int map_x, map_y;
+    int hit = 0;
 
-	ray = malloc(sizeof(ray));
-	ray->ray = 0;
-	ray->ray_a = data->player_a;
-	while (ray->ray < 1)
-	{
-		ray->dof = 0;
-		aTan = -1/tan(ray->ray_a);
-		if (ray->ray_a > PI)
-		{
-			ray->ray_y = ((data->player_y / 64) * 64) - 0.0001;
-			ray->ray_x = (data->player_y - ray->ray_y) * aTan + data->player_x;
-			ray->offset_y = -64;
-			ray->offset_x = -ray->offset_y * aTan;
-		}
-		if (ray->ray < PI)
-		{
-			ray->ray_y = ((data->player_y / 64) * 64) + 64;
-			ray->ray_x = (data->player_y - ray->ray_y) * aTan + data->player_x;
-			ray->offset_y = 64;
-			ray->offset_x = -ray->offset_y * aTan;
-		}
-		if (ray->ray_a == 0 || ray->ray_a == PI) // looking straight left or right
-		{
-			ray->ray_x = data->player_x;
-			ray->ray_y = data->player_y;
-			ray->dof = 8;
-		}
-		while (ray->dof < 8)
-		{
-			ray->map_x = ray->ray_x / 64;
-			ray->map_y = ray->ray_y / 64;
-			ray->map_hit = ray->map_y * data->map_x + ray->map_x;
-			if(ray->map_hit * data->map_x * data->map_y && data->map[ray->map_hit] == 1)
-				ray->dof = 8;
-			else
-			{
-				ray->ray_x = ray->offset_x;
-				ray->ray_y = ray->offset_y;
-				ray->dof++;
-			}
-			
-		}
-		
-	}
-	
+    while (!hit)
+    {
+        ray_x += ray_dx;
+        ray_y += ray_dy;
+        map_x = (int)(ray_x / BLOCK_SIZE);
+        map_y = (int)(ray_y / BLOCK_SIZE);
+        if (map_x >= 0 && map_x < data->map_x && map_y >= 0 && map_y < data->map_y)
+        {
+            if (data->map[map_y * data->map_x + map_x] == 1)
+            {
+                hit = 1; // 
+				// x + 5 && y + 5 to center the ray around player	
+                draw_line(data, data->player_x + 5, data->player_y + 5, ray_x, ray_y, RED);
+            }
+        }
+        else
+        {
+            hit = 1;
+        }
+    }
+}
+
+void draw_rays(t_data *data)
+{
+    float fov = PI / 2; // Field of view (we use PI to represent the angle so instead of 360 we have PI * 2)
+    float angle_step = fov / NUM_OF_RAYS;
+    float start_angle = data->player_a - (fov / 2);
+
+    for (int i = 0; i < NUM_OF_RAYS; i++)
+    {
+        float ray_angle = start_angle + i * angle_step;
+        cast_ray(data, ray_angle);
+    }
 }

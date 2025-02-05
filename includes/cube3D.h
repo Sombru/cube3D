@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/04 17:07:18 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:10:28 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@
 # define PI 3.1415926535897932384
 
 # define BLOCK_SIZE 50
+# define NUM_OF_RAYS 40
 
-struct s_ray;
 
 typedef struct	s_data
 {
@@ -69,21 +69,6 @@ typedef struct	s_data
 	int			cell_size;
 }				t_data;
 
-typedef struct s_ray
-{
-	int		ray;
-	int		map_x;
-	int		map_y;
-	int		map_hit;
-	int		dof;
-	float	ray_x;
-	float	ray_y;
-	float	ray_a; // angle of ray
-	float	offset_x;
-	float	offset_y;
-}				t_ray;
-
-
 //===============================window==================================//
 
 void    window_loop(t_data *data);
@@ -94,7 +79,8 @@ int		draw_player(t_data *data);
 int		draw_map(t_data *data);
 void	draw_direction(t_data *data);
 void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
-t_ray	*draw_rays(t_data *data);
+void	draw_rays(t_data *data);
+void	cast_ray(t_data *data, float ray_angle);
 
 
 //===============================action==================================//
