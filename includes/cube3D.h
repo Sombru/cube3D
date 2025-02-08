@@ -6,19 +6,19 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/05 19:10:28 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:07:15 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
+# include "../libft_based/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <math.h>
-# include "../libft_based/libft.h"
-# include "../minilibx-linux/mlx.h"
 
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
@@ -52,39 +52,56 @@
 # define BLOCK_SIZE 50
 # define NUM_OF_RAYS 40
 
-
-typedef struct	s_data
+typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
-	float		player_x;
-	float		player_y;
-	float		player_d_x; // delta x of player
-	float		player_d_y; // delta y of player
-	float		player_a; // angle of a player
-	int			*map;
-	int			map_x;
-	int			map_y;
-	int			map_size;
-	int			cell_size;
-}				t_data;
+	void	*mlx;
+	void	*win;
+	void	*frame;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	float	player_x;
+	float	player_y;
+	float	player_d_x; // delta x of player
+	float	player_d_y; // delta y of player
+	float	player_a;   // angle of a player
+	int		*map;
+	int		map_x;
+	int		map_y;
+	int		map_size;
+	int		block_size;
+}			t_data;
 
 //===============================window==================================//
 
-void    window_loop(t_data *data);
+void		window_loop(t_data *data);
+int			render_frame(t_data *data);
 
 //================================draw===================================//
 
-int		draw_player(t_data *data);
-int		draw_map(t_data *data);
-void	draw_direction(t_data *data);
-void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
-void	draw_rays(t_data *data);
-void	cast_ray(t_data *data, float ray_angle);
-
+void		pixel_to_frame(t_data *data, int x, int y, int color);
+int			draw_player(t_data *data);
+int			draw_map(t_data *data);
+void		draw_direction(t_data *data);
+void		draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
+void		draw_rays(t_data *data);
+void		cast_ray(t_data *data, float ray_angle);
 
 //===============================action==================================//
 
-int action(int keycode, t_data *data);
+int			action(int keycode, t_data *data);
 
 #endif
+
+// + have a working window
+// + have a drawn map and player
+// + have all rendered frame by frame instead of pixel by pixel
+//   read a map from a file
+//	 validate map from a file
+//   render all in 3D
+//   minimap (prob use existing window and fust draw game in new window)
+//   mouse view (prob only with X axis since idk how render it in Y)
+//   animted sprite
+//   dooors
+//   collision

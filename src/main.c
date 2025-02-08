@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/04 16:31:05 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:57:55 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ int	main(void)
     data = malloc(sizeof(t_data));
 	// data->ray = malloc(sizeof(data->ray));
 	data->map_size = 100;
+	data->block_size = 50;
 	data->map = malloc((sizeof(data->map)) * data->map_size);
 	data->map_x = 10;
 	data->map_y = 10;
+	data->player_a = 0;
 	data->player_d_x = cos(data->player_a);
 	data->player_d_y = sin(data->player_a);
     int map[100] = {

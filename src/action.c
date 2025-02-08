@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/05 18:54:30 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:54:47 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,6 @@ int	action(int keycode, t_data *data)
 		mlx_destroy_window(data->mlx, data->win);
 		exit(0);
 	}
-	mlx_clear_window(data->mlx, data->win);
-	draw_map(data);
-	draw_player(data);
-	draw_direction(data);
-	draw_rays(data);
+   render_frame(data);
 	return (0);
 }
