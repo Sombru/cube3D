@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:34:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/06 15:35:16 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:32:57 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 
 // get_next_line
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 42
 
 char	*ft_get_line(char *string);
 char	*ft_new_string(char *string);

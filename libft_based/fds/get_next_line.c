@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 18:00:01 by pkostura          #+#    #+#             */
-/*   Updated: 2025/01/26 16:30:36 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:41:03 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,102 +15,100 @@
 #include <stdio.h>
 #include <unistd.h>
 
-char	*ft_get_line(char *string)
+char	*ft_get_line(char *left_str)
 {
 	int		i;
 	char	*str;
 
 	i = 0;
-	if (!string[i])
+	if (!left_str[i])
 		return (NULL);
-	while (string[i] && string[i] != '\n')
+	while (left_str[i] && left_str[i] != '\n')
 		i++;
-	str = (char *)malloc(sizeof(char) * (i + 2));
+	str = malloc(sizeof(char) * (i + 2));
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (string[i] && string[i] != '\n')
+	while (left_str[i] && left_str[i] != '\n')
 	{
-		str[i] = string[i];
+		str[i] = left_str[i];
 		i++;
 	}
-	if (string[i] == '\n')
+	if (left_str[i] == '\n')
 	{
-		str[i] = string[i];
+		str[i] = left_str[i];
 		i++;
 	}
 	str[i] = '\0';
 	return (str);
 }
 
-char	*ft_new_string(char *string)
+char	*ft_new_left_str(char *left_str)
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	while (string[i] && string[i] != '\n')
+	while (left_str[i] && left_str[i] != '\n')
 		i++;
-	if (!string[i])
+	if (!left_str[i])
 	{
-		free(string);
+		free(left_str);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(string) - i + 1));
+	str = malloc(sizeof(str) * (ft_strlen(left_str) - i + 1));
 	if (!str)
 		return (NULL);
 	i++;
 	j = 0;
-	while (string[i])
-		str[j++] = string[i++];
+	while (left_str[i])
+		str[j++] = left_str[i++];
 	str[j] = '\0';
-	free(string);
+	free(left_str);
 	return (str);
 }
 
-char	*ft_read_to_string(int fd, char *string)
+char	*ft_read_left_str(int fd, char *left_str)
 {
 	char	*buff;
-	char	*tmp;
 	int		rd_bytes;
 
-	if (!string)
-	{
-		string = (char *)malloc(1);
-		string[0] = '\0';
-	}
-	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buff = malloc(sizeof(buff) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
 	rd_bytes = 1;
-	while (!ft_strchr(string, '\n') && rd_bytes != 0)
+	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
 	{
 		rd_bytes = read(fd, buff, BUFFER_SIZE);
 		if (rd_bytes == -1)
-			return (free(buff), NULL);
+		{
+			free(buff);
+			return (NULL);
+		}
 		buff[rd_bytes] = '\0';
-		tmp = ft_strjoin(string, buff);
-		free(string);
-		string = tmp;
+		left_str = ft_strjoin(left_str, buff);
 	}
-	return (free(buff), string);
+	free(buff);
+	return (left_str);
 }
-
+// get line from from a file fd (includig '\n' character)
+// and next line on next call 
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*string = NULL;
+	static char	*left_str;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	left_str = ft_read_left_str(fd, left_str);
+	if (!left_str)
 		return (NULL);
-	string = ft_read_to_string(fd, string);
-	if (!string)
-		return (NULL);
-	line = ft_get_line(string);
-	string = ft_new_string(string);
+	line = ft_get_line(left_str);
+	left_str = ft_new_left_str(left_str);
 	return (line);
 }
+
 // int main()
 // {
 // 	int fd;

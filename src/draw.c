@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 16:02:56 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:28:58 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,12 @@ void	draw_direction(t_data *data)
 	int	end_x;
 	int	end_y;
 
-	ray_length = 100;
+	ray_length = 50;
 	end_x = data->player_x + (data->player_d_x) * ray_length;
 	end_y = data->player_y + (data->player_d_y) * ray_length;
 	// x + 5 && y + 5 to center the ray around player
 	draw_line(data, data->player_x + 5, data->player_y + 5, end_x, end_y,
-		GREEN);
+		YELLOW);
 }
 
 // cast a ray based on player X and Y and check if it hit the wall every block_size

@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/08 16:07:15 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:46:52 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+
 
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
@@ -66,6 +68,8 @@ typedef struct s_data
 	float	player_d_x; // delta x of player
 	float	player_d_y; // delta y of player
 	float	player_a;   // angle of a player
+	int		ceiling_color;
+	int		floor_color;
 	int		*map;
 	int		map_x;
 	int		map_y;
@@ -92,7 +96,13 @@ void		cast_ray(t_data *data, float ray_angle);
 
 int			action(int keycode, t_data *data);
 
+//===============================parse_map==================================//
+
+char 		*get_map(char *map_path, t_data *data);
+
+
 #endif
+
 
 // + have a working window
 // + have a drawn map and player
