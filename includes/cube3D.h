@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/08 16:07:15 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:29:59 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,28 @@
 
 typedef struct s_data
 {
-	void	*mlx;
-	void	*win;
-	void	*frame;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	float	player_x;
-	float	player_y;
-	float	player_d_x; // delta x of player
-	float	player_d_y; // delta y of player
-	float	player_a;   // angle of a player
-	int		*map;
-	int		map_x;
-	int		map_y;
-	int		map_size;
-	int		block_size;
+    void	*mlx;
+    void	*win_2d;
+    void	*win_3d;
+    void	*frame_2d;
+    void	*frame_3d;
+    char	*addr_2d;
+    char	*addr_3d;
+    int		bits_per_pixel;
+    int		line_length;
+    int		endian;
+    float	player_x;
+    float	player_y;
+    float	player_d_x; // delta x of player
+    float	player_d_y; // delta y of player
+    float	player_a;   // angle of a player
+    int		*map;
+    int		map_x;
+    int		map_y;
+    int		map_size;
+    int		block_size;
+    int		screen_width;
+    int		screen_height;
 }			t_data;
 
 //===============================window==================================//
@@ -80,13 +85,14 @@ int			render_frame(t_data *data);
 
 //================================draw===================================//
 
-void		pixel_to_frame(t_data *data, int x, int y, int color);
+void		pixel_to_frame(t_data *data, int x, int y, int color, int is_3d);
 int			draw_player(t_data *data);
 int			draw_map(t_data *data);
 void		draw_direction(t_data *data);
-void		draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
+void		draw_line(t_data *data, int x0, int y0, int x1, int y1, int color, int is_3d);
 void		draw_rays(t_data *data);
-void		cast_ray(t_data *data, float ray_angle);
+float		cast_ray(t_data *data, float ray_angle);
+void		render_3D(t_data *data);
 
 //===============================action==================================//
 
@@ -99,8 +105,8 @@ int			action(int keycode, t_data *data);
 // + have all rendered frame by frame instead of pixel by pixel
 //   read a map from a file
 //	 validate map from a file
-//   render all in 3D
-//   minimap (prob use existing window and fust draw game in new window)
+// + render all in 3D
+// ~ minimap (prob use existing window and fust draw game in new window)
 //   mouse view (prob only with X axis since idk how render it in Y)
 //   animted sprite
 //   dooors

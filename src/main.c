@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/08 15:57:55 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 19:16:26 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	main(void)
 {
 	t_data			*data;
 	
-    data = malloc(sizeof(t_data));
-	// data->ray = malloc(sizeof(data->ray));
+	data = malloc(sizeof(t_data));
 	data->map_size = 100;
 	data->block_size = 50;
 	data->map = malloc((sizeof(data->map)) * data->map_size);
