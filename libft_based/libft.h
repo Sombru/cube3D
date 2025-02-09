@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:34:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 16:32:57 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 10:14:57 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ char	*get_next_line(int fd);
 
 // new
 
-char	*ft_rm_char(const char *str, char s);
+char	*ft_rm_char(char *str, char s);
 char	*ft_strjoin_free(char *s1, char *s2);
-char	*ft_rmlast_char(const char *str, char ch);
+char	*ft_rmlast_char(char *str, char ch);
 char	*ft_stradd_start_end(char *str, char ch);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strcpy(char *dest, const char *src);

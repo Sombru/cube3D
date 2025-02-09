@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/08 19:46:52 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:00:30 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@
 
 # define PI 3.1415926535897932384
 
-# define BLOCK_SIZE 50
 # define NUM_OF_RAYS 40
 
 typedef struct s_data
@@ -68,6 +67,7 @@ typedef struct s_data
 	float	player_d_x; // delta x of player
 	float	player_d_y; // delta y of player
 	float	player_a;   // angle of a player
+	char	*textures[4];
 	int		ceiling_color;
 	int		floor_color;
 	int		*map;

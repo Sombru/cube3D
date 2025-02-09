@@ -6,14 +6,14 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:00:29 by pkostura          #+#    #+#             */
-/*   Updated: 2024/12/29 15:08:29 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/09 10:14:20 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
 // removes last occurance of char ch from the string
-char	*ft_rmlast_char(const char *str, char ch)
+char	*ft_rmlast_char(char *str, char ch)
 {
 	char	*last_occurrence;
 	char	*result ;
@@ -24,7 +24,7 @@ char	*ft_rmlast_char(const char *str, char ch)
 		return (NULL);
 	last_occurrence = ft_strrchr(str, ch);
 	if (!last_occurrence)
-		return (ft_strdup(str));
+		return (str);
 	length = ft_strlen(str);
 	result = malloc(length + 1);
 	if (!result)
@@ -32,5 +32,6 @@ char	*ft_rmlast_char(const char *str, char ch)
 	prefix_length = last_occurrence - str;
 	ft_strncpy(result, str, prefix_length);
 	ft_strcpy(result + prefix_length, last_occurrence + 1);
+	free(str);
 	return (result);
 }

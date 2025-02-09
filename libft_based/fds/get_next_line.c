@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 18:00:01 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 19:41:03 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 09:51:28 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,97 +15,117 @@
 #include <stdio.h>
 #include <unistd.h>
 
-char	*ft_get_line(char *left_str)
+// join and free
+char	*ft_free(char *buffer, char *buf)
 {
-	int		i;
-	char	*str;
+	char	*temp;
 
-	i = 0;
-	if (!left_str[i])
-		return (NULL);
-	while (left_str[i] && left_str[i] != '\n')
-		i++;
-	str = malloc(sizeof(char) * (i + 2));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (left_str[i] && left_str[i] != '\n')
-	{
-		str[i] = left_str[i];
-		i++;
-	}
-	if (left_str[i] == '\n')
-	{
-		str[i] = left_str[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	temp = ft_strjoin(buffer, buf);
+	free(buffer);
+	return (temp);
 }
 
-char	*ft_new_left_str(char *left_str)
+// delete line find
+char	*ft_next(char *buffer)
 {
 	int		i;
 	int		j;
-	char	*str;
+	char	*line;
 
 	i = 0;
-	while (left_str[i] && left_str[i] != '\n')
+	// find len of first line
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (!left_str[i])
+	// if eol == \0 return NULL
+	if (!buffer[i])
 	{
-		free(left_str);
+		free(buffer);
 		return (NULL);
 	}
-	str = malloc(sizeof(str) * (ft_strlen(left_str) - i + 1));
-	if (!str)
-		return (NULL);
+	// len of file - len of firstline + 1
+	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
 	i++;
 	j = 0;
-	while (left_str[i])
-		str[j++] = left_str[i++];
-	str[j] = '\0';
-	free(left_str);
-	return (str);
+	// line == buffer
+	while (buffer[i])
+		line[j++] = buffer[i++];
+	free(buffer);
+	return (line);
 }
 
-char	*ft_read_left_str(int fd, char *left_str)
+// take line for return
+char	*ft_line(char *buffer)
 {
-	char	*buff;
-	int		rd_bytes;
+	char	*line;
+	int		i;
 
-	buff = malloc(sizeof(buff) * (BUFFER_SIZE + 1));
-	if (!buff)
+	i = 0;
+	// if no line return NULL
+	if (!buffer[i])
 		return (NULL);
-	rd_bytes = 1;
-	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
+	// go to the eol
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	// malloc to eol
+	line = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	// line = buffer
+	while (buffer[i] && buffer[i] != '\n')
 	{
-		rd_bytes = read(fd, buff, BUFFER_SIZE);
-		if (rd_bytes == -1)
+		line[i] = buffer[i];
+		i++;
+	}
+	// if eol is \0 or \n, replace eol by \n
+	if (buffer[i] && buffer[i] == '\n')
+		line[i++] = '\n';
+	return (line);
+}
+
+char	*read_file(int fd, char *res)
+{
+	char	*buffer;
+	int		byte_read;
+
+	// malloc if res dont exist
+	if (!res)
+		res = ft_calloc(1, 1);
+	// malloc buffer
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	byte_read = 1;
+	while (byte_read > 0)
+	{
+		// while not eof read
+		byte_read = read(fd, buffer, BUFFER_SIZE);
+		if (byte_read == -1)
 		{
-			free(buff);
+			free(buffer);
 			return (NULL);
 		}
-		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		// 0 to end for leak
+		buffer[byte_read] = 0;
+		// join and free
+		res = ft_free(res, buffer);
+		// quit if \n find
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
-	free(buff);
-	return (left_str);
+	free(buffer);
+	return (res);
 }
-// get line from from a file fd (includig '\n' character)
-// and next line on next call 
+
 char	*get_next_line(int fd)
 {
+	static char	*buffer;
 	char		*line;
-	static char	*left_str;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	left_str = ft_read_left_str(fd, left_str);
-	if (!left_str)
+	// error handling
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	line = ft_get_line(left_str);
-	left_str = ft_new_left_str(left_str);
+	buffer = read_file(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = ft_line(buffer);
+	buffer = ft_next(buffer);
 	return (line);
 }
 
@@ -115,10 +135,10 @@ char	*get_next_line(int fd)
 // 	char *line;
 // 	int i = 10;
 
-// 	fd = open("test.txt", O_CREAT | O_RDONLY);
+// 	fd = open("test", O_CREAT | O_RDONLY);
 // 	while (i)
 // 	{
-// 		line = get_next_line(0);
+// 		line = get_next_line(fd);
 // 		printf("%s", line);
 // 		free(line);
 // 		i--;

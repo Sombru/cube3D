@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 15:54:47 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:25:38 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-int	action(int keycode, t_data *data)
+int action(int keycode, t_data *data)
 {
-	float step = 10; // Step size for movement
-	float angle_diff = 0.1;
+    float step = 10; // Step size for movement
+    float angle_diff = 0.1;
 
-	if (keycode == A_KEY)
+    if (keycode == A_KEY)
     {
         // Strafe left
         data->player_x += data->player_d_y * step;
@@ -59,12 +59,12 @@ int	action(int keycode, t_data *data)
         data->player_d_x = cos(data->player_a);
         data->player_d_y = sin(data->player_a);
     }
-	else if (keycode == ESCAPE)
-	{
-		printf("exit\n");
-		mlx_destroy_window(data->mlx, data->win);
-		exit(0);
-	}
-   render_frame(data);
-	return (0);
+    else if (keycode == ESCAPE)
+    {
+        printf("exit\n");
+        mlx_destroy_window(data->mlx, data->win);
+        exit(0);
+    }
+    render_frame(data);
+    return (0);
 }
