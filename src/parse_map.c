@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/09 22:18:53 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:51:53 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,6 @@ static unsigned int	rgb_to_hex(int r, int g, int b)
 {
 	return ((r << 16) | (g << 8) | b);
 }
-
-// static void get_texture(char **config, t_data *data, int fd)
-// {
-// 	int i = 0;
-	
-// 	while (i <= 3)
-// 	{
-// 		config[i] = get_next_line(fd);
-// 		config[i] = ft_rmlast_char(config[i], '\n');
-// 		config[i] = ft_strchr(config[i], '/');
-// 		if(!config[i])
-// 			exit(write(2, "not valid textures\n", 20));
-// 		config[i]++;
-// 		data->textures[i] = config[i];
-// 		printf("data->textures: %s\n", data->textures[i]);
-// 		i++;
-// 	}	
-// }
-
 static char **get_config(int fd, t_data *data)
 {
 	char **config;
@@ -71,9 +52,39 @@ static char **get_config(int fd, t_data *data)
 	return(config);
 }
 
+static char	**parse_map(int fd, t_data *data)
+{
+	char **map;
+	int	x;
+	int	y;
+
+	free(get_next_line(fd));
+	map = malloc(sizeof(map) * 100);
+	x = 0;
+	y = 0;	
+	while (1)
+	{
+		map[y] = get_next_line(fd);
+		if (!map[y])
+			break ;
+		map[y] = ft_rmlast_char(map[y], '\n');
+		printf("map[%d]: %s\n", y, map[y]);
+		if ((int)ft_strlen(map[y]) > x)
+			x = ft_strlen(map[y]);
+		y++;
+	}
+	data->map_y = y;
+	data->map_x = x;
+	printf("data->map_y: %d\n", data->map_y);
+	printf("data->map_x: %d\n", data->map_x);
+	
+	return(map);
+}
+
 char	*get_map(char *map_path, t_data *data)
 {
 	int		fd;
+	char	**map_parse;
 	char	**config;
 	char	**rgb_values;
 	int		rgb[6];
@@ -109,9 +120,9 @@ char	*get_map(char *map_path, t_data *data)
 	printf("data->textures: %s\n", data->textures[1]);
 	printf("data->textures: %s\n", data->textures[2]);
 	printf("data->textures: %s\n", data->textures[3]);
-
 	printf("floor: %X\n", data->floor_color);
 	printf("ceiling: %X\n", data->ceiling_color);
+	map_parse = parse_map(fd, data);
 	close(fd);
 	return ("tst");
 }
