@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/11 13:31:42 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:09:17 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <string.h>
 
 
 # define BLACK 0x000000
@@ -67,7 +68,10 @@ typedef struct s_data
 	float	player_d_x; // delta x of player
 	float	player_d_y; // delta y of player
 	float	player_a;   // angle of a player
-	char	*textures[4];
+	char	*north_texture;
+	char	*south_texture;
+	char	*west_texture;
+	char	*east_texture;
 	int		ceiling_color;
 	int		floor_color;
 	char	*map;
@@ -79,7 +83,7 @@ typedef struct s_data
 
 //===============================debug==================================//
 
-void	debug_map(char	**map);
+void	debug_map(char	**map, t_data *data);
 
 //===============================window==================================//
 
@@ -103,6 +107,11 @@ int			action(int keycode, t_data *data);
 //===============================parse_map==================================//
 
 char 		*get_map(char *map_path, t_data *data);
+
+//===============================parsing_utils================================//
+
+char		*skip_nl(int fd);
+int			get_textures(char **config, t_data *data);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/11 13:55:04 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:27:54 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 // +spaces will be converted into walls
 // +tabs into 4 walls
 // +player_a will depend on weather is N, W, E ,S is player
-// chek validity of the map and memory leaks
+// check validity of the map and memory leaks
+// check validity of config 
 
 static unsigned int	rgb_to_hex(int r, int g, int b)
 {
@@ -31,25 +32,22 @@ static char **get_config(int fd, t_data *data)
     int i;
 
     config = malloc(sizeof(config) * (7));
+	
     i = 0;
-    while (i <= 6)
+    while (i <= 5)
     {
-        config[i] = get_next_line(fd);
+        config[i] = skip_nl(fd);
         if (!config[i])
             exit(write(2, "not valid map format\n", 22));
         config[i] = ft_rmlast_char(config[i], '\n');
         i++;
     }
     i = 0;
-    while (i <= 3)
-    {
-        config[i] = ft_strchr(config[i], '/');
-        if(!config[i])
-            exit(write(2, "not valid textures\n", 20));
-        config[i]++;
-        data->textures[i] = config[i];
-        i++;
-    }
+	if (get_textures(config, data) == EXIT_FAILURE)
+	{
+		ft_free_array(config);
+		exit(write(2, "not valid textures\n", 20));
+	}
     return(config);
 }
 
@@ -78,9 +76,7 @@ static char	*get_map_line(char *map, t_data *data)
             res[j++] = '1';
         }
         else
-        {
             res[j++] = map[i];
-        }
         i++;
     }
     while (j < data->map_x)
@@ -98,20 +94,15 @@ static char	**parse_map(int fd, t_data *data)
     char **parsed;
     int	x;
     int	y;
-    
-    map[0] = get_next_line(fd);
-    while (map[0][0] == '\n')
-    {
-        free(map[0]);
-        map[0] = get_next_line(fd);
-    }
+
+	map[0] = skip_nl(fd);
     map[0] = ft_rmlast_char(map[0], '\n');
     x = 0;
     y = 1;
     while (1)
     {
         map[y] = get_next_line(fd);
-        if (!map[y])
+        if (!map[y] || map[y][0] == '\n')
             break ;
         map[y] = ft_rmlast_char(map[y], '\n');
         if ((int)ft_strlen(map[y]) > x)
@@ -131,9 +122,7 @@ static char	**parse_map(int fd, t_data *data)
     }
     parsed[y] = NULL;
     
-    printf("data->map_y: %d\n", data->map_y);
-    printf("data->map_x: %d\n", data->map_x);
-    debug_map(parsed);
+
     return(parsed);
 }
 
@@ -150,34 +139,29 @@ char	*get_map(char *map_path, t_data *data)
     if (fd == -1)
         exit(write(2, "could not open the file\n", 25));
     config = get_config(fd, data);
-    if (config[5][0] == 'F' || config[6][0] == 'C')
+    if (config[4][0] == 'F' || config[5][0] == 'C')
     {
         i = 0;
-        rgb_values = ft_split(config[5] + 2, ',');
+        rgb_values = ft_split(config[4] + 2, ',');
         while (i <= 2)
         {
             rgb[i] = ft_atoi(rgb_values[i]);
             i++;
         }
         ft_free_array(rgb_values);
-        if (config[5][0] == 'F')
+        if (config[4][0] == 'F')
             data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-        rgb_values = ft_split(config[6] + 2, ',');
+        rgb_values = ft_split(config[5] + 2, ',');
         while (i <= 5)
         {
             rgb[i] = ft_atoi(rgb_values[i - 3]);
             i++;
         }
         ft_free_array(rgb_values);
-        if (config[6][0] == 'C')
+        if (config[5][0] == 'C')
             data->ceiling_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
     }
-    printf("data->textures: %s\n", data->textures[0]);
-    printf("data->textures: %s\n", data->textures[1]);
-    printf("data->textures: %s\n", data->textures[2]);
-    printf("data->textures: %s\n", data->textures[3]);
-    printf("floor: %X\n", data->floor_color);
-    printf("ceiling: %X\n", data->ceiling_color);
+
     map_parse = parse_map(fd, data);
     close(fd);
 
@@ -216,7 +200,7 @@ char	*get_map(char *map_path, t_data *data)
         i++;
     }
     data->map[j] = '\0';
-
+	debug_map(map_parse, data);
     ft_free_array(map_parse);
     return ("tst");
 }

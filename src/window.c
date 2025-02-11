@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/11 13:42:35 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:58:07 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	window_loop(t_data *data)
 {
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, data->map_x * data->block_size,
-			data->map_y * data->block_size, "Cube3D");
+			data->map_y * data->block_size, "Cube3D map");
 	data->frame = mlx_new_image(data->mlx, data->map_x * data->block_size,
 			data->map_y * data->block_size);
 
