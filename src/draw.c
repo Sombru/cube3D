@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 16:28:58 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:37:57 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	draw_map(t_data *data)
 		x = 0;
 		while (x < data->map_x)
 		{
-			if (data->map[y * data->map_x + x] == 1)
+			if (data->map[y * data->map_x + x] == '1')
 				color = WHITE; // Wall
 			else
 				color = BLACK; // Empty space
@@ -159,7 +159,7 @@ void	cast_ray(t_data *data, float ray_angle)
 		if (map_x >= 0 && map_x < data->map_x && map_y >= 0
 			&& map_y < data->map_y)
 		{
-			if (data->map[map_y * data->map_x + map_x] == 1)
+			if (data->map[map_y * data->map_x + map_x] == '1')
 			{
 				hit = 1; //
 							// x + 5 && y + 5 to center the ray around player

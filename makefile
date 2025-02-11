@@ -27,6 +27,7 @@ SRC			= main.c \
 			  draw.c \
 			  action.c \
 			  parse_map.c \
+			  debug.c \
 
 # Objects
 OBJ_PATH	= obj/

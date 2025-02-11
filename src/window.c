@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/08 17:28:16 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:42:35 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	window_loop(t_data *data)
 			data->map_y * data->block_size, "Cube3D");
 	data->frame = mlx_new_image(data->mlx, data->map_x * data->block_size,
 			data->map_y * data->block_size);
-	data->player_x = 100;
-	data->player_y = 100;
+
 	mlx_hook(data->win, 2, 1L << 0, action, data);
 	mlx_loop_hook(data->mlx, render_frame, data);
 	mlx_loop(data->mlx);

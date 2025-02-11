@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/09 15:00:30 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:31:42 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,16 @@ typedef struct s_data
 	char	*textures[4];
 	int		ceiling_color;
 	int		floor_color;
-	int		*map;
+	char	*map;
 	int		map_x;
 	int		map_y;
 	int		map_size;
 	int		block_size;
 }			t_data;
+
+//===============================debug==================================//
+
+void	debug_map(char	**map);
 
 //===============================window==================================//
 
