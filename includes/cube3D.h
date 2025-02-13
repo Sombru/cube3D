@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/09 19:29:59 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:17:42 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@
 # define ESCAPE 65307
 
 # define PI 3.1415926535897932384
-
-# define BLOCK_SIZE 50
-# define NUM_OF_RAYS 40
+# define NUM_OF_RAYS 400
 
 typedef struct s_data
 {

@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/09 19:16:26 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:00:36 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(void)
 	
 	data = malloc(sizeof(t_data));
 	data->map_size = 100;
-	data->block_size = 50;
+	data->block_size = 73;
 	data->map = malloc((sizeof(data->map)) * data->map_size);
 	data->map_x = 10;
 	data->map_y = 10;
