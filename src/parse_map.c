@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/11 16:27:54 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:41:25 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,37 +21,7 @@
 // check validity of the map and memory leaks
 // check validity of config 
 
-static unsigned int	rgb_to_hex(int r, int g, int b)
-{
-    return ((r << 16) | (g << 8) | b);
-}
-
-static char **get_config(int fd, t_data *data)
-{
-    char **config;
-    int i;
-
-    config = malloc(sizeof(config) * (7));
-	
-    i = 0;
-    while (i <= 5)
-    {
-        config[i] = skip_nl(fd);
-        if (!config[i])
-            exit(write(2, "not valid map format\n", 22));
-        config[i] = ft_rmlast_char(config[i], '\n');
-        i++;
-    }
-    i = 0;
-	if (get_textures(config, data) == EXIT_FAILURE)
-	{
-		ft_free_array(config);
-		exit(write(2, "not valid textures\n", 20));
-	}
-    return(config);
-}
-
-static char	*get_map_line(char *map, t_data *data)
+static char	*get_map_line(char *map_line, t_data *data)
 {
     char	*res;
     int		i;
@@ -62,13 +32,13 @@ static char	*get_map_line(char *map, t_data *data)
         return (NULL);
     i = 0;
     j = 0;
-    while (map[i])
+    while (map_line[i])
     {
-        if (map[i] == ' ')
+        if (map_line[i] == ' ')
         {
             res[j++] = '1';
         }
-        else if (map[i] == '\t')
+        else if (map_line[i] == '\t')
         {
             res[j++] = '1';
             res[j++] = '1';
@@ -76,7 +46,7 @@ static char	*get_map_line(char *map, t_data *data)
             res[j++] = '1';
         }
         else
-            res[j++] = map[i];
+            res[j++] = map_line[i];
         i++;
     }
     while (j < data->map_x)
@@ -84,7 +54,7 @@ static char	*get_map_line(char *map, t_data *data)
         res[j++] = '1';
     }
     res[j] = '\0';
-
+	free(map_line);
     return (res);
 }
 
@@ -95,23 +65,20 @@ static char	**parse_map(int fd, t_data *data)
     int	x;
     int	y;
 
-	map[0] = skip_nl(fd);
-    map[0] = ft_rmlast_char(map[0], '\n');
     x = 0;
-    y = 1;
+    y = 0;
     while (1)
     {
-        map[y] = get_next_line(fd);
-        if (!map[y] || map[y][0] == '\n')
+        map[y] = gnl_smart(fd);
+        if (!map[y])
             break ;
-        map[y] = ft_rmlast_char(map[y], '\n');
         if ((int)ft_strlen(map[y]) > x)
             x = ft_strlen(map[y]);
         y++;
     }
     data->map_y = y;
     data->map_x = x;
-    parsed = malloc(sizeof(char *) * (data->map_y + 1));
+    parsed = malloc(sizeof(parsed) * (data->map_y + 1));
     if (!parsed)
         return (NULL);
     y = 0;
@@ -122,7 +89,6 @@ static char	**parse_map(int fd, t_data *data)
     }
     parsed[y] = NULL;
     
-
     return(parsed);
 }
 
@@ -130,37 +96,15 @@ char	*get_map(char *map_path, t_data *data)
 {
     int		fd;
     char	**map_parse;
-    char	**config;
-    char	**rgb_values;
-    int		rgb[6];
     int		i;
 
     fd = open(map_path, O_RDONLY);
     if (fd == -1)
         exit(write(2, "could not open the file\n", 25));
-    config = get_config(fd, data);
-    if (config[4][0] == 'F' || config[5][0] == 'C')
-    {
-        i = 0;
-        rgb_values = ft_split(config[4] + 2, ',');
-        while (i <= 2)
-        {
-            rgb[i] = ft_atoi(rgb_values[i]);
-            i++;
-        }
-        ft_free_array(rgb_values);
-        if (config[4][0] == 'F')
-            data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-        rgb_values = ft_split(config[5] + 2, ',');
-        while (i <= 5)
-        {
-            rgb[i] = ft_atoi(rgb_values[i - 3]);
-            i++;
-        }
-        ft_free_array(rgb_values);
-        if (config[5][0] == 'C')
-            data->ceiling_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-    }
+    if (get_textures(fd, data) == EXIT_FAILURE)
+		exit(write(2, "not valid textures\n", 20));
+	if (get_colors(fd, data) == EXIT_FAILURE)
+		exit(write(2, "not valid colors\n", 18	));
 
     map_parse = parse_map(fd, data);
     close(fd);

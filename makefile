@@ -26,7 +26,7 @@ SRC			= main.c \
 			  window.c \
 			  draw.c \
 			  action.c \
-			  parse_map.c parsing_utils.c \
+			  parse_map.c parsing_utils.c get_config.c \
 			  debug.c \
 
 # Objects

@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/11 16:09:17 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:12:50 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,19 +100,20 @@ void		draw_line(t_data *data, int x0, int y0, int x1, int y1, int color);
 void		draw_rays(t_data *data);
 void		cast_ray(t_data *data, float ray_angle);
 
-//===============================action==================================//
+//===============================action=======================================//
 
 int			action(int keycode, t_data *data);
 
-//===============================parse_map==================================//
+//===============================parse_map====================================//
 
 char 		*get_map(char *map_path, t_data *data);
 
 //===============================parsing_utils================================//
 
-char		*skip_nl(int fd);
-int			get_textures(char **config, t_data *data);
+//===============================get_congif===================================//
 
+int			get_colors(int fd, t_data *data);
+int			get_textures(int fd, t_data *data);
 
 #endif
 

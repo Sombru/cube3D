@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/11 13:53:17 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:09:16 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,14 @@ int	main(int argc, char **argv)
 	printf("playery x: %f\n", data->player_x);
 	
 	data->map_size = data->map_y * data->map_x;
+	// to free block
+	free(data->north_texture);
+	free(data->west_texture);
+	free(data->east_texture);
+	free(data->south_texture);
+	free(data->map);
+	free(data);
+	//
+	exit(1);
 	window_loop(data);
 }

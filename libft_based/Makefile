@@ -8,12 +8,12 @@ STRING = string/
 TYPES = types/
 
 SRCS =	$(ARRAYS)ft_arrcomb.c $(ARRAYS)ft_arrcpy.c $(ARRAYS)ft_arrstr_rm.c $(ARRAYS)ft_free_array.c \
-		$(ARRAYS)ft_split.c \
+		$(ARRAYS)ft_split.c $(ARRAYS)ft_count_args.c \
 		$(CONVERSION)ft_atoi.c $(CONVERSION)ft_bzero.c $(CONVERSION)ft_itoa.c \
 		$(CONVERSION)ft_rmlast_char.c $(CONVERSION)ft_rm_char.c $(CONVERSION)ft_stradd_start_end.c \
 		$(CONVERSION)ft_tolower.c $(CONVERSION)ft_toupper.c $(CONVERSION)ft_swap.c \
 		$(FDS)ft_putchar_fd.c $(FDS)ft_putstr_fd.c $(FDS)ft_putendl_fd.c $(FDS)ft_putnbr_fd.c \
-		$(FDS)get_next_line.c \
+		$(FDS)get_next_line.c $(FDS)gnl_smart.c \
 		$(MEMORY)ft_memset.c  $(MEMORY)ft_memcpy.c $(MEMORY)ft_memmove.c \
 		$(MEMORY)ft_memchr.c $(MEMORY)ft_memcmp.c $(MEMORY)ft_calloc.c $(MEMORY)ft_realloc.c \
 		$(STRING)ft_strlen.c $(STRING)ft_strlcpy.c $(STRING)ft_strlcat.c  \
@@ -28,7 +28,7 @@ SRCS =	$(ARRAYS)ft_arrcomb.c $(ARRAYS)ft_arrcpy.c $(ARRAYS)ft_arrstr_rm.c $(ARRA
 OBJS = $(SRCS:%.c=.obj/%.o)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 
 all: $(NAME)

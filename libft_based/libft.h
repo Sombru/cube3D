@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:34:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/09 10:14:57 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/14 16:35:16 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	*ft_get_line(char *string);
 char	*ft_new_string(char *string);
 
 char	*get_next_line(int fd);
+char	*gnl_smart(int fd);
 
 // new
 
@@ -84,5 +85,6 @@ char	*ft_arrcomb(char **array, const char ch);
 char	**ft_arrcpy(char **array);
 char	**ft_arrstr_rm(char **array, int index, int size);
 void	ft_free_array(char **arr);
+int		ft_count_args(char	**arr);
 
 #endif

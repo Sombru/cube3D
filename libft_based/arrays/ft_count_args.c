@@ -1,14 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*   ft_count_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 15:29:45 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/14 12:24:23 by pkostura         ###   ########.fr       */
+/*   Created: 2025/02/14 12:41:57 by pkostura          #+#    #+#             */
+/*   Updated: 2025/02/14 12:43:36 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3D.h"
+#include "../libft.h"
 
+// counts strints in char array
+int	ft_count_args(char	**arr)
+{
+	int i;
+
+	i = 0;
+	if(!arr)
+		return (0);
+	while (arr[i])
+	{
+		i++;
+	}
+	return (i);
+}
