@@ -26,6 +26,8 @@ SRC			= main.c \
 			  window.c \
 			  draw.c \
 			  action.c \
+			  raycast.c \
+			  render.c \
 
 # Objects
 OBJ_PATH	= obj/

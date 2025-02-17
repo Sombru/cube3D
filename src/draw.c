@@ -6,83 +6,20 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/13 17:40:27 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:47:50 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-// cast a ray from player and return distance to the wall. Changed to float to return distance
-float	cast_ray(t_data *data, float ray_angle)
-{
-	float	ray_x;
-	float	ray_y;
-	float	ray_dx;
-	float	ray_dy;
-	int		hit;
-	float	distance;
-
-	ray_x = data->player_x;
-	ray_y = data->player_y;
-	ray_dx = cos(ray_angle);
-	ray_dy = sin(ray_angle);
-	int map_x, map_y;
-	hit = 0;
-	distance = 0;
-	while (!hit)
-	{
-		ray_x += ray_dx;
-		ray_y += ray_dy;
-		distance += 1;
-		map_x = (int)(ray_x / data->block_size);
-		map_y = (int)(ray_y / data->block_size);
-		if (map_x >= 0 && map_x < data->map_x && map_y >= 0
-			&& map_y < data->map_y)
-		{
-			if (data->map[map_y * data->map_x + map_x] == 1)
-			{
-				hit = 1;
-			}
-		}
-		else
-		{
-			hit = 1;
-		}
-	}
-	return (distance);
-}
-
-void	draw_rays(t_data *data)
-{
-	float	fov;
-	float	angle_step;
-	float	start_angle;
-	float	ray_angle;
-	float	distance;
-	int		end_x;
-	int		end_y;
-	int		i;
-
-	fov = PI / 2;
-	angle_step = fov / NUM_OF_RAYS;
-	start_angle = data->player_a - (fov / 2);
-	i = 0;
-	while (i < NUM_OF_RAYS)
-	{
-		ray_angle = start_angle + i * angle_step;
-		distance = cast_ray(data, ray_angle);
-		end_x = data->player_x + cos(ray_angle) * distance;
-		end_y = data->player_y + sin(ray_angle) * distance;
-		draw_line(data, data->player_x, data->player_y, end_x, end_y, RED, 0);
-		i++;
-	}
-}
-
+// pixel_to_frame:
+// Sets a pixel’s color at the specified (x, y) coordinate in either the 2D or 3D frame
+// buffer by calculating the correct memory offset and writing the color value.
 void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 {
 	char	*dst;
 
-	if (is_3d)
+	if (is_3d != 0)
 		dst = data->addr_3d + (y * data->line_length + x * (data->bits_per_pixel
 					/ 8));
 	else
@@ -91,77 +28,92 @@ void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 	*(unsigned int *)dst = color;
 }
 
+// draw_line:
+// Draws a line between two given points on the frame buffer using Bresenham’s algorithm,
+// which calculates the increments needed in both x and y directions and iterates until
+// the destination is reached, setting pixels along the path.
 void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color,
 		int is_3d)
 {
-	int	delta_x;
-	int	delta_y;
-	int	step_x;
-	int	step_y;
-	int	D2;
-	int	D;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	e2;
 
-	delta_x = abs(x1 - x0);
-	delta_y = abs(y1 - y0);
-	D = delta_x - delta_y;
+	dx = x1 - x0;
+	if (dx < 0)
+		dx = -dx;
+	dy = y1 - y0;
+	if (dy < 0)
+		dy = -dy;
 	if (x0 < x1)
-		step_x = 1;
+		sx = 1;
 	else
-		step_x = -1;
+		sx = -1;
 	if (y0 < y1)
-		step_y = 1;
+		sy = 1;
 	else
-		step_y = -1;
+		sy = -1;
+	err = dx - dy;
 	while (1)
 	{
 		pixel_to_frame(data, x0, y0, color, is_3d);
 		if (x0 == x1 && y0 == y1)
 			break ;
-		D2 = D * 2;
-		if (D2 > -delta_y)
+		e2 = err * 2;
+		if (e2 > -dy)
 		{
-			D -= delta_y;
-			x0 += step_x;
+			err = err - dy;
+			x0 = x0 + sx;
 		}
-		if (D2 < delta_x)
+		if (e2 < dx)
 		{
-			D += delta_x;
-			y0 += step_y;
+			err = err + dx;
+			y0 = y0 + sy;
 		}
 	}
 }
 
+// draw_player:
+// Draws the player’s representation on the 2D map as a green square by calculating a
+// centered square area around the player’s coordinate and filling it with green pixels.
 int	draw_player(t_data *data)
 {
-	int	size;
+	int	player_size;
+	int	x;
+	int	y;
+	int	i;
+	int	j;
 
-	int x, y;
-	size = 5;
-	y = data->player_y - size;
-	while (y < data->player_y + size)
+	player_size = 10;
+	x = (int)data->player_x - player_size / 2;
+	y = (int)data->player_y - player_size / 2;
+	i = 0;
+	while (i < player_size)
 	{
-		x = data->player_x - size;
-		while (x < data->player_x + size)
+		j = 0;
+		while (j < player_size)
 		{
-			pixel_to_frame(data, x, y, GREEN, 0); // 0 for 2D
-			x++;
+			pixel_to_frame(data, x + i, y + j, GREEN, 0);
+			j = j + 1;
 		}
-		y++;
+		i = i + 1;
 	}
 	return (0);
 }
 
+// Iterates over the map grid, determines whether each cell represents a wall or floor
+// space, then draws each cell as a block of pixels with the appropriate color on the 2D view.
 int	draw_map(t_data *data)
 {
+	int	y;
+	int	x;
 	int	color;
-	int	start_x;
-	int	start_y;
-	int	end_x;
-	int	end_y;
 	int	i;
 	int	j;
 
-	int x, y;
 	y = 0;
 	while (y < data->map_y)
 	{
@@ -172,67 +124,38 @@ int	draw_map(t_data *data)
 				color = WHITE;
 			else
 				color = BLACK;
-			start_x = x * data->block_size + 1;
-			start_y = y * data->block_size + 1;
-			end_x = start_x + data->block_size - 1;
-			end_y = start_y + data->block_size - 1;
-			i = start_y;
-			while (i < end_y)
 			{
-				j = start_x;
-				while (j < end_x)
+				i = 0;
+				while (i < data->block_size)
 				{
-					pixel_to_frame(data, j, i, color, 0);
-					j++;
+					j = 0;
+					while (j < data->block_size)
+					{
+						pixel_to_frame(data, x * data->block_size + i, y
+							* data->block_size + j, color, 0);
+						j = j + 1;
+					}
+					i = i + 1;
 				}
-				i++;
 			}
-			x++;
+			x = x + 1;
 		}
-		y++;
+		y = y + 1;
 	}
 	return (0);
 }
 
+// draw_direction:
+// Draws a short green line starting at the player’s position and extending in the direction
+// the player is facing, providing a visual indicator of the player's facing direction.
 void	draw_direction(t_data *data)
 {
-	int	ray_length;
-	int	end_x;
-	int	end_y;
+	int	line_length;
+	int	x1;
+	int	y1;
 
-	ray_length = 100;
-	end_x = data->player_x + (data->player_d_x) * ray_length;
-	end_y = data->player_y + (data->player_d_y) * ray_length;
-	draw_line(data, data->player_x, data->player_y, end_x, end_y, GREEN, 0);
-}
-
-void render_3D(t_data *data)
-{
-    float start_angle;
-    float ray_angle;
-    float distance;
-    int wall_height;
-    int wall_start;
-    int wall_end;
-    int i;
-
-    float fov = PI / 3; // 60 degrees
-    float angle_step = fov / data->screen_width;
-    start_angle = data->player_a - (fov / 2);
-    i = 0;
-    while (i < data->screen_width)
-    { 
-        ray_angle = start_angle + i * angle_step; // angle of the ray
-        distance = cast_ray(data, ray_angle);
-        distance *= cos(ray_angle - data->player_a); // fish eye
-        wall_height = (data->block_size * data->screen_height) / distance; // wall height scaled by distance
-        if (wall_height > data->screen_height)
-            wall_height = data->screen_height; // stop wall from going off screen
-        wall_start = (data->screen_height / 2) - (wall_height / 2);
-        wall_end = (data->screen_height / 2) + (wall_height / 2);
-        draw_line(data, i, wall_start, i, wall_end, 0xA52A2A, 1);
-        draw_line(data, i, 0, i, wall_start, 0x87CEEB, 1);
-        draw_line(data, i, wall_end, i, data->screen_height, 0x228B22, 1);
-        i++;
-    }
+	line_length = 50;
+	x1 = (int)(data->player_x + data->player_d_x * line_length);
+	y1 = (int)(data->player_y + data->player_d_y * line_length);
+	draw_line(data, (int)data->player_x, (int)data->player_y, x1, y1, GREEN, 0);
 }

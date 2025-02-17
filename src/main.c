@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/13 17:00:36 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/17 13:24:28 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(void)
 	data->player_a = 0;
 	data->player_d_x = cos(data->player_a);
 	data->player_d_y = sin(data->player_a);
+	data->mlx = mlx_init();
     int map[100] = {
         1,1,1,1,1,1,1,1,1,1,
         1,0,0,0,0,0,0,0,0,1,
@@ -43,5 +44,6 @@ int	main(void)
         data->map[i] = map[i];
         i++;
     }
+	load_textures(data);
 	window_loop(data);
 }
