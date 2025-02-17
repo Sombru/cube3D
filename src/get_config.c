@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_config.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/14 16:40:14 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:18:37 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ static unsigned int	rgb_to_hex(int r, int g, int b)
     return ((r << 16) | (g << 8) | b);
 }
 
-static char *extract_texture_path(char *line, const char *type)
+static char *extract_texture_path(char *line, const char type)
 {
 	char *path;
 
 	path = NULL;
-    if (ft_strncmp(line, type, ft_strlen(type)) == 0)
+    if (line[0] == type)
     {
         path = ft_strdup(ft_strchr(line, '/'));
 		free(line);
@@ -35,83 +35,69 @@ static char *extract_texture_path(char *line, const char *type)
     return (NULL);
 }
 
-int get_textures(int fd, t_data *data)
+int get_textures(char *line, const char type, t_data *data)
 {
 	char	*path;
-	char 	*line;
-    int 	i;
 
-	i = 0;
-	while (i < 4)
-	{
-		line = gnl_smart(fd);
-		if ((path = extract_texture_path(line, "NO")) != NULL)
-			data->north_texture = path;
-		else if ((path = extract_texture_path(line, "SO")) != NULL)
-			data->south_texture = path;
-		else if ((path = extract_texture_path(line, "WE")) != NULL)
-			data->west_texture = path;
-		else if ((path = extract_texture_path(line, "EA")) != NULL)
-			data->east_texture = path;
-		else
-			return (free(line), EXIT_FAILURE);
-		i++;
-	}
+	if (type == 'F' || type == 'C')
+		return (EXIT_SUCCESS);
+	path = extract_texture_path(line, type);
+	if (type == 'N')
+		data->north_texture = path;
+	if (type == 'S')
+		data->south_texture = path;
+	if (type == 'E')
+		data->east_texture = path;
+	if (type == 'W')
+		data->west_texture == path;
+	else
+		return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }
 
-int	get_colors(int fd, t_data *data)
+int	get_colors(char *line, const char type, t_data *data)
 {
-	char	**rgb_values[2];
-	char	*lines[2];
-	int		rgb[6];
+	char	**rgb_values;
+	int		rgb[3];
 	int 	i;
-
-	lines[0] = gnl_smart(fd);
-	lines[1] = gnl_smart(fd);
-	if (!lines[0] || !lines[1])
+	
+	if (type != 'F' || type != 'C')
+		return (EXIT_SUCCESS);
+	rgb_values = ft_split(line, ',');
+	if (ft_strcmp(rgb_values[0], line) == 0)
 		return (EXIT_FAILURE);
-	if (lines[0][0] == lines[1][0] || (lines[0][0] != 'F' && lines[0][0] != 'C') || (lines[1][0] != 'F' && lines[1][0] != 'C'))
-		return (free(lines[0]), free(lines[1]), EXIT_FAILURE);
-	rgb_values[0] = ft_split(lines[0], ',');
-	rgb_values[1] = ft_split(lines[1], ',');
-	free(lines[0]);
-	free(lines[1]);
-	if (ft_count_args(rgb_values[0]) != 3 || ft_count_args(rgb_values[1]) != 3)
-		return (ft_free_array(rgb_values[0]), ft_free_array(rgb_values[0]), EXIT_FAILURE);
-	i = 0;
-	while (i <= 2)
-	{
-		rgb[i] = ft_atoi(rgb_values[0][i]);
-		rgb[i + 3] = ft_atoi(rgb_values[1][i]);
-		i++;
-	}
-	data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-	data->ceiling_color = rgb_to_hex(rgb[3], rgb[4], rgb[5]);
-	ft_free_array(rgb_values[1]);
-	ft_free_array(rgb_values[0]);
-	return (EXIT_SUCCESS);
+	rgb[0] = ft_atoi(rgb_values[1]);
+	rgb[1] = ft_atoi(rgb_values[2]);
+	rgb[2] = ft_atoi(rgb_values[3]);
+
 }
 
-    // if (config[4][0] == 'F' || config[5][0] == 'C')
-    // {
-    //     i = 0;
-    //     rgb_values = ft_split(config[4] + 2, ',');
-    //     while (i <= 2)
-    //     {
-    //         rgb[i] = ft_atoi(rgb_values[i]);
-    //         i++;
-    //     }
-    //     ft_free_array(rgb_values);
-    //     if (config[4][0] == 'F')
-    //         data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-    //     rgb_values = ft_split(config[5] + 2, ',');
-    //     while (i <= 5)
-    //     {
-    //         rgb[i] = ft_atoi(rgb_values[i - 3]);
-    //         i++;
-    //     }
-    //     ft_free_array(rgb_values);
-    //     if (config[5][0] == 'C')
-    //         data->ceiling_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-    // }
+int	get_config(int fd, t_data *data)
+{
+	static char	keys[7] = {'N', 'S', 'E', 'W', 'F', 'C', NULL};
+	char		*lines[6];
+	int			i;
+
+	i = 6;
+	while (i < 6)
+	{
+		lines[i] = gnl_smart(fd);
+			if (!lines[i])
+			{
+				ft_free_array(lines);
+				return (EXIT_FAILURE);
+			}
+		i++;
+	}
+	while (lines[i][0] == keys[i])
+	{
+		if (get_textures(lines[i], keys[i], data) == EXIT_FAILURE)
+			return (ft_free_array(lines), EXIT_FAILURE);
+		if (get_colors(lines[i], keys[i], data) == EXIT_FAILURE)
+		
+		i--;
+	}
+	if (i > 0)
+		return (EXIT_FAILURE);
+	
+}
