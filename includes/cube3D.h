@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/14 13:12:50 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:50:48 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 
 # include "../libft_based/libft.h"
 # include "../minilibx-linux/mlx.h"
+
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <string.h>
+# include <stdbool.h>
 
 
 # define BLACK 0x000000
@@ -110,10 +112,15 @@ char 		*get_map(char *map_path, t_data *data);
 
 //===============================parsing_utils================================//
 
+void		free_config(t_data *data);
+void		free_gnl_buffer(int fd);
+int			is_valid_map_line(char	*map_line);
+
 //===============================get_congif===================================//
 
-int			get_colors(int fd, t_data *data);
-int			get_textures(int fd, t_data *data);
+int			get_config(int fd, t_data *data);
+int			get_colors(char *line, const char type, t_data *data);
+int			get_textures(char *line, const char type, t_data *data);
 
 #endif
 

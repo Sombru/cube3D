@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_config.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/16 11:18:37 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:29:53 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static char *extract_texture_path(char *line, const char type)
 	path = NULL;
     if (line[0] == type)
     {
-        path = ft_strdup(ft_strchr(line, '/'));
-		free(line);
+        path = ft_strchr(line, '/');
+		
         if (path)
 		{
-			ft_bzero(path, 1);
+			path++;	
             return (path);
 		}
     }
@@ -42,14 +42,14 @@ int get_textures(char *line, const char type, t_data *data)
 	if (type == 'F' || type == 'C')
 		return (EXIT_SUCCESS);
 	path = extract_texture_path(line, type);
-	if (type == 'N')
-		data->north_texture = path;
-	if (type == 'S')
-		data->south_texture = path;
-	if (type == 'E')
-		data->east_texture = path;
-	if (type == 'W')
-		data->west_texture == path;
+	if (!data->north_texture && type == 'N' && path)
+		data->north_texture = ft_strdup(path);
+	else if (!data->south_texture && type == 'S' && path)
+		data->south_texture = ft_strdup(path);
+	else if (!data->east_texture && type == 'E' && path)
+		data->east_texture = ft_strdup(path);
+	else if (! data->west_texture && type == 'W' && path)
+		data->west_texture = ft_strdup(path);
 	else
 		return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
@@ -59,45 +59,65 @@ int	get_colors(char *line, const char type, t_data *data)
 {
 	char	**rgb_values;
 	int		rgb[3];
-	int 	i;
-	
-	if (type != 'F' || type != 'C')
-		return (EXIT_SUCCESS);
-	rgb_values = ft_split(line, ',');
-	if (ft_strcmp(rgb_values[0], line) == 0)
-		return (EXIT_FAILURE);
-	rgb[0] = ft_atoi(rgb_values[1]);
-	rgb[1] = ft_atoi(rgb_values[2]);
-	rgb[2] = ft_atoi(rgb_values[3]);
 
+	if (type == 'N' || type == 'W' || type == 'S' || type == 'E')
+		return (EXIT_SUCCESS);
+	line++;
+	while (line && ft_isdigit(*line) == 0)
+		line++;
+	rgb_values = ft_split(line, ',');
+	rgb[0] = ft_atoi(rgb_values[0]);
+	rgb[1] = ft_atoi(rgb_values[1]);
+	rgb[2] = ft_atoi(rgb_values[2]);
+	if (type == 'F')
+		data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
+	if (type == 'C')
+		data->ceiling_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
+	ft_free_array(rgb_values);
+
+	return (EXIT_SUCCESS);
+}
+inline static void free_lines(char *lines[6])
+{
+	int i;
+	
+	i = 0;
+	while (lines[i] && i <= 5)
+	{
+		free(lines[i]);
+		i++;	
+	}
+	
 }
 
 int	get_config(int fd, t_data *data)
 {
-	static char	keys[7] = {'N', 'S', 'E', 'W', 'F', 'C', NULL};
+	static char	keys[7] = {'N', 'S', 'E', 'W', 'F', 'C', 0};
 	char		*lines[6];
 	int			i;
+	int			k;
 
-	i = 6;
-	while (i < 6)
+	i = 0;
+	while (i <= 5)
 	{
 		lines[i] = gnl_smart(fd);
 			if (!lines[i])
-			{
-				ft_free_array(lines);
 				return (EXIT_FAILURE);
-			}
 		i++;
 	}
-	while (lines[i][0] == keys[i])
+	i = 0;
+	while (lines[i] && i <= 5)
 	{
-		if (get_textures(lines[i], keys[i], data) == EXIT_FAILURE)
-			return (ft_free_array(lines), EXIT_FAILURE);
-		if (get_colors(lines[i], keys[i], data) == EXIT_FAILURE)
-		
-		i--;
+		k = 0;
+		while (keys[k] && lines[i][0] != keys[k])
+			k++;
+		if (get_textures(lines[i], keys[k], data) == EXIT_FAILURE || get_colors(lines[i], keys[k], data) == EXIT_FAILURE)
+			return (free_lines(lines), EXIT_FAILURE);
+		i++;
 	}
-	if (i > 0)
+	free_lines(lines);
+	if (i < 5)
 		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 	
 }
