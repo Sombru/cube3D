@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:13 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 19:31:43 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
-// #include "action.c"
-// #include "debug.c"
-// #include "draw.c"
-// #include "get_config.c"
-// #include "parse_map.c"
-// #include "window.c"
 
 void	exit_game(t_data *data)
 {
@@ -45,6 +39,11 @@ void	init_data(t_data *data)
 	data->player_a = 0;
 	data->player_y = 0;
 	data->player_x = 0;
+	data->player_d_x = 0;
+	data->player_d_y = 0;
+	data->minimap_size = 720;
+	data->screen_width = 1440;
+	data->screen_height = 720;
 	data->map = NULL;
 	data->west_texture = NULL;
 	data->south_texture = NULL;
@@ -62,6 +61,7 @@ int	main(int argc, char **argv)
 		return(write(STDERR_FILENO, "Too many arguments\n", 20));
 	data = malloc(sizeof(t_data));
 	init_data(data);
+	data->mlx = mlx_init();
 	get_map(argv[argc - 1], data);
 	printf("playery y: %f\n", data->player_y);
 	printf("playery x: %f\n", data->player_x);

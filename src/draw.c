@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/21 18:16:05 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 19:39:41 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-// pixel_to_frame:
-// Sets a pixel’s color at the specified (x, y) coordinate in either the 2D or 3D frame
-// buffer by calculating the correct memory offset and writing the color value.
 void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 {
 	char	*dst;
@@ -28,10 +25,6 @@ void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 	*(unsigned int *)dst = color;
 }
 
-// draw_line:
-// Draws a line between two given points on the frame buffer using Bresenham’s algorithm,
-// which calculates the increments needed in both x and y directions and iterates until
-// the destination is reached, setting pixels along the path.
 void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color,
 		int is_3d)
 {
@@ -76,44 +69,38 @@ void	draw_line(t_data *data, int x0, int y0, int x1, int y1, int color,
 	}
 }
 
-// draw_player:
-// Draws the player’s representation on the 2D map as a green square by calculating a
-// centered square area around the player’s coordinate and filling it with green pixels.
-int	draw_player(t_data *data)
+int	scale_block_size(t_data *data)
 {
-	int	player_size;
-	int	x;
-	int	y;
-	int	i;
-	int	j;
+	int	max_dim;
 
-	player_size = 10;
-	x = (int)data->player_x - player_size / 2;
-	y = (int)data->player_y - player_size / 2;
-	i = 0;
-	while (i < player_size)
-	{
-		j = 0;
-		while (j < player_size)
-		{
-			pixel_to_frame(data, x + i, y + j, GREEN, 0);
-			j = j + 1;
-		}
-		i = i + 1;
-	}
-	return (0);
+	if (data->map_x > data->map_y)
+		max_dim = data->map_x;
+	else
+		max_dim = data->map_y;
+	return (data->minimap_size / max_dim);
 }
 
-// Iterates over the map grid, determines whether each cell represents a wall or floor
-// space, then draws each cell as a block of pixels with the appropriate color on the 2D view.
+void	get_map_offsets(t_data *data, int block_size, int *off_x, int *off_y)
+{
+	*off_x = (data->minimap_size - (data->map_x * block_size)) / 2;
+	*off_y = (data->minimap_size - (data->map_y * block_size)) / 2;
+}
+
 int	draw_map(t_data *data)
 {
-	int	y;
+	int	block_size;
+	int	off_x;
+	int	off_y;
 	int	x;
-	int	color;
+	int	y;
+	int	px;
+	int	py;
 	int	i;
 	int	j;
+	int	color;
 
+	block_size = scale_block_size(data);
+	get_map_offsets(data, block_size, &off_x, &off_y);
 	y = 0;
 	while (y < data->map_y)
 	{
@@ -124,38 +111,84 @@ int	draw_map(t_data *data)
 				color = WHITE;
 			else
 				color = BLACK;
+			px = off_x + (x * block_size);
+			py = off_y + (y * block_size);
+			i = 0;
+			while (i < block_size)
 			{
-				i = 0;
-				while (i < data->block_size)
+				j = 0;
+				while (j < block_size)
 				{
-					j = 0;
-					while (j < data->block_size)
-					{
-						pixel_to_frame(data, x * data->block_size + i, y
-							* data->block_size + j, color, 0);
-						j = j + 1;
-					}
-					i = i + 1;
+					if (px + i < data->minimap_size && py
+						+ j < data->minimap_size)
+						pixel_to_frame(data, px + i, py + j, color, 0);
+					j++;
 				}
+				i++;
 			}
-			x = x + 1;
+			x++;
 		}
-		y = y + 1;
+		y++;
 	}
 	return (0);
 }
 
-// draw_direction:
-// Draws a short green line starting at the player’s position and extending in the direction
-// the player is facing, providing a visual indicator of the player's facing direction.
+int	draw_player(t_data *data)
+{
+	int		block_size;
+	int		off_x;
+	int		off_y;
+	float	screen_x;
+	float	screen_y;
+	int		player_size;
+	int		i;
+	int		j;
+	int		px;
+	int		py;
+
+	block_size = scale_block_size(data);
+	get_map_offsets(data, block_size, &off_x, &off_y);
+	screen_x = off_x + (data->player_x * block_size / data->block_size);
+	screen_y = off_y + (data->player_y * block_size / data->block_size);
+	player_size = block_size / 2;
+	i = -player_size / 2;
+	while (i < player_size / 2)
+	{
+		j = -player_size / 2;
+		while (j < player_size / 2)
+		{
+			px = screen_x + i;
+			py = screen_y + j;
+			if (px >= 0 && px < data->minimap_size && py >= 0
+				&& py < data->minimap_size)
+				pixel_to_frame(data, px, py, GREEN, 0);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	draw_direction(t_data *data)
 {
-	int	line_length;
-	int	x1;
-	int	y1;
+	int block_size;
+	int off_x;
+	int off_y;
+	float dir_length;
+	float screen_start_x;
+	float screen_start_y;
+	float screen_end_x;
+	float screen_end_y;
 
-	line_length = 50;
-	x1 = (int)(data->player_x + data->player_d_x * line_length);
-	y1 = (int)(data->player_y + data->player_d_y * line_length);
-	draw_line(data, (int)data->player_x, (int)data->player_y, x1, y1, GREEN, 0);
+	block_size = scale_block_size(data);
+	get_map_offsets(data, block_size, &off_x, &off_y);
+	dir_length = block_size;
+
+	screen_start_x = off_x + (data->player_x * block_size / data->block_size);
+	screen_start_y = off_y + (data->player_y * block_size / data->block_size);
+	screen_end_x = screen_start_x + (data->player_d_x * dir_length);
+	screen_end_y = screen_start_y + (data->player_d_y * dir_length);
+
+	draw_line(data, screen_start_x, screen_start_y, screen_end_x, screen_end_y,
+		GREEN, 0);
 }

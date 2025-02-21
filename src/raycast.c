@@ -3,25 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/21 18:16:32 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 19:36:19 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-// cast_ray:
-// Casts a single ray from the player’s position using DDA,
-// determining the point of impact with a wall on the map, computing the hit point, 
-// and returning the corrected distance (with fish-eye correction) for that ray.
-
-// dda_algorithm: Implements the Digital Differential Analyzer (DDA) algorithm for ray traversal.
-// Starting at the player's position, it computes incremental steps along the ray's x and y directions based on the ray's cosine and sine values.
-// In each iteration, the algorithm determines whether to step in the x or y direction by comparing the accumulated distances.
-// It continues these incremental steps until a wall is encountered in the map,
-// thereby identifying the precise intersection point and distance along the ray.
 float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 		float *hit_y)
 {
@@ -81,9 +71,7 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 		}
 		if (mapX < 0 || mapX >= data->map_x || mapY < 0 || mapY >= data->map_y
 			|| data->map[mapY * data->map_x + mapX] == '1')
-		{
 			hit = 1;
-		}
 	}
 	if (*side == 0)
 	{
@@ -106,19 +94,25 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 	return (distance * cos(ray_angle - data->player_a));
 }
 
-// draw_rays:
-// Iterates over a number of rays spread across the field of view, casts each ray,
-// and draws a line representing the ray on the 2D view from the player to the hit point.
 void	draw_rays(t_data *data)
 {
-	float	start_angle;
-	float	angle_step;
-	int		i;
-	float	ray_angle;
-	int		side;
-	float	hit_x;
-	float	hit_y;
+	int block_size;
+	int off_x;
+	int off_y;
+	float start_angle;
+	float angle_step;
+	int i;
+	float ray_angle;
+	int side;
+	float hit_x;
+	float hit_y;
+	float screen_start_x;
+	float screen_start_y;
+	float screen_end_x;
+	float screen_end_y;
 
+	block_size = scale_block_size(data);
+	get_map_offsets(data, block_size, &off_x, &off_y);
 	start_angle = data->player_a - (PI / 6);
 	angle_step = (PI / 3) / NUM_OF_RAYS;
 	i = 0;
@@ -126,8 +120,16 @@ void	draw_rays(t_data *data)
 	{
 		ray_angle = start_angle + i * angle_step;
 		cast_ray(data, ray_angle, &side, &hit_x, &hit_y);
-		draw_line(data, (int)data->player_x, (int)data->player_y, (int)hit_x,
-			(int)hit_y, RED, 0);
-		i = i + 1;
+
+		screen_start_x = off_x + (data->player_x * block_size
+				/ data->block_size);
+		screen_start_y = off_y + (data->player_y * block_size
+				/ data->block_size);
+		screen_end_x = off_x + (hit_x * block_size / data->block_size);
+		screen_end_y = off_y + (hit_y * block_size / data->block_size);
+
+		draw_line(data, screen_start_x, screen_start_y, screen_end_x,
+			screen_end_y, RED, 0);
+		i++;
 	}
 }

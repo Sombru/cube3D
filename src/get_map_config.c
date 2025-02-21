@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_config.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:11:07 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/18 18:57:01 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 19:04:30 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	get_player_pos(int fd, char **map_parse, t_data *data)
 				data->player_x = k * data->block_size + data->block_size / 2;
 				data->player_y = i * data->block_size + data->block_size / 2;
 				get_player_angle(map_parse[i][k], data);
-				data->map[j++] = '0'; // Replace player start pos
+				data->map[j++] = '0';
 			}
 			else
 				data->map[j++] = map_parse[i][k];

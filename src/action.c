@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/21 17:48:14 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:31:27 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,7 @@ int	action(int keycode, t_data *data)
 	else if (keycode == ESCAPE)
 	{
 		printf("exit\n");
-		mlx_destroy_image(data->mlx, data->north.img);
-		mlx_destroy_image(data->mlx, data->east.img);
-		mlx_destroy_image(data->mlx, data->south.img);
-		mlx_destroy_image(data->mlx, data->west.img);
-		mlx_destroy_image(data->mlx, data->frame_2d);
-		mlx_destroy_image(data->mlx, data->frame_3d);
-		mlx_destroy_window(data->mlx, data->win_2d);
-		mlx_destroy_window(data->mlx, data->win_3d);
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-		free(data->map);
-		free(data);
-		exit(0);
+		exit_game(data);
 	}
 	render_frame(data);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/21 17:54:42 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:38:40 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,13 @@ void	render_3D(t_data *data)
 			tex_x = tex->width - tex_x - 1;
 		else if (side == 1 && ray_angle < PI)
 			tex_x = tex->width - tex_x - 1;
-
 		y = 0;
 		while (y < data->screen_height)
 		{
 			if (y < wall_start)
-				pixel_to_frame(data, i, y, 0x87CEEB, 1);
+				pixel_to_frame(data, i, y, BLUE, 1);
 			else if (y > wall_end)
-				pixel_to_frame(data, i, y, 0x228B22, 1);
+				pixel_to_frame(data, i, y, GREEN, 1);
 			else
 			{
 				int d;

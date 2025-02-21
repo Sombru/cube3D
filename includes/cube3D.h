@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 18:15:10 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 19:38:32 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
 # define RED 0xFF0000
-# define GREEN 0x00FF00
-# define BLUE 0x0000FF
+# define GREEN 0x228B22
+# define BLUE 0x87CEEB
 # define YELLOW 0xFFFF00
 # define CYAN 0x00FFFF
 # define MAGENTA 0xFF00FF
@@ -53,7 +53,7 @@
 # define HALF_FOV (FOV / 2)
 # define RIGHT_SIDE_START (PI / 2)
 # define RIGHT_SIDE_END (3 * PI / 2)
-# define NUM_OF_RAYS 400
+# define NUM_OF_RAYS 40
 # define DEBUG_MODE 0
 
 typedef struct s_texture
@@ -88,6 +88,7 @@ typedef struct s_data
 	int			map_y;
 	int			map_size;
 	int			block_size;
+	int			minimap_size;
 	int			screen_width;
 	int			screen_height;
 	char		*north_texture;
@@ -122,6 +123,9 @@ int				draw_map(t_data *data);
 void			draw_direction(t_data *data);
 void			draw_line(t_data *data, int x0, int y0, int x1, int y1,
 					int color, int is_3d);
+int				scale_block_size(t_data *data);
+void			get_map_offsets(t_data *data, int block_size,
+					int *off_x, int *off_y);
 
 //===============================raycast=================================//
 
