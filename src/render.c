@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/17 13:50:27 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:54:42 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	render_3D(t_data *data)
 		float hit_offset;
 		int tex_x;
 		int y;
-		int texture_index;
+		t_texture *tex;
 		float ray_dx;
 		float ray_dy;
 
@@ -46,47 +46,38 @@ void	render_3D(t_data *data)
 		distance = cast_ray(data, ray_angle, &side, &hit_x, &hit_y);
 		if (distance < 0.001)
 			distance = 0.001;
-
 		wall_height = (int)((data->block_size * data->screen_height)
 				/ distance);
 		if (wall_height > data->screen_height)
 			wall_height = data->screen_height;
-
 		wall_start = (data->screen_height - wall_height) / 2;
 		wall_end = wall_start + wall_height;
-
 		ray_dx = cos(ray_angle);
 		ray_dy = sin(ray_angle);
-
-		texture_index = 0;
 		if (side == 0)
 		{
 			if (ray_dx > 0)
-				texture_index = 1; // east
+				tex = &data->east;
 			else
-				texture_index = 3; // west
+				tex = &data->west;
 		}
 		else
 		{
 			if (ray_dy > 0)
-				texture_index = 2; // south
+				tex = &data->south;
 			else
-				texture_index = 0; // north
+				tex = &data->north;
 		}
-
 		if (side == 0)
 			hit_offset = fmodf(hit_y, data->block_size);
 		else
 			hit_offset = fmodf(hit_x, data->block_size);
-
-		tex_x = (int)((hit_offset / data->block_size)
-				* data->textures[texture_index].width);
-
+		tex_x = (int)((hit_offset / data->block_size) * tex->width);
 		if (side == 0 && ray_angle > RIGHT_SIDE_START
 			&& ray_angle < RIGHT_SIDE_END)
-			tex_x = data->textures[texture_index].width - tex_x - 1;
+			tex_x = tex->width - tex_x - 1;
 		else if (side == 1 && ray_angle < PI)
-			tex_x = data->textures[texture_index].width - tex_x - 1;
+			tex_x = tex->width - tex_x - 1;
 
 		y = 0;
 		while (y < data->screen_height)
@@ -100,12 +91,9 @@ void	render_3D(t_data *data)
 				int d;
 				int tex_y;
 				int color;
-
-				d = (y - wall_start) * data->textures[texture_index].height
-					/ wall_height;
+				d = (y - wall_start) * tex->height / wall_height;
 				tex_y = d;
-				color = data->textures[texture_index].data[tex_y
-					* data->textures[texture_index].width + tex_x];
+				color = tex->data[tex_y * tex->width + tex_x];
 				pixel_to_frame(data, i, y, color, 1);
 			}
 			y = y + 1;

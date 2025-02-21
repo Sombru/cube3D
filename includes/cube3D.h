@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/17 13:36:56 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:58:15 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define RIGHT_SIDE_END (3 * PI / 2)
 # define NUM_OF_RAYS 400
 # define DEBUG_MODE 0
+
 typedef struct s_texture
 {
 	void		*img;
@@ -76,9 +77,9 @@ typedef struct s_data
 	int			endian;
 	float		player_x;
 	float		player_y;
-	float		player_d_x; // delta x of player
-	float		player_d_y; // delta y of player
-	float		player_a; // angle of a player
+	float		player_d_x;
+	float		player_d_y;
+	float		player_a;
 	int			*map;
 	int			map_x;
 	int			map_y;
@@ -86,7 +87,10 @@ typedef struct s_data
 	int			block_size;
 	int			screen_width;
 	int			screen_height;
-	t_texture	textures[4];
+	t_texture	north;
+	t_texture	east;
+	t_texture	south;
+	t_texture	west;
 }				t_data;
 
 //===============================action==================================//
