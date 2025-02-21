@@ -1,7 +1,7 @@
-WE ./path_to_the_west_texture
-NO ./path_to_the_north_texture
-EA ./path_to_the_east_texture
-SO ./path_to_the_south_texture
+WE ./texture/ballsbird.xpm
+NO ./texture/catbird.xpm
+EA ./texture/catcake.xpm
+SO ./texture/catvape.xpm
 
 
 

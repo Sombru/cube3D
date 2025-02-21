@@ -6,7 +6,7 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 17:19:25 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:15:10 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
@@ -77,18 +78,36 @@ typedef struct s_data
 	int			endian;
 	float		player_x;
 	float		player_y;
-	float		player_d_x; // delta x of player
-	float		player_d_y; // delta y of player
-	float		player_a; // angle of a player
-	int			*map;
+	float		player_d_x;
+	float		player_d_y;
+	float		player_a;
+	int			ceiling_color;
+	int			floor_color;
+	char		*map;
 	int			map_x;
 	int			map_y;
 	int			map_size;
 	int			block_size;
 	int			screen_width;
 	int			screen_height;
-	t_texture	textures[4];
+	char		*north_texture;
+	char		*south_texture;
+	char		*west_texture;
+	char		*east_texture;
+	t_texture	north;
+	t_texture	east;
+	t_texture	south;
+	t_texture	west;
 }				t_data;
+
+//===============================main==================================//
+
+void	exit_game(t_data *data);
+
+//===============================debug==================================//
+
+void	debug_map(char	**map, t_data *data);
+
 
 //===============================action==================================//
 
@@ -119,6 +138,30 @@ void			render_3D(t_data *data);
 void			window_loop(t_data *data);
 int				render_frame(t_data *data);
 void			load_textures(t_data *data);
+
+//===============================parse_map====================================//
+
+void		get_map(char *map_path, t_data *data);
+
+//===============================parsing_utils================================//
+
+void		free_config(t_data *data);
+void		free_gnl_buffer(int fd);
+int			is_valid_map_line(char	*map_line);
+void		safe_exit(int fd, char **map, t_data *data, const char *message);
+
+//===============================get_config===================================//
+
+void		get_player_pos(int fd, char **map_parse, t_data *data);
+void		is_map_closed(int fd, char **map, t_data *data);
+
+//===============================get_map_config===============================//
+
+
+int			get_config(int fd, t_data *data);
+int			get_colors(char *line, const char type, t_data *data);
+int			get_textures(char *line, const char type, t_data *data);
+
 
 #endif
 

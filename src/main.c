@@ -6,7 +6,7 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 17:51:58 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:13 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,18 @@ void	exit_game(t_data *data)
 	free(data->west_texture);
 	free(data->east_texture);
 	free(data->south_texture);
+	mlx_destroy_image(data->mlx, data->north.img);
+	mlx_destroy_image(data->mlx, data->east.img);
+	mlx_destroy_image(data->mlx, data->south.img);
+	mlx_destroy_image(data->mlx, data->west.img);
+	mlx_destroy_image(data->mlx, data->frame_2d);
+	mlx_destroy_image(data->mlx, data->frame_3d);
+	mlx_destroy_window(data->mlx, data->win_2d);
+	mlx_destroy_window(data->mlx, data->win_3d);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
 	free(data->map);
 	free(data);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	
 	exit(0);
 }
 

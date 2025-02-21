@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/17 13:47:50 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:16:05 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	draw_map(t_data *data)
 		x = 0;
 		while (x < data->map_x)
 		{
-			if (data->map[y * data->map_x + x] == 1)
+			if (data->map[y * data->map_x + x] == '1')
 				color = WHITE;
 			else
 				color = BLACK;

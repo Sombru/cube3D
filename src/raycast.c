@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/17 13:46:30 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:16:32 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 			*side = 1;
 		}
 		if (mapX < 0 || mapX >= data->map_x || mapY < 0 || mapY >= data->map_y
-			|| data->map[mapY * data->map_x + mapX] == 1)
+			|| data->map[mapY * data->map_x + mapX] == '1')
 		{
 			hit = 1;
 		}

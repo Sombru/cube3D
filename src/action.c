@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/21 17:21:03 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:48:14 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int	action(int keycode, t_data *data)
 	else if (keycode == ESCAPE)
 	{
 		printf("exit\n");
+		mlx_destroy_image(data->mlx, data->north.img);
+		mlx_destroy_image(data->mlx, data->east.img);
+		mlx_destroy_image(data->mlx, data->south.img);
+		mlx_destroy_image(data->mlx, data->west.img);
 		mlx_destroy_image(data->mlx, data->frame_2d);
 		mlx_destroy_image(data->mlx, data->frame_3d);
-        mlx_destroy_image(data->mlx, data->textures[0].img);
-        mlx_destroy_image(data->mlx, data->textures[1].img);
-        mlx_destroy_image(data->mlx, data->textures[2].img);
-        mlx_destroy_image(data->mlx, data->textures[3].img);
 		mlx_destroy_window(data->mlx, data->win_2d);
 		mlx_destroy_window(data->mlx, data->win_3d);
 		mlx_destroy_display(data->mlx);
