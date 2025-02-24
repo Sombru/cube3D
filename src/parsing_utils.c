@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:29:45 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/18 18:10:10 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:04:22 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void free_gnl_buffer(int fd)
 
 static int	is_valid_map_key(char c)
 {
-    static const char valid_keys[] = "01 \tNSEW";
+    static const char valid_keys[] = "012 \tNSEW";
     int i;
 
     i = 0;

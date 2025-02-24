@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/20 20:19:39 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:30:21 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ static char	*get_map_line(char *map_line, t_data *data)
 	while (map_line[i])
 	{
 		if (map_line[i] == ' ')
-		{
 			res[j++] = '1';
-		}
 		else if (map_line[i] == '\t')
 		{
 			res[j++] = '1';
@@ -49,14 +47,14 @@ static char	*get_map_line(char *map_line, t_data *data)
 			res[j++] = '1';
 			res[j++] = '1';
 		}
+		else if (map_line[i] == '2') // Door handling
+			res[j++] = '2';
 		else
 			res[j++] = map_line[i];
 		i++;
 	}
 	while (j < data->map_x)
-	{
 		res[j++] = '1';
-	}
 	res[j] = '\0';
 	free(map_line);
 	return (res);
@@ -106,8 +104,8 @@ static char	**parse_map(int fd, t_data *data)
 
 void	get_map(char *map_path, t_data *data)
 {
-	char	**map_parse;
-	int		fd;
+	char **map_parse;
+	int fd;
 
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
@@ -115,15 +113,33 @@ void	get_map(char *map_path, t_data *data)
 		free(data);
 		exit(write(2, "could not open the file\n", 25));
 	}
+
 	if (get_config(fd, data) == EXIT_FAILURE)
 		safe_exit(fd, NULL, data, "bad config\n");
+
 	map_parse = parse_map(fd, data);
 	if (!map_parse)
 		safe_exit(fd, NULL, data, "invalid map symbol\n");
+
 	data->map = malloc(data->map_x * data->map_y + 1);
+	if (!data->map)
+		safe_exit(fd, map_parse, data, "malloc failed\n");
+
+	// Store original map for door reset
+	data->original_map = malloc(data->map_x * data->map_y + 1);
+	if (!data->original_map)
+	{
+		free(data->map);
+		safe_exit(fd, map_parse, data, "malloc failed\n");
+	}
+
 	get_player_pos(fd, map_parse, data);
 	if (!data->player_x)
 		safe_exit(fd, NULL, data, "missing player position\n");
+
+	// Copy map to original_map
+	ft_memcpy(data->original_map, data->map, data->map_x * data->map_y + 1);
+
 	is_map_closed(fd, map_parse, data);
 	debug_map(map_parse, data);
 	ft_free_array(map_parse);

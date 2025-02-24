@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/21 19:39:41 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:47:45 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ void	get_map_offsets(t_data *data, int block_size, int *off_x, int *off_y)
 
 int	draw_map(t_data *data)
 {
-	int	block_size;
-	int	off_x;
-	int	off_y;
 	int	x;
 	int	y;
 	int	px;
@@ -99,8 +96,7 @@ int	draw_map(t_data *data)
 	int	j;
 	int	color;
 
-	block_size = scale_block_size(data);
-	get_map_offsets(data, block_size, &off_x, &off_y);
+	get_map_offsets(data, data->block_size, &data->off_x, &data->off_y);
 	y = 0;
 	while (y < data->map_y)
 	{
@@ -109,15 +105,17 @@ int	draw_map(t_data *data)
 		{
 			if (data->map[y * data->map_x + x] == '1')
 				color = WHITE;
+			else if (data->map[y * data->map_x + x] == '2')
+				color = RED;
 			else
 				color = BLACK;
-			px = off_x + (x * block_size);
-			py = off_y + (y * block_size);
+			px = data->off_x + (x * data->block_size);
+			py = data->off_y + (y * data->block_size);
 			i = 0;
-			while (i < block_size)
+			while (i < data->block_size)
 			{
 				j = 0;
-				while (j < block_size)
+				while (j < data->block_size)
 				{
 					if (px + i < data->minimap_size && py
 						+ j < data->minimap_size)
@@ -135,9 +133,6 @@ int	draw_map(t_data *data)
 
 int	draw_player(t_data *data)
 {
-	int		block_size;
-	int		off_x;
-	int		off_y;
 	float	screen_x;
 	float	screen_y;
 	int		player_size;
@@ -146,11 +141,10 @@ int	draw_player(t_data *data)
 	int		px;
 	int		py;
 
-	block_size = scale_block_size(data);
-	get_map_offsets(data, block_size, &off_x, &off_y);
-	screen_x = off_x + (data->player_x * block_size / data->block_size);
-	screen_y = off_y + (data->player_y * block_size / data->block_size);
-	player_size = block_size / 2;
+	get_map_offsets(data, data->block_size, &data->off_x, &data->off_y);
+	screen_x = data->off_x + (data->player_x * data->block_size / data->block_size);
+	screen_y = data->off_y + (data->player_y * data->block_size / data->block_size);
+	player_size = data->block_size / 2;
 	i = -player_size / 2;
 	while (i < player_size / 2)
 	{
@@ -171,24 +165,16 @@ int	draw_player(t_data *data)
 
 void	draw_direction(t_data *data)
 {
-	int block_size;
-	int off_x;
-	int off_y;
-	float dir_length;
 	float screen_start_x;
 	float screen_start_y;
 	float screen_end_x;
 	float screen_end_y;
 
-	block_size = scale_block_size(data);
-	get_map_offsets(data, block_size, &off_x, &off_y);
-	dir_length = block_size;
-
-	screen_start_x = off_x + (data->player_x * block_size / data->block_size);
-	screen_start_y = off_y + (data->player_y * block_size / data->block_size);
-	screen_end_x = screen_start_x + (data->player_d_x * dir_length);
-	screen_end_y = screen_start_y + (data->player_d_y * dir_length);
-
+	get_map_offsets(data, data->block_size, &data->off_x, &data->off_y);
+	screen_start_x = data->off_x + (data->player_x * data->block_size / data->block_size);
+	screen_start_y = data->off_y + (data->player_y * data->block_size / data->block_size);
+	screen_end_x = screen_start_x + (data->player_d_x * data->block_size);
+	screen_end_y = screen_start_y + (data->player_d_y * data->block_size);
 	draw_line(data, screen_start_x, screen_start_y, screen_end_x, screen_end_y,
 		GREEN, 0);
 }

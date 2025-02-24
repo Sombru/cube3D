@@ -6,13 +6,13 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:11:07 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 19:04:30 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:31:32 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-static void get_player_angle(char map_line, t_data *data)
+static void	get_player_angle(char map_line, t_data *data)
 {
 	if (map_line == 'N')
 		data->player_a = 3 * PI / 2;
@@ -26,7 +26,7 @@ static void get_player_angle(char map_line, t_data *data)
 
 void	is_map_closed(int fd, char **map, t_data *data)
 {
-    int i;
+	int	i;
 
 	i = 0;
 	while (i < data->map_x)

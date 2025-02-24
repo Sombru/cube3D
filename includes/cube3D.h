@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 19:38:32 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:32:12 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 # include "../libft_based/libft.h"
 # include "../minilibx-linux/mlx.h"
+# include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
@@ -99,16 +99,22 @@ typedef struct s_data
 	t_texture	east;
 	t_texture	south;
 	t_texture	west;
+	t_texture	door;
+	int			door_timer;
+	char		*original_map;
+	int			off_x;
+	int			off_y;
+	float		start_angle;
+	float		angle_step;
 }				t_data;
 
 //===============================main==================================//
 
-void	exit_game(t_data *data);
+void			exit_game(t_data *data);
 
 //===============================debug==================================//
 
-void	debug_map(char	**map, t_data *data);
-
+void			debug_map(char **map, t_data *data);
 
 //===============================action==================================//
 
@@ -124,13 +130,13 @@ void			draw_direction(t_data *data);
 void			draw_line(t_data *data, int x0, int y0, int x1, int y1,
 					int color, int is_3d);
 int				scale_block_size(t_data *data);
-void			get_map_offsets(t_data *data, int block_size,
-					int *off_x, int *off_y);
+void			get_map_offsets(t_data *data, int block_size, int *off_x,
+					int *off_y);
 
 //===============================raycast=================================//
 
 float			cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
-					float *hit_y);
+					float *hit_y, char *hit_cell);
 void			draw_rays(t_data *data);
 
 //===============================render==================================//
@@ -145,27 +151,26 @@ void			load_textures(t_data *data);
 
 //===============================parse_map====================================//
 
-void		get_map(char *map_path, t_data *data);
+void			get_map(char *map_path, t_data *data);
 
 //===============================parsing_utils================================//
 
-void		free_config(t_data *data);
-void		free_gnl_buffer(int fd);
-int			is_valid_map_line(char	*map_line);
-void		safe_exit(int fd, char **map, t_data *data, const char *message);
+void			free_config(t_data *data);
+void			free_gnl_buffer(int fd);
+int				is_valid_map_line(char *map_line);
+void			safe_exit(int fd, char **map, t_data *data,
+					const char *message);
 
 //===============================get_config===================================//
 
-void		get_player_pos(int fd, char **map_parse, t_data *data);
-void		is_map_closed(int fd, char **map, t_data *data);
+void			get_player_pos(int fd, char **map_parse, t_data *data);
+void			is_map_closed(int fd, char **map, t_data *data);
 
 //===============================get_map_config===============================//
 
-
-int			get_config(int fd, t_data *data);
-int			get_colors(char *line, const char type, t_data *data);
-int			get_textures(char *line, const char type, t_data *data);
-
+int				get_config(int fd, t_data *data);
+int				get_colors(char *line, const char type, t_data *data);
+int				get_textures(char *line, const char type, t_data *data);
 
 #endif
 
@@ -178,5 +183,5 @@ int			get_textures(char *line, const char type, t_data *data);
 // ~ minimap (prob use existing window and fust draw game in new window)
 //   mouse view (prob only with X axis since idk how render it in Y)
 //   animted sprite
-//   dooors
-//   collision
+// + dooors
+// + collision
