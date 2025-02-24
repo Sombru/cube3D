@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/24 13:32:12 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:55:35 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_data
 	int			off_y;
 	float		start_angle;
 	float		angle_step;
+	int			scaled_size;
 }				t_data;
 
 //===============================main==================================//

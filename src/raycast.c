@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/24 13:19:15 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:59:06 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void	draw_rays(t_data *data)
 	float screen_end_y;
 
 	int off_x, off_y;
-	get_map_offsets(data, data->block_size, &off_x, &off_y);
+	scale_block_size(data);
+	get_map_offsets(data, data->scaled_size, &off_x, &off_y);
 	start_angle = data->player_a - (PI / 6);
 	angle_step = (PI / 3) / NUM_OF_RAYS;
 	i = 0;
@@ -123,12 +124,12 @@ void	draw_rays(t_data *data)
 		ray_angle = start_angle + i * angle_step;
 		float hit_x, hit_y;
 		cast_ray(data, ray_angle, &side, &hit_x, &hit_y, &hit_cell);
-		screen_start_x = off_x + (data->player_x * data->block_size
+		screen_start_x = off_x + (data->player_x * data->scaled_size
 				/ data->block_size);
-		screen_start_y = off_y + (data->player_y * data->block_size
+		screen_start_y = off_y + (data->player_y * data->scaled_size
 				/ data->block_size);
-		screen_end_x = off_x + (hit_x * data->block_size / data->block_size);
-		screen_end_y = off_y + (hit_y * data->block_size / data->block_size);
+		screen_end_x = off_x + (hit_x * data->scaled_size / data->block_size);
+		screen_end_y = off_y + (hit_y * data->scaled_size / data->block_size);
 		draw_line(data, screen_start_x, screen_start_y, screen_end_x,
 			screen_end_y, RED, 0);
 		i++;
