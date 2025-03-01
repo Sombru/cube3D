@@ -6,11 +6,14 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/24 13:59:06 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:44:56 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
+
+// cast_ray() - Implements DDA (Digital Differential Analysis) algorithm for raycasting, calculates wall hit positions and distances
+// draw_rays() - Renders raycasting debug lines on minimap showing field of view
 
 float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 		float *hit_y, char *hit_cell)
@@ -35,27 +38,31 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 	delta_dist_x = fabsf(1 / ray_dx);
 	delta_dist_y = fabsf(1 / ray_dy);
 	if (ray_dx < 0)
+	{
 		stepX = -1;
-	else
-		stepX = 1;
-	if (ray_dy < 0)
-		stepY = -1;
-	else
-		stepY = 1;
-	if (ray_dx < 0)
 		side_dist_x = (data->player_x - mapX * data->block_size) * delta_dist_x
 			/ data->block_size;
+	}
 	else
+	{
+		stepX = 1;
 		side_dist_x = ((mapX + 1) * data->block_size - data->player_x)
 			* delta_dist_x / data->block_size;
+	}
 	if (ray_dy < 0)
+	{
+		stepY = -1;
 		side_dist_y = (data->player_y - mapY * data->block_size) * delta_dist_y
 			/ data->block_size;
+	}
 	else
+	{
+		stepY = 1;
 		side_dist_y = ((mapY + 1) * data->block_size - data->player_y)
 			* delta_dist_y / data->block_size;
+	}
 	hit = 0;
-	while (!hit) // DDA
+	while (!hit)
 	{
 		if (side_dist_x < side_dist_y)
 		{
@@ -69,9 +76,8 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 			mapY += stepY;
 			*side = 1;
 		}
-		if (mapX < 0 || mapX >= data->map_x || mapY < 0 || mapY >= data->map_y)
-			hit = 1;
-		else if (data->map[mapY * data->map_x + mapX] == '1' || data->map[mapY
+		if (mapX < 0 || mapX >= data->map_x || mapY < 0 || mapY >= data->map_y
+			|| data->map[mapY * data->map_x + mapX] == '1' || data->map[mapY
 			* data->map_x + mapX] == '2')
 			hit = 1;
 	}
@@ -102,18 +108,22 @@ float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
 
 void	draw_rays(t_data *data)
 {
-	float start_angle;
-	float angle_step;
-	int i;
-	float ray_angle;
-	int side;
-	char hit_cell;
-	float screen_start_x;
-	float screen_start_y;
-	float screen_end_x;
-	float screen_end_y;
+	float	start_angle;
+	float	angle_step;
+	int		i;
+	float	ray_angle;
+	int		side;
+	char	hit_cell;
+	float	screen_start_x;
+	float	screen_start_y;
+	float	screen_end_x;
+	float	screen_end_y;
+	int		off_x;
+	int		off_y;
+	float	hit_x;
+	float	hit_y;
 
-	int off_x, off_y;
+
 	scale_block_size(data);
 	get_map_offsets(data, data->scaled_size, &off_x, &off_y);
 	start_angle = data->player_a - (PI / 6);
@@ -122,7 +132,6 @@ void	draw_rays(t_data *data)
 	while (i < NUM_OF_RAYS)
 	{
 		ray_angle = start_angle + i * angle_step;
-		float hit_x, hit_y;
 		cast_ray(data, ray_angle, &side, &hit_x, &hit_y, &hit_cell);
 		screen_start_x = off_x + (data->player_x * data->scaled_size
 				/ data->block_size);

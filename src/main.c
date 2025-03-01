@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/21 19:31:43 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:13:48 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	exit_game(t_data *data)
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
 	free(data->map);
+	free(data->original_map);
 	free(data);
 	exit(0);
 }
@@ -49,24 +50,34 @@ void	init_data(t_data *data)
 	data->south_texture = NULL;
 	data->north_texture = NULL;
 	data->east_texture = NULL;
+	data->door_timer = 0;
+	data->original_map = NULL;
 }
 
 int	main(int argc, char **argv)
 {
-	t_data			*data;
-	
+	t_data *data;
+
 	if (argc == 1)
-		return(write(STDERR_FILENO, "Specify map to read\n", 21));
+		return (write(STDERR_FILENO, "Specify map to read\n", 21));
 	if (argc == 3)
-		return(write(STDERR_FILENO, "Too many arguments\n", 20));
+		return (write(STDERR_FILENO, "Too many arguments\n", 20));
 	data = malloc(sizeof(t_data));
+	if (!data)
+		return (write(STDERR_FILENO, "Memory allocation failed\n", 25));
 	init_data(data);
 	data->mlx = mlx_init();
+	if (!data->mlx)
+	{
+		free(data);
+		return (write(STDERR_FILENO, "MLX initialization failed\n", 26));
+	}
 	get_map(argv[argc - 1], data);
 	printf("playery y: %f\n", data->player_y);
 	printf("playery x: %f\n", data->player_x);
-	data->map_size = data->map_y * data->map_x;
-	load_textures(data);
+	data->player_d_x = cos(data->player_a);
+	data->player_d_y = sin(data->player_a);
 	window_loop(data);
-	
+	exit_game(data);
+	return (0);
 }

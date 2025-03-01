@@ -6,11 +6,13 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/02/24 13:22:37 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:45:07 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
+
+// render_3D() - Creates the 3D view by casting rays and rendering textured wall slices with perspective correction
 
 void	render_3D(t_data *data)
 {

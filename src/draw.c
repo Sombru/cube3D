@@ -6,11 +6,19 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/24 13:58:57 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:45:47 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
+
+// pixel_to_frame() - Draws a single pixel to either 2D or 3D frame buffer at specified coordinates with given color
+// draw_line() - Implements Bresenham's line algorithm to draw a line between two points
+// scale_block_size() - Calculates scaled block size for minimap based on map dimensions
+// get_map_offsets() - Calculates offsets to center minimap in window
+// draw_map() - Renders the 2D minimap view showing walls, doors and empty spaces
+// draw_player() - Renders player position as a small square on minimap
+// draw_direction() - Draws line showing player's viewing direction on minimap
 
 void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 {
@@ -86,83 +94,6 @@ void	get_map_offsets(t_data *data, int block_size, int *off_x, int *off_y)
 	*off_x = (data->minimap_size - (data->map_x * block_size)) / 2;
 	*off_y = (data->minimap_size - (data->map_y * block_size)) / 2;
 }
-
-// int	draw_map(t_data *data)
-// {
-// 	int	x;
-// 	int	y;
-// 	int	px;
-// 	int	py;
-// 	int	i;
-// 	int	j;
-// 	int	color;
-
-// 	get_map_offsets(data, data->block_size, &data->off_x, &data->off_y);
-// 	y = 0;
-// 	while (y < data->map_y)
-// 	{
-// 		x = 0;
-// 		while (x < data->map_x)
-// 		{
-// 			if (data->map[y * data->map_x + x] == '1')
-// 				color = WHITE;
-// 			else if (data->map[y * data->map_x + x] == '2')
-// 				color = RED;
-// 			else
-// 				color = BLACK;
-// 			px = data->off_x + (x * data->block_size);
-// 			py = data->off_y + (y * data->block_size);
-// 			i = 0;
-// 			while (i < data->block_size)
-// 			{
-// 				j = 0;
-// 				while (j < data->block_size)
-// 				{
-// 					if (px + i < data->minimap_size && py
-// 						+ j < data->minimap_size)
-// 						pixel_to_frame(data, px + i, py + j, color, 0);
-// 					j++;
-// 				}
-// 				i++;
-// 			}
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	return (0);
-// }
-
-// int	draw_player(t_data *data)
-// {
-// 	float	screen_x;
-// 	float	screen_y;
-// 	int		player_size;
-// 	int		i;
-// 	int		j;
-// 	int		px;
-// 	int		py;
-
-// 	get_map_offsets(data, data->block_size, &data->off_x, &data->off_y);
-// 	screen_x = data->off_x + (data->player_x * data->block_size / data->block_size);
-// 	screen_y = data->off_y + (data->player_y * data->block_size / data->block_size);
-// 	player_size = data->block_size / 2;
-// 	i = -player_size / 2;
-// 	while (i < player_size / 2)
-// 	{
-// 		j = -player_size / 2;
-// 		while (j < player_size / 2)
-// 		{
-// 			px = screen_x + i;
-// 			py = screen_y + j;
-// 			if (px >= 0 && px < data->minimap_size && py >= 0
-// 				&& py < data->minimap_size)
-// 				pixel_to_frame(data, px, py, GREEN, 0);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
 
 int	draw_map(t_data *data)
 {
