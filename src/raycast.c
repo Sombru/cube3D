@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/01 16:44:56 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:28:48 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,132 +15,143 @@
 // cast_ray() - Implements DDA (Digital Differential Analysis) algorithm for raycasting, calculates wall hit positions and distances
 // draw_rays() - Renders raycasting debug lines on minimap showing field of view
 
-float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
-		float *hit_y, char *hit_cell)
+typedef struct s_raycast
 {
 	float	ray_dx;
 	float	ray_dy;
-	int		mapX;
-	int		mapY;
 	float	delta_dist_x;
 	float	delta_dist_y;
-	int		stepX;
-	int		stepY;
 	float	side_dist_x;
 	float	side_dist_y;
-	int		hit;
 	float	distance;
+	int		mapX;
+	int		mapY;
+	int		stepX;
+	int		stepY;
+	int		hit;
+}			t_raycast;
 
-	ray_dx = cos(ray_angle);
-	ray_dy = sin(ray_angle);
-	mapX = (int)(data->player_x / data->block_size);
-	mapY = (int)(data->player_y / data->block_size);
-	delta_dist_x = fabsf(1 / ray_dx);
-	delta_dist_y = fabsf(1 / ray_dy);
-	if (ray_dx < 0)
+
+float	cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
+		float *hit_y, char *hit_cell)
+{
+	t_raycast raycast;
+
+	raycast.ray_dx = cos(ray_angle);
+	raycast.ray_dy = sin(ray_angle);
+	raycast.mapX = (int)(data->player.x / data->block_size);
+	raycast.mapY = (int)(data->player.y / data->block_size);
+	raycast.delta_dist_x = fabsf(1 / raycast.ray_dx);
+	raycast.delta_dist_y = fabsf(1 / raycast.ray_dy);
+	if (raycast.ray_dx < 0)
 	{
-		stepX = -1;
-		side_dist_x = (data->player_x - mapX * data->block_size) * delta_dist_x
+		raycast.stepX = -1;
+		raycast.side_dist_x = (data->player.x - raycast.mapX * data->block_size) * raycast.delta_dist_x
 			/ data->block_size;
 	}
 	else
 	{
-		stepX = 1;
-		side_dist_x = ((mapX + 1) * data->block_size - data->player_x)
-			* delta_dist_x / data->block_size;
+		raycast.stepX = 1;
+		raycast.side_dist_x = ((raycast.mapX + 1) * data->block_size - data->player.x)
+			* raycast.delta_dist_x / data->block_size;
 	}
-	if (ray_dy < 0)
+	if (raycast.ray_dy < 0)
 	{
-		stepY = -1;
-		side_dist_y = (data->player_y - mapY * data->block_size) * delta_dist_y
+		raycast.stepY = -1;
+		raycast.side_dist_y = (data->player.y - raycast.mapY * data->block_size) * raycast.delta_dist_y
 			/ data->block_size;
 	}
 	else
 	{
-		stepY = 1;
-		side_dist_y = ((mapY + 1) * data->block_size - data->player_y)
-			* delta_dist_y / data->block_size;
+		raycast.stepY = 1;
+		raycast.side_dist_y = ((raycast.mapY + 1) * data->block_size - data->player.y)
+			* raycast.delta_dist_y / data->block_size;
 	}
-	hit = 0;
-	while (!hit)
+	raycast.hit = 0;
+	while (!raycast.hit)
 	{
-		if (side_dist_x < side_dist_y)
+		if (raycast.side_dist_x < raycast.side_dist_y)
 		{
-			side_dist_x += delta_dist_x;
-			mapX += stepX;
+			raycast.side_dist_x += raycast.delta_dist_x;
+			raycast.mapX += raycast.stepX;
 			*side = 0;
 		}
 		else
 		{
-			side_dist_y += delta_dist_y;
-			mapY += stepY;
+			raycast.side_dist_y += raycast.delta_dist_y;
+			raycast.mapY += raycast.stepY;
 			*side = 1;
 		}
-		if (mapX < 0 || mapX >= data->map_x || mapY < 0 || mapY >= data->map_y
-			|| data->map[mapY * data->map_x + mapX] == '1' || data->map[mapY
-			* data->map_x + mapX] == '2')
-			hit = 1;
+		if (raycast.mapX < 0 || raycast.mapX >= data->map_x || raycast.mapY < 0 || raycast.mapY >= data->map_y
+			|| data->map[raycast.mapY * data->map_x + raycast.mapX] == '1' || data->map[raycast.mapY
+			* data->map_x + raycast.mapX] == '2')
+			raycast.hit = 1;
 	}
-	if (mapX >= 0 && mapX < data->map_x && mapY >= 0 && mapY < data->map_y)
-		*hit_cell = data->map[mapY * data->map_x + mapX];
+	if (raycast.mapX >= 0 && raycast.mapX < data->map_x && raycast.mapY >= 0 && raycast.mapY < data->map_y)
+		*hit_cell = data->map[raycast.mapY * data->map_x + raycast.mapX];
 	else
 		*hit_cell = '1';
 	if (*side == 0)
 	{
-		if (stepX < 0)
-			distance = (mapX * data->block_size - data->player_x
-					+ data->block_size) / ray_dx;
+		if (raycast.stepX < 0)
+			raycast.distance = (raycast.mapX * data->block_size - data->player.x
+					+ data->block_size) / raycast.ray_dx;
 		else
-			distance = (mapX * data->block_size - data->player_x) / ray_dx;
+			raycast.distance = (raycast.mapX * data->block_size - data->player.x) / raycast.ray_dx;
 	}
 	else
 	{
-		if (stepY < 0)
-			distance = (mapY * data->block_size - data->player_y
-					+ data->block_size) / ray_dy;
+		if (raycast.stepY < 0)
+			raycast.distance = (raycast.mapY * data->block_size - data->player.y
+					+ data->block_size) / raycast.ray_dy;
 		else
-			distance = (mapY * data->block_size - data->player_y) / ray_dy;
+			raycast.distance = (raycast.mapY * data->block_size - data->player.y) / raycast.ray_dy;
 	}
-	*hit_x = data->player_x + distance * ray_dx;
-	*hit_y = data->player_y + distance * ray_dy;
-	return (distance * cos(ray_angle - data->player_a));
+	*hit_x = data->player.x + raycast.distance * raycast.ray_dx;
+	*hit_y = data->player.y + raycast.distance * raycast.ray_dy;
+	return (raycast.distance * cos(ray_angle - data->player.a));
 }
 
-void	draw_rays(t_data *data)
+typedef struct s_rays
 {
 	float	start_angle;
 	float	angle_step;
-	int		i;
 	float	ray_angle;
-	int		side;
-	char	hit_cell;
 	float	screen_start_x;
 	float	screen_start_y;
 	float	screen_end_x;
 	float	screen_end_y;
-	int		off_x;
-	int		off_y;
 	float	hit_x;
 	float	hit_y;
+	int		side;
+	int		off_y;
+	int		off_x;
+	char	hit_cell;
+}			t_rays;
 
+
+void	draw_rays(t_data *data)
+{
+	t_rays rays;
+	int i;
 
 	scale_block_size(data);
-	get_map_offsets(data, data->scaled_size, &off_x, &off_y);
-	start_angle = data->player_a - (PI / 6);
-	angle_step = (PI / 3) / NUM_OF_RAYS;
+	get_map_offsets(data, data->scaled_size, &rays.off_x, &rays.off_y);
+	rays.start_angle = data->player.a - (PI / 6);
+	rays.angle_step = (PI / 3) / NUM_OF_RAYS;
 	i = 0;
 	while (i < NUM_OF_RAYS)
 	{
-		ray_angle = start_angle + i * angle_step;
-		cast_ray(data, ray_angle, &side, &hit_x, &hit_y, &hit_cell);
-		screen_start_x = off_x + (data->player_x * data->scaled_size
+		rays.ray_angle = rays.start_angle + i * rays.angle_step;
+		cast_ray(data, rays.ray_angle, &rays.side, &rays.hit_x, &rays.hit_y, &rays.hit_cell);
+		rays.screen_start_x = rays.off_x + (data->player.x * data->scaled_size
 				/ data->block_size);
-		screen_start_y = off_y + (data->player_y * data->scaled_size
+		rays.screen_start_y = rays.off_y + (data->player.y * data->scaled_size
 				/ data->block_size);
-		screen_end_x = off_x + (hit_x * data->scaled_size / data->block_size);
-		screen_end_y = off_y + (hit_y * data->scaled_size / data->block_size);
-		draw_line(data, screen_start_x, screen_start_y, screen_end_x,
-			screen_end_y, RED, 0);
+		rays.screen_end_x = rays.off_x + (rays.hit_x * data->scaled_size / data->block_size);
+		rays.screen_end_y = rays.off_y + (rays.hit_y * data->scaled_size / data->block_size);
+		draw_line(data, rays.screen_start_x, rays.screen_start_y, rays.screen_end_x,
+			rays.screen_end_y, RED, 0);
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:10:33 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/11 16:19:48 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:01:54 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ void	debug_map(char	**map, t_data *data)
     printf("ceiling: %X\n", data->ceiling_color);
 	printf("data->map_y: %d\n", data->map_y);
     printf("data->map_x: %d\n", data->map_x);
+	printf("player y: %f\n", data->player.y);
+	printf("playe. x: %f\n", data->player.x);
 	while (map[i])
 	{
 		printf("map[%d]: %s\n", i, map[i]);
 		i++;
 	}
-	
 }

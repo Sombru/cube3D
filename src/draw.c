@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/01 16:45:47 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:00:34 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // scale_block_size() - Calculates scaled block size for minimap based on map dimensions
 // get_map_offsets() - Calculates offsets to center minimap in window
 // draw_map() - Renders the 2D minimap view showing walls, doors and empty spaces
-// draw_player() - Renders player position as a small square on minimap
-// draw_direction() - Draws line showing player's viewing direction on minimap
+// draw_player.) - Renders player.position as a small square on minimap
+// draw_direction() - Draws line showing player.s viewing direction on minimap
 
 void	pixel_to_frame(t_data *data, int x, int y, int color, int is_3d)
 {
@@ -145,7 +145,6 @@ int	draw_player(t_data *data)
 {
 	float	screen_x;
 	float	screen_y;
-	int		player_size;
 	int		i;
 	int		j;
 	int		px;
@@ -153,16 +152,16 @@ int	draw_player(t_data *data)
 
 	scale_block_size(data);
 	get_map_offsets(data, data->scaled_size, &data->off_x, &data->off_y);
-	screen_x = data->off_x + (data->player_x * data->scaled_size
+	screen_x = data->off_x + (data->player.x * data->scaled_size
 			/ data->block_size);
-	screen_y = data->off_y + (data->player_y * data->scaled_size
+	screen_y = data->off_y + (data->player.y * data->scaled_size
 			/ data->block_size);
-	player_size = data->scaled_size / 2;
-	i = -player_size / 2;
-	while (i < player_size / 2)
+	data->player.size = data->scaled_size / 2;
+	i = -data->player.size / 2;
+	while (i < data->player.size / 2)
 	{
-		j = -player_size / 2;
-		while (j < player_size / 2)
+		j = -data->player.size / 2;
+		while (j < data->player.size / 2)
 		{
 			px = screen_x + i;
 			py = screen_y + j;
@@ -185,12 +184,12 @@ void	draw_direction(t_data *data)
 
 	scale_block_size(data);
 	get_map_offsets(data, data->scaled_size, &data->off_x, &data->off_y);
-	screen_start_x = data->off_x + (data->player_x * data->scaled_size
+	screen_start_x = data->off_x + (data->player.x * data->scaled_size
 			/ data->block_size);
-	screen_start_y = data->off_y + (data->player_y * data->scaled_size
+	screen_start_y = data->off_y + (data->player.y * data->scaled_size
 			/ data->block_size);
-	screen_end_x = screen_start_x + (data->player_d_x * data->scaled_size);
-	screen_end_y = screen_start_y + (data->player_d_y * data->scaled_size);
+	screen_end_x = screen_start_x + (data->player.d_x * data->scaled_size);
+	screen_end_y = screen_start_y + (data->player.d_y * data->scaled_size);
 	draw_line(data, screen_start_x, screen_start_y, screen_end_x, screen_end_y,
 		GREEN, 0);
 }

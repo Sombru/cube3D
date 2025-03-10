@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/24 13:55:35 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:02:17 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,33 @@
 
 # include "../libft_based/libft.h"
 # include "../minilibx-linux/mlx.h"
+# include "defines.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
-# define BLACK 0x000000
-# define WHITE 0xFFFFFF
-# define RED 0xFF0000
-# define GREEN 0x228B22
-# define BLUE 0x87CEEB
-# define YELLOW 0xFFFF00
-# define CYAN 0x00FFFF
-# define MAGENTA 0xFF00FF
-# define GRAY 0x808080
-# define LIGHT_GRAY 0xD3D3D3
-# define DARK_GRAY 0xA9A9A9
-# define ORANGE 0xFFA500
-# define PINK 0xFFC0CB
-# define PURPLE 0x800080
-# define BROWN 0xA52A2A
+typedef struct s_player
+{
+	float		x;
+	float		y;
+	float		d_x;
+	float		d_y;
+	float		a;
+	int			size;
+}				t_player;
 
-# define LEFT_ARROW 65361
-# define UP_ARROW 65362
-# define RIGHT_ARROW 65363
-# define DOWN_ARROW 65364
-# define W_KEY 119
-# define A_KEY 97
-# define S_KEY 115
-# define D_KEY 100
-# define SPACE 32
-# define ESCAPE 65307
-
-# define PI 3.1415926535897932384
-# define FOV (PI / 3)
-# define HALF_FOV (FOV / 2)
-# define RIGHT_SIDE_START (PI / 2)
-# define RIGHT_SIDE_END (3 * PI / 2)
-# define NUM_OF_RAYS 40
-# define DEBUG_MODE 0
+typedef struct	s_keys
+{
+    int	space;
+    int	a;
+    int	w;
+    int	d;
+    int	s;
+    int	left;
+    int	right;
+}				t_keys;
 
 typedef struct s_texture
 {
@@ -76,11 +63,6 @@ typedef struct s_data
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-	float		player_x;
-	float		player_y;
-	float		player_d_x;
-	float		player_d_y;
-	float		player_a;
 	int			ceiling_color;
 	int			floor_color;
 	char		*map;
@@ -95,6 +77,8 @@ typedef struct s_data
 	char		*south_texture;
 	char		*west_texture;
 	char		*east_texture;
+	t_player	player;
+	t_keys		keys;
 	t_texture	north;
 	t_texture	east;
 	t_texture	south;
@@ -119,7 +103,9 @@ void			debug_map(char **map, t_data *data);
 
 //===============================action==================================//
 
-int				action(int keycode, t_data *data);
+int				action(t_data *data);
+int				key_press_handler(int keycode, t_data *data);
+int				key_release_handler(int keycode, t_data *data);
 
 //================================draw===================================//
 
@@ -148,7 +134,6 @@ void			render_3D(t_data *data);
 
 void			window_loop(t_data *data);
 int				render_frame(t_data *data);
-void			load_textures(t_data *data);
 
 //===============================parse_map====================================//
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/01 17:13:48 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/10 07:01:50 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	exit_game(t_data *data)
 void	init_data(t_data *data)
 {
 	data->block_size = 50;
-	data->player_a = 0;
-	data->player_y = 0;
-	data->player_x = 0;
-	data->player_d_x = 0;
-	data->player_d_y = 0;
+	data->player.a = 0;
+	data->player.y = 0;
+	data->player.x = 0;
+	data->player.d_x = 0;
+	data->player.d_y = 0;
 	data->minimap_size = 720;
 	data->screen_width = 1440;
 	data->screen_height = 720;
@@ -73,10 +73,8 @@ int	main(int argc, char **argv)
 		return (write(STDERR_FILENO, "MLX initialization failed\n", 26));
 	}
 	get_map(argv[argc - 1], data);
-	printf("playery y: %f\n", data->player_y);
-	printf("playery x: %f\n", data->player_x);
-	data->player_d_x = cos(data->player_a);
-	data->player_d_y = sin(data->player_a);
+	data->player.d_x = cos(data->player.a);
+	data->player.d_y = sin(data->player.a);
 	window_loop(data);
 	exit_game(data);
 	return (0);

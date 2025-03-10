@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/01 16:45:07 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/04 02:06:35 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	render_3D(t_data *data)
 {
 	int i = 0;
 	data->angle_step = FOV / data->screen_width;
-	data->start_angle = data->player_a - HALF_FOV;
+	data->start_angle = data->player.a - HALF_FOV;
 	while (i < data->screen_width)
 	{
 		float ray_angle = data->start_angle + i * data->angle_step;
