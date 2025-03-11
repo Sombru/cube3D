@@ -6,7 +6,7 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/10 07:02:17 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/10 19:20:11 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,8 @@ int				get_textures(char *line, const char type, t_data *data);
 // + have a working window
 // + have a drawn map and player
 // + have all rendered frame by frame instead of pixel by pixel
-//   read a map from a file
-//		validate map from a file
+// + read a map from a file
+// + validate map from a file
 // + render all in 3D
 // ~ minimap (prob use existing window and fust draw game in new window)
 //   mouse view (prob only with X axis since idk how render it in Y)

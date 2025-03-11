@@ -6,7 +6,7 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/10 07:01:50 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/11 06:52:45 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	main(int argc, char **argv)
 		return (write(STDERR_FILENO, "Specify map to read\n", 21));
 	if (argc == 3)
 		return (write(STDERR_FILENO, "Too many arguments\n", 20));
+	if (ft_strcmp(ft_strchr(argv[1], '.'), ".cub") != 0)
+		return(write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (write(STDERR_FILENO, "Memory allocation failed\n", 25));
