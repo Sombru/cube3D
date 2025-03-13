@@ -3,47 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/02/17 13:24:28 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/13 09:31:11 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-int	main(void)
+void	exit_game(t_data *data)
 {
-	t_data			*data;
-	
+	free(data->north_texture);
+	free(data->west_texture);
+	free(data->east_texture);
+	free(data->south_texture);
+	mlx_destroy_image(data->mlx, data->north.img);
+	mlx_destroy_image(data->mlx, data->east.img);
+	mlx_destroy_image(data->mlx, data->south.img);
+	mlx_destroy_image(data->mlx, data->west.img);
+	mlx_destroy_image(data->mlx, data->frame_2d);
+	mlx_destroy_image(data->mlx, data->frame_3d);
+	mlx_destroy_window(data->mlx, data->win_2d);
+	mlx_destroy_window(data->mlx, data->win_3d);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	free(data->map);
+	free(data->original_map);
+	free(data);
+	exit(0);
+}
+
+void	init_data(t_data *data)
+{
+	data->block_size = 50;
+	data->player.a = 0;
+	data->player.y = 0;
+	data->player.x = 0;
+	data->player.d_x = 0;
+	data->player.d_y = 0;
+	data->minimap_size = 720;
+	data->screen_width = 1440;
+	data->screen_height = 720;
+	data->map = NULL;
+	data->west_texture = NULL;
+	data->south_texture = NULL;
+	data->north_texture = NULL;
+	data->east_texture = NULL;
+	data->original_map = NULL;
+	data->door_timer = 0;
+	data->keys.a = 0;
+	data->keys.s = 0;
+	data->keys.d = 0;
+	data->keys.w = 0;
+	data->keys.left = 0;
+	data->keys.right = 0;
+	data->keys.space = 0;
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
+	if (argc == 1)
+		return (write(STDERR_FILENO, "Specify map to read\n", 21));
+	if (argc == 3)
+		return (write(STDERR_FILENO, "Too many arguments\n", 20));
+	if (ft_strcmp(ft_strchr(argv[1], '.'), ".cub") != 0)
+		return (write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
 	data = malloc(sizeof(t_data));
-	data->map_size = 100;
-	data->block_size = 73;
-	data->map = malloc((sizeof(data->map)) * data->map_size);
-	data->map_x = 10;
-	data->map_y = 10;
-	data->player_a = 0;
-	data->player_d_x = cos(data->player_a);
-	data->player_d_y = sin(data->player_a);
+	if (!data)
+		return (write(STDERR_FILENO, "Memory allocation failed\n", 25));
+	init_data(data);
 	data->mlx = mlx_init();
-    int map[100] = {
-        1,1,1,1,1,1,1,1,1,1,
-        1,0,0,0,0,0,0,0,0,1,
-        1,0,0,1,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,1,0,1,
-        1,0,0,0,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,1,0,1,
-        1,0,0,0,0,0,0,1,0,1,
-        1,1,1,1,1,1,1,1,1,1
-    };
-    int i = 0;
-    while (i < 100)
-    {
-        data->map[i] = map[i];
-        i++;
-    }
-	load_textures(data);
+	if (!data->mlx)
+	{
+		free(data);
+		return (write(STDERR_FILENO, "MLX initialization failed\n", 26));
+	}
+	get_map(argv[argc - 1], data);
+	data->player.d_x = cos(data->player.a);
+	data->player.d_y = sin(data->player.a);
 	window_loop(data);
+	exit_game(data);
+	return (0);
 }

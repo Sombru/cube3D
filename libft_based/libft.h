@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:34:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/06 15:35:16 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:35:16 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,19 @@ int		ft_strcmp(const char *s1, const char *s2);
 
 // get_next_line
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 42
 
 char	*ft_get_line(char *string);
 char	*ft_new_string(char *string);
 
 char	*get_next_line(int fd);
+char	*gnl_smart(int fd);
 
 // new
 
-char	*ft_rm_char(const char *str, char s);
+char	*ft_rm_char(char *str, char s);
 char	*ft_strjoin_free(char *s1, char *s2);
-char	*ft_rmlast_char(const char *str, char ch);
+char	*ft_rmlast_char(char *str, char ch);
 char	*ft_stradd_start_end(char *str, char ch);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strcpy(char *dest, const char *src);
@@ -84,5 +85,6 @@ char	*ft_arrcomb(char **array, const char ch);
 char	**ft_arrcpy(char **array);
 char	**ft_arrstr_rm(char **array, int index, int size);
 void	ft_free_array(char **arr);
+int		ft_count_args(char	**arr);
 
 #endif

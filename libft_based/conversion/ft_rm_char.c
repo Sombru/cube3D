@@ -6,21 +6,21 @@
 /*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 15:55:42 by pkostura          #+#    #+#             */
-/*   Updated: 2024/12/29 15:08:26 by sombru           ###   ########.fr       */
+/*   Updated: 2025/02/09 10:15:37 by sombru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
 // function to remove all occurances of char s in string str
-char	*ft_rm_char(const char *str, char s)
+char	*ft_rm_char(char *str, char s)
 {
 	int		len;
 	char	*trimmed_str;
 	int		i;
 	int		j;
 
-	len = strlen(str);
+	len = ft_strlen(str);
 	trimmed_str = malloc(len + 1);
 	if (!trimmed_str)
 		return (NULL);
@@ -36,5 +36,6 @@ char	*ft_rm_char(const char *str, char s)
 		i++;
 	}
 	trimmed_str[j] = '\0';
+	free(str);
 	return (trimmed_str);
 }
