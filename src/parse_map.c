@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 09:51:42 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:47:41 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,53 @@
 static char	*get_map_line(char *map_line, t_data *data)
 {
 	char	*res;
-	int		i;
-	int		j;
+	int		i[2] = {0, 0};
 
 	res = malloc(sizeof(char) * (data->map_x + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (map_line[i])
+	while (map_line[i[0]])
 	{
-		if (map_line[i] == ' ')
-			res[j++] = '1';
-		else if (map_line[i] == '\t')
+		if (map_line[i[0]] == ' ')
+			res[i[1]++] = '1';
+		else if (map_line[i[0]] == '\t')
 		{
-			res[j++] = '1';
-			res[j++] = '1';
-			res[j++] = '1';
-			res[j++] = '1';
+			res[i[1]++] = '1';
+			res[i[1]++] = '1';
+			res[i[1]++] = '1';
+			res[i[1]++] = '1';
 		}
-		else if (map_line[i] == '2') // door handling
-			res[j++] = '2';
+		else if (map_line[i[0]] == '2')
+			res[i[1]++] = '2';
 		else
-			res[j++] = map_line[i];
-		i++;
+			res[i[1]++] = map_line[i[0]];
+		i[0]++;
 	}
-	while (j < data->map_x)
-		res[j++] = '1';
-	res[j] = '\0';
-	free(map_line);
-	return (res);
+	while (i[1] < data->map_x)
+		res[i[1]++] = '1';
+	res[i[1]] = '\0';
+	return (free(map_line), res);
+}
+
+static int	read_map_lines(int fd, char *map[], int *x, int *y)
+{
+	while (1)
+	{
+		map[*y] = gnl_smart(fd);
+		if (!map[*y])
+			break ;
+		if (!is_valid_map_line(map[*y]))
+		{
+			while (*y >= 0)
+			{
+				free(map[*y]);
+				(*y)--;
+			}
+			return (EXIT_FAILURE);
+		}
+		if ((int)ft_strlen(map[*y]) > *x)
+			*x = ft_strlen(map[*y]);
+		(*y)++;
+	}
+	return (EXIT_SUCCESS);
 }
 
 static char	**parse_map(int fd, t_data *data)
@@ -69,24 +86,7 @@ static char	**parse_map(int fd, t_data *data)
 
 	x = 0;
 	y = 0;
-	while (1)
-	{
-		map[y] = gnl_smart(fd);
-		if (!map[y])
-			break ;
-		if (!is_valid_map_line(map[y]))
-		{
-			while (y >= 0)
-			{
-				free(map[y]);
-				y--;
-			}
-			return (NULL);
-		}
-		if ((int)ft_strlen(map[y]) > x)
-			x = ft_strlen(map[y]);
-		y++;
-	}
+	read_map_lines(fd, map, &x, &y);
 	data->map_y = y;
 	data->map_x = x;
 	parsed = malloc(sizeof(parsed) * (data->map_y + 1));
@@ -106,32 +106,25 @@ static int	load_textures(t_data *data)
 {
 	data->north.img = mlx_xpm_file_to_image(data->mlx, data->north_texture,
 			&data->north.width, &data->north.height);
-	if (!data->north.img)
+	data->east.img = mlx_xpm_file_to_image(data->mlx, data->east_texture,
+			&data->east.width, &data->east.height);
+	data->south.img = mlx_xpm_file_to_image(data->mlx, data->south_texture,
+			&data->south.width, &data->south.height);
+	data->west.img = mlx_xpm_file_to_image(data->mlx, data->west_texture,
+			&data->west.width, &data->west.height);
+	data->door.img = mlx_xpm_file_to_image(data->mlx, "texture/wall.xpm",
+			&data->door.width, &data->door.height);
+	if (!data->north.img || !data->east.img || !data->south.img
+		|| !data->west.img || !data->door.img)
 		return (EXIT_FAILURE);
 	data->north.data = (int *)mlx_get_data_addr(data->north.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
-	data->east.img = mlx_xpm_file_to_image(data->mlx, data->east_texture,
-			&data->east.width, &data->east.height);
-	if (!data->east.img)
-		return (EXIT_FAILURE);
 	data->east.data = (int *)mlx_get_data_addr(data->east.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
-	data->south.img = mlx_xpm_file_to_image(data->mlx, data->south_texture,
-			&data->south.width, &data->south.height);
-	if (!data->south.img)
-		return (EXIT_FAILURE);
 	data->south.data = (int *)mlx_get_data_addr(data->south.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
-	data->west.img = mlx_xpm_file_to_image(data->mlx, data->west_texture,
-			&data->west.width, &data->west.height);
-	if (!data->west.img)
-		return (EXIT_FAILURE);
 	data->west.data = (int *)mlx_get_data_addr(data->west.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
-	data->door.img = mlx_xpm_file_to_image(data->mlx, "texture/wall.xpm",
-			&data->door.width, &data->door.height);
-	if (!data->door.img)
-		return (EXIT_FAILURE);
 	data->door.data = (int *)mlx_get_data_addr(data->door.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	return (EXIT_SUCCESS);
@@ -139,9 +132,9 @@ static int	load_textures(t_data *data)
 
 void	get_map(char *map_path, t_data *data)
 {
-	char			**map_parse;
-	int				fd;
-	static int		i = 0;
+	char		**map_parse;
+	int			fd;
+	static int	i = 0;
 
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
