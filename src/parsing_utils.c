@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:29:45 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/10 07:00:41 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 10:07:50 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	free_config(t_data *data)
 		free(data->east_texture);
 }
 
-void free_gnl_buffer(int fd)
+void	free_gnl_buffer(int fd)
 {
-	char *line;
+	char	*line;
 
 	line = get_next_line(fd);
 	while (line)
@@ -39,31 +39,31 @@ void free_gnl_buffer(int fd)
 
 static int	is_valid_map_key(char c)
 {
-    static const char valid_keys[] = "012 \tNSEW";
-    int i;
+	static const char	valid_keys[] = "012 \tNSEW";
+	int					i;
 
-    i = 0;
-    while (valid_keys[i])
-    {
-        if (c == valid_keys[i])
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (valid_keys[i])
+	{
+		if (c == valid_keys[i])
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	is_valid_map_line(char *map_line)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (map_line[i])
-    {
-        if (!is_valid_map_key(map_line[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	i = 0;
+	while (map_line[i])
+	{
+		if (!is_valid_map_key(map_line[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 void	safe_exit(int fd, char **map, t_data *data, const char *message)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/10 19:20:11 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 11:23:28 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,26 @@ typedef struct s_player
 	int			size;
 }				t_player;
 
-typedef struct	s_keys
+typedef struct s_keys
 {
-    int	space;
-    int	a;
-    int	w;
-    int	d;
-    int	s;
-    int	left;
-    int	right;
+	int			space;
+	int			a;
+	int			w;
+	int			d;
+	int			s;
+	int			left;
+	int			right;
 }				t_keys;
+
+typedef struct s_draw
+{
+	float		screen_x;
+	float		screen_y;
+	int			i;
+	int			j;
+	int			px;
+	int			py;
+}				t_draw;
 
 typedef struct s_texture
 {
@@ -50,6 +60,24 @@ typedef struct s_texture
 	int			width;
 	int			height;
 }				t_texture;
+
+typedef struct s_line
+{
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			e2;
+}				t_line;
+
+typedef struct s_coord
+{
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+}				t_coord;
 
 typedef struct s_data
 {
@@ -104,18 +132,23 @@ void			debug_map(char **map, t_data *data);
 //===============================action==================================//
 
 int				action(t_data *data);
+void			handle_key_right(t_data *data);
+void			handle_key_left(t_data *data);
+void			handle_key_s(t_data *data);
+void			handle_key_d(t_data *data);
+void			handle_key_a(t_data *data);
+void			handle_key_w(t_data *data);
+int				check_collision(t_data *data, float new_x, float new_y);
 int				key_press_handler(int keycode, t_data *data);
 int				key_release_handler(int keycode, t_data *data);
 
 //================================draw===================================//
 
-void			pixel_to_frame(t_data *data, int x, int y, int color,
-					int is_3d);
+t_coord			line_coords(int x0, int y0, int x1, int y1);
 int				draw_player(t_data *data);
 int				draw_map(t_data *data);
 void			draw_direction(t_data *data);
-void			draw_line(t_data *data, int x0, int y0, int x1, int y1,
-					int color, int is_3d);
+void			draw_line(t_data *data, t_coord coord, int color, int is_3d);
 int				scale_block_size(t_data *data);
 void			get_map_offsets(t_data *data, int block_size, int *off_x,
 					int *off_y);
@@ -128,6 +161,8 @@ void			draw_rays(t_data *data);
 
 //===============================render==================================//
 
+void			pixel_to_frame_2D(t_data *data, int x, int y, int color);
+void			pixel_to_frame_3D(t_data *data, int x, int y, int color);
 void			render_3D(t_data *data);
 
 //===============================window==================================//

@@ -24,8 +24,8 @@ INC			=	-I ./includes/\
 SRC_DIR		= src/
 SRC			= main.c \
 			  window.c \
-			  draw.c \
-			  action.c \
+			  draw_player.c draw_map.c \
+			  action.c action_keys.c \
 			  raycast.c \
 			  render.c \
 			  parse_map.c parsing_utils.c get_config.c get_map_config.c \

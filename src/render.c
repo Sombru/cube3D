@@ -3,16 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/04 02:06:35 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 10:50:40 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
 // render_3D() - Creates the 3D view by casting rays and rendering textured wall slices with perspective correction
+
+void	pixel_to_frame_2D(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr_2d + (y * data->line_length + x * (data->bits_per_pixel
+				/ 8));
+	*(unsigned int *)dst = color;
+}
+
+void	pixel_to_frame_3D(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr_3d + (y * data->line_length + x * (data->bits_per_pixel
+				/ 8));
+	*(unsigned int *)dst = color;
+}
 
 void	render_3D(t_data *data)
 {
@@ -71,9 +89,9 @@ void	render_3D(t_data *data)
 		while (y < data->screen_height)
 		{
 			if (y < wall_start)
-				pixel_to_frame(data, i, y, BLUE, 1);
+				pixel_to_frame_3D(data, i, y, BLUE);
 			else if (y > wall_end)
-				pixel_to_frame(data, i, y, GREEN, 1);
+				pixel_to_frame_3D(data, i, y, GREEN);
 			else
 			{
 				float tex_pos = (y - unclamped_wall_start) / real_wall_height;
@@ -83,7 +101,7 @@ void	render_3D(t_data *data)
 				if (tex_y >= tex->height)
 					tex_y = tex->height - 1;
 				int color = tex->data[tex_y * tex->width + tex_x];
-				pixel_to_frame(data, i, y, color, 1);
+				pixel_to_frame_3D(data, i, y, color);
 			}
 			y++;
 		}
