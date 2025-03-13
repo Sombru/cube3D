@@ -3,39 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   get_config.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 08:58:05 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/13 09:27:24 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-static unsigned int	rgb_to_hex(int r, int g, int b)
+inline static void	free_lines(char *lines[6])
 {
-    return ((r << 16) | (g << 8) | b);
+	int	i;
+
+	i = 0;
+	while (lines[i] && i <= 5)
+	{
+		free(lines[i]);
+		i++;
+	}
 }
 
-static char *extract_texture_path(char *line, const char type)
+static char	*extract_texture_path(char *line, const char type)
 {
-	char *path;
+	char	*path;
 
 	path = NULL;
-    if (line[0] == type)
-    {
-        path = ft_strchr(line, '/');
-		
-        if (path)
+	if (line[0] == type)
+	{
+		path = ft_strchr(line, '/');
+		if (path)
 		{
-			path++;	
-            return (path);
+			path++;
+			return (path);
 		}
-    }
-    return (NULL);
+	}
+	return (NULL);
 }
 
-int get_textures(char *line, const char type, t_data *data)
+int	get_textures(char *line, const char type, t_data *data)
 {
 	char	*path;
 
@@ -48,11 +54,11 @@ int get_textures(char *line, const char type, t_data *data)
 		data->south_texture = ft_strdup(path);
 	else if (!data->east_texture && type == 'E' && path)
 		data->east_texture = ft_strdup(path);
-	else if (! data->west_texture && type == 'W' && path)
+	else if (!data->west_texture && type == 'W' && path)
 		data->west_texture = ft_strdup(path);
 	else
 		return (EXIT_FAILURE);
-    return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 int	get_colors(char *line, const char type, t_data *data)
@@ -70,53 +76,38 @@ int	get_colors(char *line, const char type, t_data *data)
 	rgb[1] = ft_atoi(rgb_values[1]);
 	rgb[2] = ft_atoi(rgb_values[2]);
 	if (type == 'F')
-		data->floor_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
+		data->floor_color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 	if (type == 'C')
-		data->ceiling_color = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
+		data->ceiling_color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 	ft_free_array(rgb_values);
-
 	return (EXIT_SUCCESS);
-}
-inline static void free_lines(char *lines[6])
-{
-	int i;
-	
-	i = 0;
-	while (lines[i] && i <= 5)
-	{
-		free(lines[i]);
-		i++;	
-	}
-	
 }
 
 int	get_config(int fd, t_data *data)
 {
 	static char	keys[7] = {'N', 'S', 'E', 'W', 'F', 'C', 0};
 	char		*lines[6];
-	int			i;
-	int			k;
+	static int	i[2] = {0, 0};
 
-	i = 0;
-	while (i <= 5)
+	while (i[0] <= 5)
 	{
-		lines[i] = gnl_smart(fd);
-			if (!lines[i])
-				return (EXIT_FAILURE);
-		i++;
+		lines[i[0]] = gnl_smart(fd);
+		if (!lines[i[0]])
+			return (EXIT_FAILURE);
+		i[0]++;
 	}
-	i = 0;
-	while (lines[i] && i <= 5)
+	i[0] = 0;
+	while (lines[i[0]] && i[0] <= 5)
 	{
-		k = 0;
-		while (keys[k] && lines[i][0] != keys[k])
-			k++;
-		if (get_textures(lines[i], keys[k], data) == EXIT_FAILURE || get_colors(lines[i], keys[k], data) == EXIT_FAILURE)
+		i[1] = 0;
+		while (keys[i[1]] && lines[i[0]][0] != keys[i[1]])
+			i[1]++;
+		if (get_textures(lines[i[0]], keys[i[1]], data) == 1
+			|| get_colors(lines[i[0]], keys[i[1]], data) == 1)
 			return (free_lines(lines), EXIT_FAILURE);
-		i++;
+		i[0]++;
 	}
-	free_lines(lines);
-	if (i < 5)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (i[0] < 5)
+		return (free_lines(lines), EXIT_FAILURE);
+	return (free_lines(lines), EXIT_SUCCESS);
 }

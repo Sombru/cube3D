@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/10 07:17:20 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:38:07 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@
 # define ANGLE_DIFF 0.1 // change of camera view per action
 # define DOOR_RANGE 30.f // how far can we open door from 
 
-# define DEBUG_MODE 0
+# define DEBUG_MODE 1
 
 #endif

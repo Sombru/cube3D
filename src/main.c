@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/11 06:52:45 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:31:11 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,27 @@ void	init_data(t_data *data)
 	data->south_texture = NULL;
 	data->north_texture = NULL;
 	data->east_texture = NULL;
-	data->door_timer = 0;
 	data->original_map = NULL;
+	data->door_timer = 0;
+	data->keys.a = 0;
+	data->keys.s = 0;
+	data->keys.d = 0;
+	data->keys.w = 0;
+	data->keys.left = 0;
+	data->keys.right = 0;
+	data->keys.space = 0;
 }
 
 int	main(int argc, char **argv)
 {
-	t_data *data;
+	t_data	*data;
 
 	if (argc == 1)
 		return (write(STDERR_FILENO, "Specify map to read\n", 21));
 	if (argc == 3)
 		return (write(STDERR_FILENO, "Too many arguments\n", 20));
 	if (ft_strcmp(ft_strchr(argv[1], '.'), ".cub") != 0)
-		return(write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
+		return (write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (write(STDERR_FILENO, "Memory allocation failed\n", 25));

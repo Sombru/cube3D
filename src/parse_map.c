@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/10 07:02:45 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 09:51:42 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,75 +101,66 @@ static char	**parse_map(int fd, t_data *data)
 	parsed[y] = NULL;
 	return (parsed);
 }
+
 static int	load_textures(t_data *data)
 {
 	data->north.img = mlx_xpm_file_to_image(data->mlx, data->north_texture,
 			&data->north.width, &data->north.height);
 	if (!data->north.img)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->north.data = (int *)mlx_get_data_addr(data->north.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	data->east.img = mlx_xpm_file_to_image(data->mlx, data->east_texture,
 			&data->east.width, &data->east.height);
 	if (!data->east.img)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->east.data = (int *)mlx_get_data_addr(data->east.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	data->south.img = mlx_xpm_file_to_image(data->mlx, data->south_texture,
 			&data->south.width, &data->south.height);
 	if (!data->south.img)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->south.data = (int *)mlx_get_data_addr(data->south.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	data->west.img = mlx_xpm_file_to_image(data->mlx, data->west_texture,
 			&data->west.width, &data->west.height);
 	if (!data->west.img)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->west.data = (int *)mlx_get_data_addr(data->west.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	data->door.img = mlx_xpm_file_to_image(data->mlx, "texture/wall.xpm",
 			&data->door.width, &data->door.height);
 	if (!data->door.img)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	data->door.data = (int *)mlx_get_data_addr(data->door.img,
 			&data->bits_per_pixel, &data->line_length, &data->endian);
 	return (EXIT_SUCCESS);
 }
 
-
 void	get_map(char *map_path, t_data *data)
 {
-	char **map_parse;
-	int fd;
-	int i;
+	char			**map_parse;
+	int				fd;
+	static int		i = 0;
 
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "Error opening map file\n", 23);
 		free(data);
-		exit(1);
+		exit(write(2, "Error opening map file\n", 23));
 	}
 	if (get_config(fd, data) == EXIT_FAILURE)
-		safe_exit(fd, NULL, data, "Error in config\n");
+		safe_exit(fd, NULL, data, "Error in map config\n");
 	if (load_textures(data) == EXIT_FAILURE)
-		safe_exit(fd, NULL, data, "error loading textures\n");
+		safe_exit(fd, NULL, data, "Error loading textures\n");
 	map_parse = parse_map(fd, data);
 	if (!map_parse)
 		safe_exit(fd, NULL, data, "Error parsing map\n");
 	data->map = malloc(data->map_x * data->map_y + 1);
-	if (!data->map)
-		safe_exit(fd, map_parse, data, "Memory allocation failed\n");
 	data->original_map = malloc(data->map_x * data->map_y + 1);
-	if (!data->original_map)
-		safe_exit(fd, map_parse, data, "Memory allocation failed\n");
 	get_player_pos(fd, map_parse, data);
-	i = 0;
-	while (i < data->map_x * data->map_y + 1)
-	{
+	while (i++ < data->map_x * data->map_y + 1)
 		data->original_map[i] = data->map[i];
-		i++;
-	}
 	is_map_closed(fd, map_parse, data);
 	debug_map(map_parse, data);
 	ft_free_array(map_parse);
