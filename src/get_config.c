@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_config.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/18 18:08:01 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/13 08:58:05 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	get_config(int fd, t_data *data)
 	int			k;
 
 	i = 0;
-	lines[6] = NULL;
 	while (i <= 5)
 	{
 		lines[i] = gnl_smart(fd);
