@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:15 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 13:40:24 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:19:43 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,22 @@ void	get_map_offsets(t_data *data, int block_size, int *off_x, int *off_y)
 
 static void	draw_block(t_data *data, int x, int y, int color)
 {
-	int	px;
-	int	py;
-	int	i;
-	int	j;
+	t_drawing	draw;
+	int			i;
+	int			j;
 
-	px = data->off_x + (x * data->scaled_size);
-	py = data->off_y + (y * data->scaled_size);
+	draw.x0 = data->off_x + (x * data->scaled_size);
+	draw.y0 = data->off_y + (y * data->scaled_size);
+	draw.color = color;
 	i = 0;
 	while (i < data->scaled_size)
 	{
 		j = 0;
 		while (j < data->scaled_size)
 		{
-			if (px + i < data->minimap_size && py + j < data->minimap_size)
-				pixel_to_frame_2d(data, px + i, py + j, color);
+			if (draw.x0 + i < data->minimap_size && draw.y0
+				+ j < data->minimap_size)
+				pixel_to_frame_2d(data, draw.x0 + i, draw.y0 + j, draw.color);
 			j++;
 		}
 		i++;

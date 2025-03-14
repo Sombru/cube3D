@@ -6,22 +6,21 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/14 13:30:05 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:18:49 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-static void	init_ray_values(t_data *data, int i, t_ray_params *ray,
-		float *distance)
+static void	init_ray_values(t_data *data, int i, t_ray *ray, float *distance)
 {
-	*ray = create_ray_params(data->start_angle + i * data->angle_step);
+	*ray = create_ray(data->start_angle + i * data->angle_step);
 	*distance = cast_ray(data, ray);
 	if (*distance < 0.001)
 		*distance = 0.001;
 }
 
-static t_texture	*select_texture(t_data *data, t_ray_params ray)
+static t_texture	*select_texture(t_data *data, t_ray ray)
 {
 	if (ray.hit_cell == '2')
 		return (&data->door);
@@ -36,7 +35,7 @@ static t_texture	*select_texture(t_data *data, t_ray_params ray)
 	return (&data->north);
 }
 
-static void	calculate_texture_x(t_data *data, t_ray_params ray, t_texture *tex,
+static void	calculate_texture_x(t_data *data, t_ray ray, t_texture *tex,
 		int *tex_x)
 {
 	float	hit_offset;
@@ -53,7 +52,7 @@ static void	calculate_texture_x(t_data *data, t_ray_params ray, t_texture *tex,
 		*tex_x = tex->width - *tex_x - 1;
 }
 
-static void	draw_wall_section(t_data *data, t_draw_params *p, int y)
+static void	draw_wall_section(t_data *data, t_drawing *draw, int y)
 {
 	float	tex_pos;
 	int		tex_y;
@@ -61,31 +60,31 @@ static void	draw_wall_section(t_data *data, t_draw_params *p, int y)
 
 	if (y >= data->screen_height)
 		return ;
-	if (y < p->wall_start)
-		pixel_to_frame_3d(data, p->x, y, BLUE);
-	else if (y > p->wall_end)
-		pixel_to_frame_3d(data, p->x, y, GREEN);
+	if (y < draw->wall_start)
+		pixel_to_frame_3d(data, draw->x0, y, BLUE);
+	else if (y > draw->wall_end)
+		pixel_to_frame_3d(data, draw->x0, y, GREEN);
 	else
 	{
-		tex_pos = (y - p->start_unclamped) / p->wall_height;
-		tex_y = (int)(tex_pos * p->tex->height);
+		tex_pos = (y - draw->start_unclamped) / draw->wall_height;
+		tex_y = (int)(tex_pos * draw->tex->height);
 		if (tex_y < 0)
 			tex_y = 0;
-		if (tex_y >= p->tex->height)
-			tex_y = p->tex->height - 1;
-		color = p->tex->data[tex_y * p->tex->width + p->tex_x];
-		pixel_to_frame_3d(data, p->x, y, color);
+		if (tex_y >= draw->tex->height)
+			tex_y = draw->tex->height - 1;
+		color = draw->tex->data[tex_y * draw->tex->width + draw->tex_x];
+		pixel_to_frame_3d(data, draw->x0, y, color);
 	}
-	draw_wall_section(data, p, y + 1);
+	draw_wall_section(data, draw, y + 1);
 }
 
 void	render_3d(t_data *data)
 {
-	t_ray_params	ray;
-	float			distance;
-	t_wall_dims		dims;
-	t_draw_params	params;
-	int				i;
+	t_ray		ray;
+	float		distance;
+	t_wall_dims	dims;
+	t_drawing	draw;
+	int			i;
 
 	data->angle_step = FOV / data->screen_width;
 	data->start_angle = data->player.a - HALF_FOV;
@@ -94,14 +93,14 @@ void	render_3d(t_data *data)
 	{
 		init_ray_values(data, i, &ray, &distance);
 		calculate_wall_dimensions(data, distance, &dims);
-		params.x = i;
-		params.wall_start = dims.start;
-		params.wall_end = dims.end;
-		params.start_unclamped = dims.start_unclamped;
-		params.wall_height = dims.real_height;
-		params.tex = select_texture(data, ray);
-		calculate_texture_x(data, ray, params.tex, &params.tex_x);
-		draw_wall_section(data, &params, 0);
+		draw.x0 = i;
+		draw.wall_start = dims.start;
+		draw.wall_end = dims.end;
+		draw.start_unclamped = dims.start_unclamped;
+		draw.wall_height = dims.real_height;
+		draw.tex = select_texture(data, ray);
+		calculate_texture_x(data, ray, draw.tex, &draw.tex_x);
+		draw_wall_section(data, &draw, 0);
 		i++;
 	}
 }

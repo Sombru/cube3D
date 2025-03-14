@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 14:00:13 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:13:01 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,34 @@ typedef struct s_texture
 	int			height;
 }				t_texture;
 
-typedef struct s_draw_params
+typedef struct s_drawing
 {
-	int			x;
+	// Line drawing
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+
+	// Bresenham algorithm
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			e2;
+
+	// Texture mapping
+	t_texture	*tex;
+	int			tex_x;
+	float		tex_pos;
 	int			wall_start;
 	int			wall_end;
 	float		start_unclamped;
 	float		wall_height;
-	t_texture	*tex;
-	int			tex_x;
-}				t_draw_params;
+
+	// General drawing
+	int			color;
+}				t_drawing;
 
 typedef struct s_data
 {
@@ -133,19 +151,20 @@ typedef struct s_data
 	int			scaled_size;
 }				t_data;
 
-typedef struct s_ray_params
+typedef struct s_ray
 {
+	// Core ray properties
 	float		ray_angle;
+	float		ray_dx;
+	float		ray_dy;
+
+	// Hit information
 	int			side;
 	float		hit_x;
 	float		hit_y;
 	char		hit_cell;
-}				t_ray_params;
 
-typedef struct s_raycast
-{
-	float		ray_dx;
-	float		ray_dy;
+	// DDA algorithm fields
 	float		delta_dist_x;
 	float		delta_dist_y;
 	float		side_dist_x;
@@ -156,24 +175,13 @@ typedef struct s_raycast
 	int			x_step;
 	int			y_step;
 	int			hit;
-}				t_raycast;
 
-typedef struct s_rays
-{
-	float		start_angle;
-	float		angle_step;
-	float		ray_angle;
+	// Drawing fields (when needed)
 	float		screen_start_x;
 	float		screen_start_y;
 	float		screen_end_x;
 	float		screen_end_y;
-	float		hit_x;
-	float		hit_y;
-	int			side;
-	int			off_y;
-	int			off_x;
-	char		hit_cell;
-}				t_rays;
+}				t_ray;
 
 typedef struct s_wall_dims
 {
@@ -218,8 +226,8 @@ void			get_map_offsets(t_data *data, int block_size, int *off_x,
 
 //===============================raycast=================================//
 
-t_ray_params	create_ray_params(float ray_angle);
-float			cast_ray(t_data *data, t_ray_params *ray);
+t_ray			create_ray(float ray_angle);
+float			cast_ray(t_data *data, t_ray *ray);
 void			draw_rays(t_data *data);
 
 //===============================render==================================//

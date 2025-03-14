@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 12:52:41 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:30:16 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,14 @@ void	exit_game(t_data *data)
 	exit(0);
 }
 
-void	init_data(t_data *data)
+static void	init_player_and_keys(t_data *data)
 {
-	data->mlx = mlx_init();
-	data->block_size = 50;
 	data->player.a = 0;
 	data->player.y = 0;
 	data->player.x = 0;
 	data->player.d_x = 0;
 	data->player.d_y = 0;
-	data->minimap_size = 720;
-	data->screen_width = 1440;
-	data->screen_height = 720;
-	data->map = NULL;
-	data->west_texture = NULL;
-	data->south_texture = NULL;
-	data->north_texture = NULL;
-	data->east_texture = NULL;
-	data->original_map = NULL;
-	data->door_timer = 0;
+	data->player.size = 0;
 	data->keys.a = 0;
 	data->keys.s = 0;
 	data->keys.d = 0;
@@ -61,6 +50,44 @@ void	init_data(t_data *data)
 	data->keys.left = 0;
 	data->keys.right = 0;
 	data->keys.space = 0;
+}
+
+static void	init_textures(t_data *data)
+{
+	data->north_texture = NULL;
+	data->south_texture = NULL;
+	data->east_texture = NULL;
+	data->west_texture = NULL;
+	ft_bzero(&data->north, sizeof(t_texture));
+	ft_bzero(&data->south, sizeof(t_texture));
+	ft_bzero(&data->east, sizeof(t_texture));
+	ft_bzero(&data->west, sizeof(t_texture));
+	ft_bzero(&data->door, sizeof(t_texture));
+}
+
+void	init_data(t_data *data)
+{
+	ft_bzero(data, sizeof(t_data));
+	data->mlx = mlx_init();
+	data->block_size = 50;
+	data->minimap_size = 720;
+	data->screen_width = 1440;
+	data->screen_height = 720;
+	data->door_timer = 0;
+	data->off_x = 0;
+	data->off_y = 0;
+	data->start_angle = 0;
+	data->angle_step = 0;
+	data->scaled_size = 0;
+	data->map_x = 0;
+	data->map_y = 0;
+	data->map_size = 0;
+	data->ceiling_color = 0;
+	data->floor_color = 0;
+	data->map = NULL;
+	data->original_map = NULL;
+	init_player_and_keys(data);
+	init_textures(data);
 }
 
 int	main(int argc, char **argv)
