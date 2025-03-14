@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 11:27:05 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:38:59 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,15 @@ int	key_press_handler(int keycode, t_data *data)
 		data->keys.left = 1;
 	else if (keycode == RIGHT_ARROW)
 		data->keys.right = 1;
-	else if (keycode == ESCAPE)
+	else if (keycode == M_KEY)
 	{
-		printf("exit\n");
-		exit_game(data);
+		if (data->keys.m == 1)
+			data->keys.m = 0;
+		else
+			data->keys.m = 1;
 	}
+	else if (keycode == ESCAPE)
+		exit_game(data);
 	return (0);
 }
 
@@ -89,6 +93,8 @@ int	key_release_handler(int keycode, t_data *data)
 		data->keys.left = 0;
 	else if (keycode == RIGHT_ARROW)
 		data->keys.right = 0;
+	// else if (keycode == M_KEY)
+		// data->keys.m = 0;
 	return (0);
 }
 
@@ -108,7 +114,7 @@ int	action(t_data *data)
 		handle_key_left(data);
 	if (data->keys.right)
 		handle_key_right(data);
-	printf("Player position: %f %f\n", data->player.x, data->player.y);
-	printf("Player direction: %f %f\n", data->player.d_x, data->player.d_y);
+	// printf("Player position: %f %f\n", data->player.x, data->player.y);
+	// printf("Player direction: %f %f\n", data->player.d_x, data->player.d_y);
 	return (0);
 }

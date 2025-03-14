@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:11:30 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:18:35 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	draw_line(t_data *data, t_coord coord, int color, int is_3d)
 	line.err = line.dx - line.dy;
 	if (is_3d)
 		draw_line_loop_3d(data, coord, color, &line);
-	else 
+	else
 		draw_line_loop_2d(data, coord, color, &line);
 }
 

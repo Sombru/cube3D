@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 11:51:47 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:26:12 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_keys
 	int			w;
 	int			d;
 	int			s;
+	int			m;
 	int			left;
 	int			right;
 }				t_keys;

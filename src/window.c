@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sombru <sombru@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/10 06:51:09 by sombru           ###   ########.fr       */
+/*   Updated: 2025/03/14 12:28:09 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,14 @@ int	render_frame(t_data *data)
     draw_direction(data);
     render_3D(data);
     action(data);
-    mlx_put_image_to_window(data->mlx, data->win_2d, data->frame_2d, 0, 0);
-    mlx_put_image_to_window(data->mlx, data->win_3d, data->frame_3d, 0, 0);
+    if (data->keys.m) // to reveal the map
+    {
+        mlx_put_image_to_window(data->mlx, data->win_3d, data->frame_2d, 0, 0);
+    }
+    else
+    {
+        mlx_put_image_to_window(data->mlx, data->win_2d, data->frame_2d, 0, 0);
+        mlx_put_image_to_window(data->mlx, data->win_3d, data->frame_3d, 0, 0);
+    }
     return (0);
 }

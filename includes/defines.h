@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 12:10:00 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:37:10 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define A_KEY 97
 # define S_KEY 115
 # define D_KEY 100
+# define M_KEY 0x6d // using keysym cuz actual keycode doesnt work
 # define SPACE 32
 # define ESCAPE 65307
 
