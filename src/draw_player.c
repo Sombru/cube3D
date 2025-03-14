@@ -6,14 +6,16 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 11:12:32 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:54:55 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-// pixel_to_frame() - Draws a single pixel to either 2D or 3D frame buffer at specified coordinates with given color
-// draw_line() - Implements Bresenham's line algorithm to draw a line between two points
+// pixel_to_frame() - Draws a single pixel
+// to either 2D or 3D frame buffer at specified coordinates with given color
+// draw_line() - Implements Bresenham's line algorithm 
+// to draw a line between two points
 // scale_block_size() - Calculates scaled block size for minimap based on map dimensions
 // get_map_offsets() - Calculates offsets to center minimap in window
 // draw_map() - Renders the 2D minimap view showing walls, doors and empty spaces

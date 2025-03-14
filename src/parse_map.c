@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 11:47:41 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:52:17 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,31 @@
 // +check exec player pos
 //  normette
 
+
 static char	*get_map_line(char *map_line, t_data *data)
 {
 	char	*res;
-	int		i[2] = {0, 0};
+	int		i;
+	int		j;
 
-	res = malloc(sizeof(char) * (data->map_x + 1));
-	while (map_line[i[0]])
+	res = malloc(sizeof(res) * (data->map_x + 1));
+	i = 0;
+	j = 0;
+	while (map_line[i])
 	{
-		if (map_line[i[0]] == ' ')
-			res[i[1]++] = '1';
-		else if (map_line[i[0]] == '\t')
-		{
-			res[i[1]++] = '1';
-			res[i[1]++] = '1';
-			res[i[1]++] = '1';
-			res[i[1]++] = '1';
-		}
-		else if (map_line[i[0]] == '2')
-			res[i[1]++] = '2';
+		if (map_line[i] == ' ')
+			res[j++] = '1';
+		else if (map_line[i] == '\t')
+			j = put_tab(res, j);
+		else if (map_line[i] == '2')
+			res[j++] = '2';
 		else
-			res[i[1]++] = map_line[i[0]];
-		i[0]++;
+			res[j++] = map_line[i];
+		i++;
 	}
-	while (i[1] < data->map_x)
-		res[i[1]++] = '1';
-	res[i[1]] = '\0';
+	while (j < data->map_x)
+		res[j++] = '1';
+	res[j] = '\0';
 	return (free(map_line), res);
 }
 
@@ -138,10 +137,7 @@ void	get_map(char *map_path, t_data *data)
 
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
-	{
-		free(data);
 		exit(write(2, "Error opening map file\n", 23));
-	}
 	if (get_config(fd, data) == EXIT_FAILURE)
 		safe_exit(fd, NULL, data, "Error in map config\n");
 	if (load_textures(data) == EXIT_FAILURE)
@@ -152,8 +148,11 @@ void	get_map(char *map_path, t_data *data)
 	data->map = malloc(data->map_x * data->map_y + 1);
 	data->original_map = malloc(data->map_x * data->map_y + 1);
 	get_player_pos(fd, map_parse, data);
-	while (i++ < data->map_x * data->map_y + 1)
+	while (i < data->map_x * data->map_y + 1)
+	{
 		data->original_map[i] = data->map[i];
+		i++;
+	}
 	is_map_closed(fd, map_parse, data);
 	debug_map(map_parse, data);
 	ft_free_array(map_parse);

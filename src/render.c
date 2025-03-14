@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/13 10:50:40 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:56:53 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	render_3D(t_data *data)
 		float hit_x, hit_y;
 		char hit_cell;
 		float distance = cast_ray(data, ray_angle, &side, &hit_x, &hit_y,
-				&hit_cell);
+				&hit_cell);	
 		if (distance < 0.001)
 			distance = 0.001;
 		float real_wall_height = (data->block_size * data->screen_height)

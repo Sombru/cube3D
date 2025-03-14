@@ -6,11 +6,20 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:10:33 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 11:26:01 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:51:19 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
+
+int	put_tab(char *res, int j)
+{
+	res[j++] = '1';
+	res[j++] = '1';
+	res[j++] = '1';
+	res[j++] = '1';
+	return (j);
+}
 
 // did not fit into other key handler functions 
 void	handle_key_right(t_data *data)
