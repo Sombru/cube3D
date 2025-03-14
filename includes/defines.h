@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 12:37:10 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:09:03 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@
 # define ESCAPE 65307
 
 # define PI 3.1415926535897932384
-# define FOV (PI / 3)
-# define HALF_FOV (FOV / 2)
-# define RIGHT_SIDE_START (PI / 2)
-# define RIGHT_SIDE_END (3 * PI / 2)
+# define FOV 1.0471975511965977461333333333333 // (PI / 3)
+# define HALF_FOV 0.52359877559829887306666666666667 // (FOV / 2)
+# define RIGHT_SIDE_START 1.5707963267948966192 //(PI / 2)
+# define RIGHT_SIDE_END 4.7123889803846898576 //(3 * PI / 2)
 # define NUM_OF_RAYS 40 // how detailed is view 
 
 # define STEP 2 // how far to move per action
