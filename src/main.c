@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/13 09:31:11 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:52:41 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	exit_game(t_data *data)
 	mlx_destroy_image(data->mlx, data->east.img);
 	mlx_destroy_image(data->mlx, data->south.img);
 	mlx_destroy_image(data->mlx, data->west.img);
+	mlx_destroy_image(data->mlx, data->door.img);
 	mlx_destroy_image(data->mlx, data->frame_2d);
 	mlx_destroy_image(data->mlx, data->frame_3d);
-	mlx_destroy_window(data->mlx, data->win_2d);
 	mlx_destroy_window(data->mlx, data->win_3d);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
@@ -36,6 +36,7 @@ void	exit_game(t_data *data)
 
 void	init_data(t_data *data)
 {
+	data->mlx = mlx_init();
 	data->block_size = 50;
 	data->player.a = 0;
 	data->player.y = 0;
@@ -56,6 +57,7 @@ void	init_data(t_data *data)
 	data->keys.s = 0;
 	data->keys.d = 0;
 	data->keys.w = 0;
+	data->keys.m = 0;
 	data->keys.left = 0;
 	data->keys.right = 0;
 	data->keys.space = 0;
@@ -75,7 +77,6 @@ int	main(int argc, char **argv)
 	if (!data)
 		return (write(STDERR_FILENO, "Memory allocation failed\n", 25));
 	init_data(data);
-	data->mlx = mlx_init();
 	if (!data->mlx)
 	{
 		free(data);
