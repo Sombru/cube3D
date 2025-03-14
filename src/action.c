@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 17:03:27 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:38:59 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:02:21 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int	key_release_handler(int keycode, t_data *data)
 		data->keys.left = 0;
 	else if (keycode == RIGHT_ARROW)
 		data->keys.right = 0;
-	// else if (keycode == M_KEY)
-		// data->keys.m = 0;
 	return (0);
 }
 
@@ -114,7 +112,5 @@ int	action(t_data *data)
 		handle_key_left(data);
 	if (data->keys.right)
 		handle_key_right(data);
-	// printf("Player position: %f %f\n", data->player.x, data->player.y);
-	// printf("Player direction: %f %f\n", data->player.d_x, data->player.d_y);
 	return (0);
 }

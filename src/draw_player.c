@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 13:40:24 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:02:48 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 // draw_player.) - Renders player.position as a small square on minimap
 // draw_direction() - Draws line showing player.s viewing direction on minimap
 
-static void	draw_line_loop_3d(t_data *data, t_coord coord, int color, t_line *line)
+static void	draw_line_loop_3d(t_data *data, t_coord coord,
+				int color, t_line *line)
 {
 	while (1)
 	{
@@ -45,8 +46,8 @@ static void	draw_line_loop_3d(t_data *data, t_coord coord, int color, t_line *li
 	}
 }
 
-
-static void	draw_line_loop_2d(t_data *data, t_coord coord, int color, t_line *line)
+static void	draw_line_loop_2d(t_data *data, t_coord coord,
+				int color, t_line *line)
 {
 	while (1)
 	{
