@@ -26,8 +26,8 @@ SRC			= main.c \
 			  window.c \
 			  draw_player.c draw_map.c \
 			  action.c action_keys.c \
-			  raycast.c \
-			  render.c \
+			  raycast.c raycast_utils.c \
+			  render.c render_utils.c \
 			  parse_map.c parsing_utils.c get_config.c get_map_config.c \
 			  debug.c \
 

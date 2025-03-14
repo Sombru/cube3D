@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 12:26:12 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:00:13 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,6 @@ typedef struct s_draw
 	int			py;
 }				t_draw;
 
-typedef struct s_texture
-{
-	void		*img;
-	int			*data;
-	int			width;
-	int			height;
-}				t_texture;
-
 typedef struct s_line
 {
 	int			dx;
@@ -79,6 +71,25 @@ typedef struct s_coord
 	int			x1;
 	int			y1;
 }				t_coord;
+
+typedef struct s_texture
+{
+	void		*img;
+	int			*data;
+	int			width;
+	int			height;
+}				t_texture;
+
+typedef struct s_draw_params
+{
+	int			x;
+	int			wall_start;
+	int			wall_end;
+	float		start_unclamped;
+	float		wall_height;
+	t_texture	*tex;
+	int			tex_x;
+}				t_draw_params;
 
 typedef struct s_data
 {
@@ -122,6 +133,57 @@ typedef struct s_data
 	int			scaled_size;
 }				t_data;
 
+typedef struct s_ray_params
+{
+	float		ray_angle;
+	int			side;
+	float		hit_x;
+	float		hit_y;
+	char		hit_cell;
+}				t_ray_params;
+
+typedef struct s_raycast
+{
+	float		ray_dx;
+	float		ray_dy;
+	float		delta_dist_x;
+	float		delta_dist_y;
+	float		side_dist_x;
+	float		side_dist_y;
+	float		distance;
+	int			x_map;
+	int			y_map;
+	int			x_step;
+	int			y_step;
+	int			hit;
+}				t_raycast;
+
+typedef struct s_rays
+{
+	float		start_angle;
+	float		angle_step;
+	float		ray_angle;
+	float		screen_start_x;
+	float		screen_start_y;
+	float		screen_end_x;
+	float		screen_end_y;
+	float		hit_x;
+	float		hit_y;
+	int			side;
+	int			off_y;
+	int			off_x;
+	char		hit_cell;
+}				t_rays;
+
+typedef struct s_wall_dims
+{
+	float		real_height;
+	float		start_unclamped;
+	int			height;
+	int			start;
+	int			end;
+}				t_wall_dims;
+
 //===============================main==================================//
 
 void			exit_game(t_data *data);
@@ -156,15 +218,17 @@ void			get_map_offsets(t_data *data, int block_size, int *off_x,
 
 //===============================raycast=================================//
 
-float			cast_ray(t_data *data, float ray_angle, int *side, float *hit_x,
-					float *hit_y, char *hit_cell);
+t_ray_params	create_ray_params(float ray_angle);
+float			cast_ray(t_data *data, t_ray_params *ray);
 void			draw_rays(t_data *data);
 
 //===============================render==================================//
 
-void			pixel_to_frame_2D(t_data *data, int x, int y, int color);
-void			pixel_to_frame_3D(t_data *data, int x, int y, int color);
-void			render_3D(t_data *data);
+void			pixel_to_frame_2d(t_data *data, int x, int y, int color);
+void			pixel_to_frame_3d(t_data *data, int x, int y, int color);
+void			render_3d(t_data *data);
+void			calculate_wall_dimensions(t_data *data, float distance,
+					t_wall_dims *dims);
 
 //===============================window==================================//
 

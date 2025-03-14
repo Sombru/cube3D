@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:15 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:12:56 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:40:24 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	draw_block(t_data *data, int x, int y, int color)
 		while (j < data->scaled_size)
 		{
 			if (px + i < data->minimap_size && py + j < data->minimap_size)
-				pixel_to_frame_2D(data, px + i, py + j, color);
+				pixel_to_frame_2d(data, px + i, py + j, color);
 			j++;
 		}
 		i++;

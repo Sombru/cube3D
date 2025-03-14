@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:48:04 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:40:15 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	render_frame(t_data *data)
     draw_player(data);
     draw_rays(data);
     draw_direction(data);
-    render_3D(data);
+    render_3d(data);
     action(data);
     if (data->keys.m) // to reveal the map
         mlx_put_image_to_window(data->mlx, data->win_3d, data->frame_2d, 0, 0);

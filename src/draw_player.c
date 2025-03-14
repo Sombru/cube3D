@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:18:35 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:40:24 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	draw_line_loop_3d(t_data *data, t_coord coord, int color, t_line *li
 {
 	while (1)
 	{
-		pixel_to_frame_2D(data, coord.x0, coord.y0, color);
+		pixel_to_frame_2d(data, coord.x0, coord.y0, color);
 		if (coord.x0 == coord.x1 && coord.y0 == coord.y1)
 			break ;
 		line->e2 = line->err * 2;
@@ -50,7 +50,7 @@ static void	draw_line_loop_2d(t_data *data, t_coord coord, int color, t_line *li
 {
 	while (1)
 	{
-		pixel_to_frame_2D(data, coord.x0, coord.y0, color);
+		pixel_to_frame_2d(data, coord.x0, coord.y0, color);
 		if (coord.x0 == coord.x1 && coord.y0 == coord.y1)
 			break ;
 		line->e2 = line->err * 2;
@@ -113,7 +113,7 @@ int	draw_player(t_data *data)
 			draw.py = draw.screen_y + draw.j;
 			if (draw.px >= 0 && draw.px < data->minimap_size && draw.py >= 0
 				&& draw.py < data->minimap_size)
-				pixel_to_frame_2D(data, draw.px, draw.py, GREEN);
+				pixel_to_frame_2d(data, draw.px, draw.py, GREEN);
 			draw.j++;
 		}
 		draw.i++;
