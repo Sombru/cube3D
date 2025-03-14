@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/14 14:18:49 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:17:11 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	draw_wall_section(t_data *data, t_drawing *draw, int y)
 	if (y >= data->screen_height)
 		return ;
 	if (y < draw->wall_start)
-		pixel_to_frame_3d(data, draw->x0, y, BLUE);
+		pixel_to_frame_3d(data, draw->x0, y, data->ceiling_color);
 	else if (y > draw->wall_end)
-		pixel_to_frame_3d(data, draw->x0, y, GREEN);
+		pixel_to_frame_3d(data, draw->x0, y, data->floor_color);
 	else
 	{
 		tex_pos = (y - draw->start_unclamped) / draw->wall_height;

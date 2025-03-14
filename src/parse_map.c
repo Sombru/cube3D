@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 11:53:40 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:18:18 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static int	load_textures(t_data *data)
 			&data->south.width, &data->south.height);
 	data->west.img = mlx_xpm_file_to_image(data->mlx, data->west_texture,
 			&data->west.width, &data->west.height);
-	data->door.img = mlx_xpm_file_to_image(data->mlx, "texture/wall.xpm",
+	data->door.img = mlx_xpm_file_to_image(data->mlx, "texture/black.xpm",
 			&data->door.width, &data->door.height);
 	if (!data->north.img || !data->east.img || !data->south.img
 		|| !data->west.img || !data->door.img)

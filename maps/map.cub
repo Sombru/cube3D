@@ -1,10 +1,10 @@
-WE ./texture/ballsbird.xpm
-NO ./texture/catbird.xpm
-EA ./texture/catcake.xpm
-SO ./texture/catvape.xpm
+WE ./texture/lightest_grey.xpm
+NO ./texture/dark_grey.xpm
+EA ./texture/grey.xpm
+SO ./texture/light_grey.xpm
 
-F 220,100,0
-C 225,30,0
+F 30,30,30
+C 200,200,200
 
 
 111111
