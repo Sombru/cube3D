@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:11:07 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/13 10:11:37 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:53:56 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	is_map_closed(int fd, char **map, t_data *data)
 		i++;
 	}
 }
+
 static void	get_player_angle(char map_line, t_data *data)
 {
 	if (map_line == 'N')

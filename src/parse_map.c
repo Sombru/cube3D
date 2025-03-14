@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 11:52:17 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:53:40 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 // +check valid map borders
 // +check exec player pos
 //  normette
-
 
 static char	*get_map_line(char *map_line, t_data *data)
 {

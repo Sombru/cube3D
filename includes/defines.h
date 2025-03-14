@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/13 09:38:07 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:10:00 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 # define RIGHT_SIDE_END (3 * PI / 2)
 # define NUM_OF_RAYS 40 // how detailed is view 
 
-# define STEP 5 // how far to move per action
-# define ANGLE_DIFF 0.1 // change of camera view per action
+# define STEP 2 // how far to move per action
+# define ANGLE_DIFF 0.05 // change of camera view per action
 # define DOOR_RANGE 30.f // how far can we open door from 
 
 # define DEBUG_MODE 1

@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 15:26:19 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 11:54:55 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:11:30 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,41 @@
 // to either 2D or 3D frame buffer at specified coordinates with given color
 // draw_line() - Implements Bresenham's line algorithm 
 // to draw a line between two points
-// scale_block_size() - Calculates scaled block size for minimap based on map dimensions
+// scale_block_size() - Calculates scaled block size 
+// for minimap based on map dimensions
 // get_map_offsets() - Calculates offsets to center minimap in window
-// draw_map() - Renders the 2D minimap view showing walls, doors and empty spaces
+// draw_map() - Renders the 2D minimap view showing 
+// walls, doors and empty spaces
 // draw_player.) - Renders player.position as a small square on minimap
 // draw_direction() - Draws line showing player.s viewing direction on minimap
 
-t_coord	line_coords(int x0, int y0, int x1, int y1)
-{
-	t_coord	coord;
-
-	coord.x0 = x0;
-	coord.x1 = x1;
-	coord.y0 = y0;
-	coord.y1 = y1;
-	return (coord);
-}
-
-static void	draw_line_loop(t_data *data, t_coord coord, int color, int is_3d,
-		t_line *line)
+static void	draw_line_loop_3d(t_data *data, t_coord coord, int color, t_line *line)
 {
 	while (1)
 	{
-		if (is_3d)
-			pixel_to_frame_3D(data, coord.x0, coord.y0, color);
-		else
-			pixel_to_frame_2D(data, coord.x0, coord.y0, color);
+		pixel_to_frame_2D(data, coord.x0, coord.y0, color);
+		if (coord.x0 == coord.x1 && coord.y0 == coord.y1)
+			break ;
+		line->e2 = line->err * 2;
+		if (line->e2 > -line->dy)
+		{
+			line->err = line->err - line->dy;
+			coord.x0 = coord.x0 + line->sx;
+		}
+		if (line->e2 < line->dx)
+		{
+			line->err = line->err + line->dx;
+			coord.y0 = coord.y0 + line->sy;
+		}
+	}
+}
+
+
+static void	draw_line_loop_2d(t_data *data, t_coord coord, int color, t_line *line)
+{
+	while (1)
+	{
+		pixel_to_frame_2D(data, coord.x0, coord.y0, color);
 		if (coord.x0 == coord.x1 && coord.y0 == coord.y1)
 			break ;
 		line->e2 = line->err * 2;
@@ -77,7 +86,10 @@ void	draw_line(t_data *data, t_coord coord, int color, int is_3d)
 	else
 		line.sy = -1;
 	line.err = line.dx - line.dy;
-	draw_line_loop(data, coord, color, is_3d, &line);
+	if (is_3d)
+		draw_line_loop_3d(data, coord, color, &line);
+	else 
+		draw_line_loop_2d(data, coord, color, &line);
 }
 
 int	draw_player(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:15 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 10:49:24 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:12:56 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,33 @@ void	get_map_offsets(t_data *data, int block_size, int *off_x, int *off_y)
 	*off_y = (data->minimap_size - (data->map_y * block_size)) / 2;
 }
 
-int	draw_map(t_data *data)
+static void	draw_block(t_data *data, int x, int y, int color)
 {
-	int	x;
-	int	y;
 	int	px;
 	int	py;
 	int	i;
 	int	j;
+
+	px = data->off_x + (x * data->scaled_size);
+	py = data->off_y + (y * data->scaled_size);
+	i = 0;
+	while (i < data->scaled_size)
+	{
+		j = 0;
+		while (j < data->scaled_size)
+		{
+			if (px + i < data->minimap_size && py + j < data->minimap_size)
+				pixel_to_frame_2D(data, px + i, py + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+int	draw_map(t_data *data)
+{
+	int	x;
+	int	y;
 	int	color;
 
 	scale_block_size(data);
@@ -54,21 +73,7 @@ int	draw_map(t_data *data)
 				color = RED;
 			else
 				color = BLACK;
-			px = data->off_x + (x * data->scaled_size);
-			py = data->off_y + (y * data->scaled_size);
-			i = 0;
-			while (i < data->scaled_size)
-			{
-				j = 0;
-				while (j < data->scaled_size)
-				{
-					if (px + i < data->minimap_size && py
-						+ j < data->minimap_size)
-						pixel_to_frame_2D(data, px + i, py + j, color);
-					j++;
-				}
-				i++;
-			}
+			draw_block(data, x, y, color);
 			x++;
 		}
 		y++;

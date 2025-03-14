@@ -6,11 +6,22 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:10:33 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 11:51:19 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:11:40 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
+
+t_coord	line_coords(int x0, int y0, int x1, int y1)
+{
+	t_coord	coord;
+
+	coord.x0 = x0;
+	coord.x1 = x1;
+	coord.y0 = y0;
+	coord.y1 = y1;
+	return (coord);
+}
 
 int	put_tab(char *res, int j)
 {
