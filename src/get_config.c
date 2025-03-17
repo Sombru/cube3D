@@ -6,18 +6,18 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/13 09:27:24 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/17 10:10:56 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-inline static void	free_lines(char *lines[6])
+inline static void	free_lines(char *lines[7])
 {
 	int	i;
 
 	i = 0;
-	while (lines[i] && i <= 5)
+	while (lines[i] && i <= 6)
 	{
 		free(lines[i]);
 		i++;
@@ -56,6 +56,8 @@ int	get_textures(char *line, const char type, t_data *data)
 		data->east_texture = ft_strdup(path);
 	else if (!data->west_texture && type == 'W' && path)
 		data->west_texture = ft_strdup(path);
+	else if (!data->door_texture && type == 'D' && path)
+		data->door_texture = ft_strdup(path);
 	else
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -66,7 +68,7 @@ int	get_colors(char *line, const char type, t_data *data)
 	char	**rgb_values;
 	int		rgb[3];
 
-	if (type == 'N' || type == 'W' || type == 'S' || type == 'E')
+	if (type == 'N' || type == 'W' || type == 'S' || type == 'E' || type == 'D')
 		return (EXIT_SUCCESS);
 	line++;
 	while (line && ft_isdigit(*line) == 0)
@@ -85,11 +87,11 @@ int	get_colors(char *line, const char type, t_data *data)
 
 int	get_config(int fd, t_data *data)
 {
-	static char	keys[7] = {'N', 'S', 'E', 'W', 'F', 'C', 0};
-	char		*lines[6];
+	static char	keys[8] = {'N', 'S', 'E', 'W', 'F', 'C', 'D', 0};
+	static char	*lines[7] = {NULL};
 	static int	i[2] = {0, 0};
 
-	while (i[0] <= 5)
+	while (i[0] <= 6)
 	{
 		lines[i[0]] = gnl_smart(fd);
 		if (!lines[i[0]])
@@ -97,7 +99,7 @@ int	get_config(int fd, t_data *data)
 		i[0]++;
 	}
 	i[0] = 0;
-	while (lines[i[0]] && i[0] <= 5)
+	while (lines[i[0]] && i[0] <= 6)
 	{
 		i[1] = 0;
 		while (keys[i[1]] && lines[i[0]][0] != keys[i[1]])
@@ -107,7 +109,7 @@ int	get_config(int fd, t_data *data)
 			return (free_lines(lines), EXIT_FAILURE);
 		i[0]++;
 	}
-	if (i[0] < 5)
+	if (i[0] < 6)
 		return (free_lines(lines), EXIT_FAILURE);
 	return (free_lines(lines), EXIT_SUCCESS);
 }

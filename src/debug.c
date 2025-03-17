@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:10:33 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 12:11:40 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/17 09:50:10 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	debug_map(char **map, t_data *data)
 	printf("data->south_textures: %s\n", data->south_texture);
 	printf("data->west_textures: %s\n", data->west_texture);
 	printf("data->east_textures: %s\n", data->east_texture);
+	printf("data->door_textures: %s\n", data->door_texture);
 	printf("floor: %X\n", data->floor_color);
 	printf("ceiling: %X\n", data->ceiling_color);
 	printf("data->map_y: %d\n", data->map_y);

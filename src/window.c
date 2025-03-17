@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 14:05:34 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:20:55 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 void	window_loop(t_data *data)
 {
 	data->win_3d = mlx_new_window(data->mlx, data->screen_width,
-			data->screen_height, "Cube3D - 3D View");
+			data->screen_height, "Cube3D - 3D");
 	data->frame_2d = mlx_new_image(data->mlx, data->minimap_size,
 			data->minimap_size);
 	data->frame_3d = mlx_new_image(data->mlx, data->screen_width,

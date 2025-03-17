@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 14:30:16 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:25:21 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	exit_game(t_data *data)
 	free(data->west_texture);
 	free(data->east_texture);
 	free(data->south_texture);
+	free(data->door_texture);
 	mlx_destroy_image(data->mlx, data->north.img);
 	mlx_destroy_image(data->mlx, data->east.img);
 	mlx_destroy_image(data->mlx, data->south.img);
@@ -58,6 +59,7 @@ static void	init_textures(t_data *data)
 	data->south_texture = NULL;
 	data->east_texture = NULL;
 	data->west_texture = NULL;
+	data->door_texture = NULL;
 	ft_bzero(&data->north, sizeof(t_texture));
 	ft_bzero(&data->south, sizeof(t_texture));
 	ft_bzero(&data->east, sizeof(t_texture));
@@ -70,9 +72,9 @@ void	init_data(t_data *data)
 	ft_bzero(data, sizeof(t_data));
 	data->mlx = mlx_init();
 	data->block_size = 50;
-	data->minimap_size = 720;
-	data->screen_width = 1440;
-	data->screen_height = 720;
+	data->minimap_size = MINIMAP_SIZE;
+	data->screen_width = SCREEN_WIDTH;
+	data->screen_height = SCREEN_HEIGHT;
 	data->door_timer = 0;
 	data->off_x = 0;
 	data->off_y = 0;

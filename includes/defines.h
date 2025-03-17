@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/17 13:44:16 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:56:01 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,13 @@
 # define HALF_FOV 0.52359877559829887306666666666667 // (FOV / 2)
 # define RIGHT_SIDE_START 1.5707963267948966192 //(PI / 2)
 # define RIGHT_SIDE_END 4.7123889803846898576 //(3 * PI / 2)
-# define NUM_OF_RAYS 400 // how detailed is view 
+# define NUM_OF_RAYS 10000 // how detailed is view 
 
-# define STEP 2 // how far to move per action
+# define STEP 2 // how far to move per action // keep less than BLOCK_SIZE
+# define BLOCK_SIZE 50 // doesnt really affect much
+# define SCREEN_WIDTH 1440
+# define SCREEN_HEIGHT 720
+# define MINIMAP_SIZE 1000 // not bigger than SCREEN_HEIGHT/SCREEN WITDH
 # define ANGLE_DIFF 0.05 // change of camera view per action
 # define DOOR_RANGE 30.f // how far can we open door from 
 
