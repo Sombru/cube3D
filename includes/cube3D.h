@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/14 14:13:01 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:39:39 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,16 @@ typedef struct s_texture
 
 typedef struct s_drawing
 {
-	// Line drawing
 	int			x0;
 	int			y0;
 	int			x1;
 	int			y1;
-
-	// Bresenham algorithm
 	int			dx;
 	int			dy;
 	int			sx;
 	int			sy;
 	int			err;
 	int			e2;
-
-	// Texture mapping
 	t_texture	*tex;
 	int			tex_x;
 	float		tex_pos;
@@ -104,9 +99,10 @@ typedef struct s_drawing
 	int			wall_end;
 	float		start_unclamped;
 	float		wall_height;
-
-	// General drawing
 	int			color;
+	int			start_x;
+	int			end_x;
+	int			current_x;
 }				t_drawing;
 
 typedef struct s_data
@@ -237,6 +233,7 @@ void			pixel_to_frame_3d(t_data *data, int x, int y, int color);
 void			render_3d(t_data *data);
 void			calculate_wall_dimensions(t_data *data, float distance,
 					t_wall_dims *dims);
+void			draw_wall_section(t_data *data, t_drawing *draw, int y);
 
 //===============================window==================================//
 

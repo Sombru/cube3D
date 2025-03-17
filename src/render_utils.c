@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 13:28:55 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/14 13:30:08 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:29:35 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,30 @@ void	calculate_wall_dimensions(t_data *data, float distance,
 		dims->height = data->screen_height;
 	dims->start = (data->screen_height - dims->height) / 2;
 	dims->end = dims->start + dims->height;
+}
+
+void	draw_wall_section(t_data *data, t_drawing *draw, int y)
+{
+	float	tex_pos;
+	int		tex_y;
+	int		color;
+
+	if (y >= data->screen_height)
+		return ;
+	if (y < draw->wall_start)
+		pixel_to_frame_3d(data, draw->x0, y, data->ceiling_color);
+	else if (y > draw->wall_end)
+		pixel_to_frame_3d(data, draw->x0, y, data->floor_color);
+	else
+	{
+		tex_pos = (y - draw->start_unclamped) / draw->wall_height;
+		tex_y = (int)(tex_pos * draw->tex->height);
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= draw->tex->height)
+			tex_y = draw->tex->height - 1;
+		color = draw->tex->data[tex_y * draw->tex->width + draw->tex_x];
+		pixel_to_frame_3d(data, draw->x0, y, color);
+	}
+	draw_wall_section(data, draw, y + 1);
 }

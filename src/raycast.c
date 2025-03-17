@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:08:23 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/14 14:24:55 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:36:42 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_ray	create_ray(float ray_angle)
 
 static void	draw_single_ray(t_data *data, t_ray *ray, int ray_index)
 {
-	ray->ray_angle = data->start_angle + ray_index * ((PI / 3) / NUM_OF_RAYS);
+	ray->ray_angle = data->start_angle + ray_index * data->angle_step;
 	*ray = create_ray(ray->ray_angle);
 	cast_ray(data, ray);
 	ray->screen_start_x = data->off_x + (data->player.x * data->scaled_size
@@ -48,6 +48,11 @@ void	draw_rays(t_data *data)
 
 	scale_block_size(data);
 	get_map_offsets(data, data->scaled_size, &data->off_x, &data->off_y);
+	if (NUM_OF_RAYS > 0)
+		data->angle_step = FOV / NUM_OF_RAYS;
+	else
+		data->angle_step = FOV;
+	data->start_angle = data->player.a - HALF_FOV;
 	i = 0;
 	while (i < NUM_OF_RAYS)
 	{

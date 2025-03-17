@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:09:00 by nspalevi          #+#    #+#             */
-/*   Updated: 2025/03/14 15:17:11 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:43:36 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,55 +52,47 @@ static void	calculate_texture_x(t_data *data, t_ray ray, t_texture *tex,
 		*tex_x = tex->width - *tex_x - 1;
 }
 
-static void	draw_wall_section(t_data *data, t_drawing *draw, int y)
-{
-	float	tex_pos;
-	int		tex_y;
-	int		color;
-
-	if (y >= data->screen_height)
-		return ;
-	if (y < draw->wall_start)
-		pixel_to_frame_3d(data, draw->x0, y, data->ceiling_color);
-	else if (y > draw->wall_end)
-		pixel_to_frame_3d(data, draw->x0, y, data->floor_color);
-	else
-	{
-		tex_pos = (y - draw->start_unclamped) / draw->wall_height;
-		tex_y = (int)(tex_pos * draw->tex->height);
-		if (tex_y < 0)
-			tex_y = 0;
-		if (tex_y >= draw->tex->height)
-			tex_y = draw->tex->height - 1;
-		color = draw->tex->data[tex_y * draw->tex->width + draw->tex_x];
-		pixel_to_frame_3d(data, draw->x0, y, color);
-	}
-	draw_wall_section(data, draw, y + 1);
-}
-
-void	render_3d(t_data *data)
+static void	process_ray(t_data *data, int i)
 {
 	t_ray		ray;
 	float		distance;
 	t_wall_dims	dims;
 	t_drawing	draw;
-	int			i;
 
-	data->angle_step = FOV / data->screen_width;
-	data->start_angle = data->player.a - HALF_FOV;
-	i = 0;
-	while (i < data->screen_width)
+	init_ray_values(data, i, &ray, &distance);
+	calculate_wall_dimensions(data, distance, &dims);
+	draw.tex = select_texture(data, ray);
+	calculate_texture_x(data, ray, draw.tex, &draw.tex_x);
+	draw.start_x = (i * data->screen_width) / NUM_OF_RAYS;
+	draw.end_x = ((i + 1) * data->screen_width) / NUM_OF_RAYS;
+	if (draw.end_x > data->screen_width)
+		draw.end_x = data->screen_width;
+	draw.current_x = draw.start_x;
+	while (draw.current_x < draw.end_x)
 	{
-		init_ray_values(data, i, &ray, &distance);
-		calculate_wall_dimensions(data, distance, &dims);
-		draw.x0 = i;
+		draw.x0 = draw.current_x;
 		draw.wall_start = dims.start;
 		draw.wall_end = dims.end;
 		draw.start_unclamped = dims.start_unclamped;
 		draw.wall_height = dims.real_height;
-		draw.tex = select_texture(data, ray);
-		calculate_texture_x(data, ray, draw.tex, &draw.tex_x);
 		draw_wall_section(data, &draw, 0);
+		draw.current_x++;
+	}
+}
+
+void	render_3d(t_data *data)
+{
+	int	i;
+
+	if (NUM_OF_RAYS > 0)
+		data->angle_step = FOV / NUM_OF_RAYS;
+	else
+		data->angle_step = FOV;
+	data->start_angle = data->player.a - HALF_FOV;
+	i = 0;
+	while (i < NUM_OF_RAYS)
+	{
+		process_ray(data, i);
 		i++;
 	}
 }
