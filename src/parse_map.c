@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/20 09:46:18 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:48:58 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ static char	**parse_map(int fd, t_data *data)
 
 	x = 0;
 	y = 0;
-	read_map_lines(fd, map, &x, &y);
+	if (read_map_lines(fd, map, &x, &y) == EXIT_FAILURE)
+		return (NULL);
 	data->map_y = y;
 	data->map_x = x;
 	parsed = malloc(sizeof(parsed) * (data->map_y + 1));

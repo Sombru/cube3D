@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_smart.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:12:44 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/20 08:45:03 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/20 12:23:31 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,29 @@
 // returns a line from a file exluding empty line and trims '\n' ending char
 char	*gnl_smart(int fd)
 {
-	char	*line;
+	char *line;
+	int i;
+	int only_whitespace;
 
 	line = get_next_line(fd);
 	if (!line)
 		return (NULL);
-	while (line && line[0] == '\n')
+
+	while (line)
 	{
+		i = 0;
+		only_whitespace = 1;
+		while (line[i] && line[i] != '\n')
+		{
+			if (line[i] != ' ' && line[i] != '\t')
+			{
+				only_whitespace = 0;
+				break ;
+			}
+			i++;
+		}
+		if (!only_whitespace)
+			break ;
 		free(line);
 		line = get_next_line(fd);
 	}

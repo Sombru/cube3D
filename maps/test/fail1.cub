@@ -3,9 +3,13 @@ NO ./texture/blank/dark_grey.xpm
 EA ./texture/blank/grey.xpm
 SO ./texture/blank/light_grey.xpm
 DO ./texture/blank/black.xpm
+  
+
+
 
 F 30,30,30
 C 200,200,200
+
 
 
 111111
@@ -23,4 +27,6 @@ C 200,200,200
 1000000000000000000000000001
 1000000000000000110101010001
 11000001110101011111011110111
+1
+
 1
