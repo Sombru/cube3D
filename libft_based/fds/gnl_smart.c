@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_smart.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:12:44 by pkostura          #+#    #+#             */
-/*   Updated: 2025/02/14 13:21:55 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 08:45:03 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-// returns a line from a file exluding empty line and trims '\n' ending char 
+// returns a line from a file exluding empty line and trims '\n' ending char
 char	*gnl_smart(int fd)
 {
 	char	*line;
@@ -20,11 +20,10 @@ char	*gnl_smart(int fd)
 	line = get_next_line(fd);
 	if (!line)
 		return (NULL);
-    while (line && line[0] == '\n')
-    {
-        free(line);
-        line = get_next_line(fd);
-    }
-    return (ft_rmlast_char(line, '\n'));
-	
+	while (line && line[0] == '\n')
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (ft_rmlast_char(line, '\n'));
 }

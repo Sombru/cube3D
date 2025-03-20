@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nspalevi <nspalevi@student.fr>             +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 10:21:15 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/14 14:19:43 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/20 08:03:53 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	draw_map(t_data *data)
 			if (data->map[y * data->map_x + x] == '1')
 				color = WHITE;
 			else if (data->map[y * data->map_x + x] == '2')
-				color = RED;
+				color = PURPLE;
 			else
 				color = BLACK;
 			draw_block(data, x, y, color);
