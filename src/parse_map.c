@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/17 09:52:02 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 09:46:18 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ void	get_map(char *map_path, t_data *data)
 		safe_exit(fd, NULL, data, "Error parsing map\n");
 	data->map = malloc(data->map_x * data->map_y + 1);
 	data->original_map = malloc(data->map_x * data->map_y + 1);
-	debug_map(map_parse, data);
 	get_player_pos(fd, map_parse, data);
 	while (i < data->map_x * data->map_y + 1)
 	{

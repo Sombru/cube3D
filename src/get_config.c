@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 12:11:05 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/17 10:10:56 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:02:44 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ static char	*extract_texture_path(char *line, const char type)
 	path = NULL;
 	if (line[0] == type)
 	{
-		path = ft_strchr(line, '/');
+		path = ft_strchr(line, '.');
 		if (path)
 		{
+			path++;
 			path++;
 			return (path);
 		}
@@ -71,18 +72,22 @@ int	get_colors(char *line, const char type, t_data *data)
 	if (type == 'N' || type == 'W' || type == 'S' || type == 'E' || type == 'D')
 		return (EXIT_SUCCESS);
 	line++;
-	while (line && ft_isdigit(*line) == 0)
+	while (line && (ft_isdigit(*line) == 0) && (*line) != '-')
 		line++;
 	rgb_values = ft_split(line, ',');
+	if (ft_count_args(rgb_values) != 3)
+		return (ft_free_array(rgb_values), EXIT_FAILURE);
 	rgb[0] = ft_atoi(rgb_values[0]);
 	rgb[1] = ft_atoi(rgb_values[1]);
 	rgb[2] = ft_atoi(rgb_values[2]);
+	if ((rgb[0] < 0 || rgb[0] > 255) || (rgb[1] < 0 || rgb[1] > 255)
+		|| (rgb[2] < 0 || rgb[2] > 255))
+		return (ft_free_array(rgb_values), EXIT_FAILURE);
 	if (type == 'F')
 		data->floor_color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 	if (type == 'C')
 		data->ceiling_color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
-	ft_free_array(rgb_values);
-	return (EXIT_SUCCESS);
+	return (ft_free_array(rgb_values), EXIT_SUCCESS);
 }
 
 int	get_config(int fd, t_data *data)
@@ -111,5 +116,5 @@ int	get_config(int fd, t_data *data)
 	}
 	if (i[0] < 6)
 		return (free_lines(lines), EXIT_FAILURE);
-	return (free_lines(lines), EXIT_SUCCESS);
+	return (free_lines(lines), check_config(data));
 }

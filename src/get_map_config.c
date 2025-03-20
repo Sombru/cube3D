@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:11:07 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/17 10:05:31 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 09:51:47 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void	get_player_pos(int fd, char **map_parse, t_data *data)
 		}
 		i[0]++;
 	}
+	is_there_player(data, map_parse, fd);
 	data->map[i[1]] = '\0';
 }

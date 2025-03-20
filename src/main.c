@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/17 11:25:21 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 09:40:22 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	main(int argc, char **argv)
 		return (write(STDERR_FILENO, "Specify map to read\n", 21));
 	if (argc == 3)
 		return (write(STDERR_FILENO, "Too many arguments\n", 20));
+	if (ft_strchr(argv[1], '.') == NULL)
+		return (write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
 	if (ft_strcmp(ft_strchr(argv[1], '.'), ".cub") != 0)
 		return (write(STDERR_FILENO, "Map file must end with \".cub\"\n", 31));
 	data = malloc(sizeof(t_data));

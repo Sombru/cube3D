@@ -6,7 +6,7 @@
 /*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/17 13:53:31 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/20 09:51:07 by pkostura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,11 +253,13 @@ void			free_gnl_buffer(int fd);
 int				is_valid_map_line(char *map_line);
 void			safe_exit(int fd, char **map, t_data *data,
 					const char *message);
+void			is_there_player(t_data *data, char **map, int fd);
 
 //===============================get_config===================================//
 
 void			get_player_pos(int fd, char **map_parse, t_data *data);
 void			is_map_closed(int fd, char **map, t_data *data);
+int				check_config(t_data *data);
 
 //===============================get_map_config===============================//
 
