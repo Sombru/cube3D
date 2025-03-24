@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:29:45 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/17 13:56:58 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/24 08:52:23 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void	safe_exit(int fd, char **map, t_data *data, const char *message)
 	if (map)
 		ft_free_array(map);
 	if (data->map)
+	{
 		free(data->map);
+		free(data->original_map);
+	}
 	free(data);
 	exit(69);
 }

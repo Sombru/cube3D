@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 06:41:30 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/20 09:44:22 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/24 08:49:32 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # define SCREEN_HEIGHT 720
 # define MINIMAP_SIZE 720 // not bigger than SCREEN_HEIGHT or SCREEN WITDH
 # define ANGLE_DIFF 0.05 // change of camera view per action
-# define DOOR_RANGE 30.f // how far can we open door from 
+# define DOOR_RANGE 30 // how far can we open door from 
 
 # define DEBUG_MODE 0
 

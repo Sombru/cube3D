@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:56 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/20 09:51:07 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/24 09:49:01 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
+
+// Created link.cub, it links to itself and crashes, which can be fixed by checking the map before we init data, but we need to init data to check map,
+// also fixed norm in gnl smart and added a free to safe exit for original map.
 
 # include "../libft_based/libft.h"
 # include "../minilibx-linux/mlx.h"
