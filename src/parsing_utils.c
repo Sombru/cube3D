@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:29:45 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/24 08:52:23 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:35:00 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	is_valid_map_line(char *map_line)
 void	safe_exit(int fd, char **map, t_data *data, const char *message)
 {
 	write(2, message, ft_strlen(message));
-	free_gnl_buffer(fd);
+	if (read(fd, NULL, 0) != -1)
+		free_gnl_buffer(fd);
 	free_config(data);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);

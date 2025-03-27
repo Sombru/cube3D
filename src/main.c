@@ -6,13 +6,13 @@
 /*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 18:21:28 by sombru            #+#    #+#             */
-/*   Updated: 2025/03/24 09:13:17 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:49:05 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3D.h"
 
-void	exit_game(t_data *data)
+int	exit_game(t_data *data)
 {
 	free(data->north_texture);
 	free(data->west_texture);
@@ -33,6 +33,7 @@ void	exit_game(t_data *data)
 	free(data->original_map);
 	free(data);
 	exit(0);
+	return (0);
 }
 
 static void	init_player_and_keys(t_data *data)

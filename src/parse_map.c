@@ -6,7 +6,7 @@
 /*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:47:14 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/27 08:00:46 by nspalevi         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:32:04 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	get_map(char *map_path, t_data *data)
 	static int	i = 0;
 
 	fd = open(map_path, O_RDONLY);
-	if (fd == -1)
+	if (fd == -1 || read(fd, NULL, 0) == -1)
 		safe_exit(fd, NULL, data, "Error opening map file\n");
 	if (get_config(fd, data) == EXIT_FAILURE)
 		safe_exit(fd, NULL, data, "Error in map config\n");

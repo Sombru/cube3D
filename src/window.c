@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pkostura <pkostura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nspalevi <nspalevi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:31:30 by pkostura          #+#    #+#             */
-/*   Updated: 2025/03/20 09:38:03 by pkostura         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:50:59 by nspalevi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	window_loop(t_data *data)
 			data->screen_height);
 	mlx_hook(data->win_3d, 2, 1L << 0, key_press_handler, data);
 	mlx_hook(data->win_3d, 3, 1L << 1, key_release_handler, data);
+	mlx_hook(data->win_3d, 33, 0L, exit_game, data);
 	mlx_loop_hook(data->mlx, render_frame, data);
 	mlx_loop(data->mlx);
 }

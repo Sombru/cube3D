@@ -1,14 +1,15 @@
 WE ./texture/blank/lightest_grey.xpm
+F 30, 30, 30
 NO ./texture/blank/dark_grey.xpm
 EA ./texture/blank/grey.xpm
 SO ./texture/blank/light_grey.xpm
 DO ./texture/blank/black.xpm
+ 
+	 	 	 
+			 	 	 
 
-F 30,30,30
+							 
 C 200,200,200
-
-
-
 111111
 10010100
 10101
